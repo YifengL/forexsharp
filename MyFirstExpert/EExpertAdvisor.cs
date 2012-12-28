@@ -177,6 +177,8 @@ namespace MyFirstExpert
 
         protected Order Buy(double size, double stopLoss, double takeProfit)
         {
+            // check if stopLoss and take profit valid for buy
+
             int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
 
             // check if we can create and order to ecn 
@@ -193,6 +195,8 @@ namespace MyFirstExpert
 
         protected Order Sell(double size, double stopLoss, double takeProfit)
         {
+            // check if stopLoss and take profit valid for buy
+
             int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
 
             // check if we can create and order to ecn 
@@ -214,5 +218,34 @@ namespace MyFirstExpert
         public double SellOpenPrice { get { return Bid; } }
 
         public double SellClosePrice { get { return Ask; } }
+
+        protected Order PendingBuy(double size, double entry, double stopLoss, double takeProfit)
+        {
+            // check if stopLoss and take profit valid for buy
+            ORDER_TYPE orderType = default(ORDER_TYPE);
+
+            if (BuyOpenPrice < entry)
+            {
+                orderType = ORDER_TYPE.OP_SELLLIMIT;
+            }
+            else
+            {
+                orderType = ORDER_TYPE.OP_BUYLIMIT;
+            }
+
+            int ticket = OrderSend(Symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
+
+            // check if we can create and order to ecn 
+
+            // should host compatible handler in server
+
+            if (ticket == -1)
+            {
+                ThrowLatestException();
+            }
+
+            return new Order(ticket, size, orderType, this);
+            //return new Order(
+        }
     }
 }

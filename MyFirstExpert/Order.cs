@@ -1,4 +1,5 @@
-﻿using TradePlatform.MT4.SDK.API;
+﻿using System;
+using TradePlatform.MT4.SDK.API;
 
 namespace MyFirstExpert
 {
@@ -56,6 +57,19 @@ namespace MyFirstExpert
             Close();
 
             return true;
+        }
+
+        public void ModifyStopLoss(double newStopLoss)
+        {
+            bool success = false;
+            // should throw exception for each call
+            if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
+                success = ea.OrderModify(ticket, ea.OrderOpenPrice(), newStopLoss, ea.OrderTakeProfit(), DateTime.Now.AddDays(100), 0);
+
+            if (!success)
+            {
+                ea.ThrowLatestException();    
+            }
         }
     }
 }
