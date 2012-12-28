@@ -87,6 +87,7 @@
     <Compile Include="CheckupFunctions.cs" />
     <Compile Include="OrderExtensions.cs" />
     <Compile Include="Test\ModifyStopTest.cs" />
+    <Compile Include="Test\PendingBuyTest.cs" />
     <Compile Include="Test\SellFunctionTest.cs" />
     <Compile Include="MyExpertAdvisor.cs" />
     <Compile Include="EExpertAdvisor.cs" />

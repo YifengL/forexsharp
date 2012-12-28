@@ -37,7 +37,7 @@ namespace MyFirstExpert
         #endregion
 
         #region Special Constant
-        public const int CLR_NONE = 0;
+        public const int CLR_NONE = -1;
         #endregion
 
         private int lastError;
@@ -108,9 +108,9 @@ namespace MyFirstExpert
                                               magic, expiration, arrow_color);
         }
 
-        public bool OrderModify(int ticket, double price, double stoploss, double takeprofit, DateTime expiration = default(DateTime), int arrow_color = 0)
+        public bool OrderModify(int ticket, double price, double stoploss, double takeprofit, DateTime expiration = default(DateTime), int arrow_color = -1)
         {
-            return TradingFunctions.OrderModify(this, ticket, price, stoploss, takeprofit, expiration, arrow_color);
+            return TradingFunctions.OrderModify(this, ticket, price, stoploss, takeprofit, DateTime.Now.AddDays(100), arrow_color);
         }
 
         public bool OrderClose(int ticket, double lots, double price, int slippage, int color = 0)
@@ -179,6 +179,10 @@ namespace MyFirstExpert
         {
             // check if stopLoss and take profit valid for buy
 
+            if (stopLoss >= BuyOpenPrice) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
+
+            if (takeProfit <= BuyOpenPrice) throw new ApplicationException("Take profit for Buy have to more than Ask");
+            
             int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
 
             // check if we can create and order to ecn 
@@ -196,6 +200,10 @@ namespace MyFirstExpert
         protected Order Sell(double size, double stopLoss, double takeProfit)
         {
             // check if stopLoss and take profit valid for buy
+
+            if (stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than Bid");
+
+            if (takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than Bid");
 
             int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
 
@@ -222,6 +230,10 @@ namespace MyFirstExpert
         protected Order PendingBuy(double size, double entry, double stopLoss, double takeProfit)
         {
             // check if stopLoss and take profit valid for buy
+            if (stopLoss >= entry) throw new ApplicationException("Stop Loss for Buy have to less than entry price");
+
+            if (takeProfit <= entry) throw new ApplicationException("Take profit for Buy have to more than entry price");
+
             ORDER_TYPE orderType = default(ORDER_TYPE);
 
             if (BuyOpenPrice < entry)
@@ -247,5 +259,41 @@ namespace MyFirstExpert
             return new Order(ticket, size, orderType, this);
             //return new Order(
         }
+
+        protected Order PendingSell(double size, double entry, double stopLoss, double takeProfit)
+        {
+            // check if stopLoss and take profit valid for buy
+            if (stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than entry price");
+
+            if (takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than entry price");
+
+            ORDER_TYPE orderType = default(ORDER_TYPE);
+
+            if (SellOpenPrice < entry)
+            {
+                // sell limit
+                orderType = ORDER_TYPE.OP_BUYSTOP;
+            }
+            else
+            {
+                // sell stop
+                orderType = ORDER_TYPE.OP_SELLSTOP;
+            }
+
+            int ticket = OrderSend(Symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
+
+            // check if we can create and order to ecn 
+
+            // should host compatible handler in server
+
+            if (ticket == -1)
+            {
+                ThrowLatestException();
+            }
+
+            return new Order(ticket, size, orderType, this);
+            //return new Order(
+        }
+        
     }
 }

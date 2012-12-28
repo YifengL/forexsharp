@@ -64,7 +64,7 @@ namespace MyFirstExpert
             bool success = false;
             // should throw exception for each call
             if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
-                success = ea.OrderModify(ticket, ea.OrderOpenPrice(), newStopLoss, ea.OrderTakeProfit(), DateTime.Now.AddDays(100), 0);
+                success = ea.OrderModify(ticket, ea.OrderOpenPrice(), newStopLoss, ea.OrderTakeProfit(), DateTime.Now.AddDays(100), -1);
 
             if (!success)
             {
