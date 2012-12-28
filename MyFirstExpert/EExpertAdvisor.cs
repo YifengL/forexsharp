@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyFirstExpert.PredefinedVariable;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -175,14 +176,14 @@ namespace MyFirstExpert
             throw new NotImplementedException();
         }
 
-        protected Order Buy(double size, double stopLoss, double takeProfit)
+        protected Order Buy(double size, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
 
-            if (stopLoss >= BuyOpenPrice) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
+            if (stopLoss != 0 && stopLoss >= BuyOpenPrice) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
 
-            if (takeProfit <= BuyOpenPrice) throw new ApplicationException("Take profit for Buy have to more than Ask");
-            
+            if (takeProfit != 0 && takeProfit <= BuyOpenPrice) throw new ApplicationException("Take profit for Buy have to more than Ask");
+
             int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
 
             // check if we can create and order to ecn 
@@ -197,13 +198,13 @@ namespace MyFirstExpert
             return new Order(ticket, size, ORDER_TYPE.OP_BUY, this);
         }
 
-        protected Order Sell(double size, double stopLoss, double takeProfit)
+        protected Order Sell(double size, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
 
-            if (stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than Bid");
+            if (stopLoss != 0 && stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than Bid");
 
-            if (takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than Bid");
+            if (takeProfit != 0 && takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than Bid");
 
             int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
 
@@ -227,12 +228,12 @@ namespace MyFirstExpert
 
         public double SellClosePrice { get { return Ask; } }
 
-        protected Order PendingBuy(double size, double entry, double stopLoss, double takeProfit)
+        protected Order PendingBuy(double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
-            if (stopLoss >= entry) throw new ApplicationException("Stop Loss for Buy have to less than entry price");
+            if (stopLoss != 0 && stopLoss >= entry) throw new ApplicationException("Stop Loss for Buy have to less than entry price");
 
-            if (takeProfit <= entry) throw new ApplicationException("Take profit for Buy have to more than entry price");
+            if (takeProfit != 0 && takeProfit <= entry) throw new ApplicationException("Take profit for Buy have to more than entry price");
 
             ORDER_TYPE orderType = default(ORDER_TYPE);
 
@@ -263,9 +264,9 @@ namespace MyFirstExpert
         protected Order PendingSell(double size, double entry, double stopLoss, double takeProfit)
         {
             // check if stopLoss and take profit valid for buy
-            if (stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than entry price");
+            if (stopLoss != 0 && stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than entry price");
 
-            if (takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than entry price");
+            if (takeProfit != 0 && takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than entry price");
 
             ORDER_TYPE orderType = default(ORDER_TYPE);
 
@@ -294,6 +295,22 @@ namespace MyFirstExpert
             return new Order(ticket, size, orderType, this);
             //return new Order(
         }
-        
+
+        public Closes Close
+        {
+            get { return new Closes(this); }
+        }
+
+        public Opens Open
+        {
+            get { return new Opens(this); }
+        }
+
+        public Times Time
+        {
+            get { return new Times(this); }
+        }
     }
+
 }
+
