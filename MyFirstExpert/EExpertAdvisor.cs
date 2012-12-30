@@ -103,7 +103,7 @@ namespace MyFirstExpert
             return TradingFunctions.OrderType(this);
         }
 
-        public int OrderSend(string symbol, ORDER_TYPE cmd, double volume, double price, int slippage, double stoploss, double takeprofit, string comment = "", int magic = 0, DateTime expiration = default(DateTime), int arrow_color = 0)
+        public int OrderSend(string symbol, ORDER_TYPE cmd, double volume, double price, int slippage, double stoploss, double takeprofit, string comment = "", int magic = 0, DateTime expiration = default(DateTime), int arrow_color = -1)
         {
             return TradingFunctions.OrderSend(this, symbol, cmd, volume, price, slippage, stoploss, takeprofit, comment,
                                               magic, expiration, arrow_color);
@@ -184,7 +184,7 @@ namespace MyFirstExpert
 
             if (takeProfit != 0 && takeProfit <= BuyOpenPrice) throw new ApplicationException("Take profit for Buy have to more than Ask");
 
-            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
+            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134);
 
             // check if we can create and order to ecn 
 
@@ -206,7 +206,7 @@ namespace MyFirstExpert
 
             if (takeProfit != 0 && takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than Bid");
 
-            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPrice, 3, stopLoss, takeProfit, "", 12134, DateTime.MaxValue, CLR_NONE);
+            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPrice, 3, stopLoss, takeProfit, "", 12134);
 
             // check if we can create and order to ecn 
 

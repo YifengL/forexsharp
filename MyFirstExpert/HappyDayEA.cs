@@ -6,8 +6,8 @@ namespace MyFirstExpert
     {
         private DateTime prevtime = default(DateTime);
         private Order order = null;
-        private bool IsBuy = true;
-
+        //private bool IsBuy = true;
+        private double stopLoss = 100;
         protected override int Init()
         {
             prevtime = Time[0];
@@ -32,13 +32,13 @@ namespace MyFirstExpert
 
                 if (IsPreviouslyBulishCandle())
                 {
-                    order = Buy(0.1);
-                    IsBuy = true;
+                    order = Buy(0.1, BuyClosePrice - (stopLoss * Point), BuyClosePrice + (2 * stopLoss * Point));
+                    //IsBuy = true;
                 }
                 else
                 {
-                    order = Sell(0.1);
-                    IsBuy = false;
+                    order = Sell(0.1, SellClosePrice + (stopLoss * Point), SellClosePrice - (2 * stopLoss * Point));
+                    //IsBuy = false;
                 }
             }
             else
@@ -65,11 +65,11 @@ namespace MyFirstExpert
             order = null;
         }
 
-        private double CloseOrderPrice()
-        {
-            if (IsBuy) return (Bid);
-            else return (Ask);
-        }
+        //private double CloseOrderPrice()
+        //{
+        //    if (IsBuy) return (Bid);
+        //    else return (Ask);
+        //}
 
         private bool IsThereOpenOrder()
         {

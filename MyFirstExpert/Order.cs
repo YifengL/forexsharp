@@ -9,6 +9,7 @@ namespace MyFirstExpert
         private EExpertAdvisor ea;
         private double lots;
         ORDER_TYPE orderType;
+        private DateTime NULL_TIME = new DateTime(621355968000000000);
 
         public Order(int ticket, double lots, ORDER_TYPE orderType, EExpertAdvisor ea)
         {
@@ -21,6 +22,9 @@ namespace MyFirstExpert
         public void Close()
         {
             bool success = false;
+            
+            if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() != NULL_TIME)
+                return;
 
             // should refactor to hierarcy
 
