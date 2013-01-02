@@ -168,6 +168,8 @@ namespace MyFirstExpert
         {
             int lastError = GetLastError();
 
+            if (lastError == 0) return;
+
             throw CreateException(lastError);
         }
 
@@ -309,6 +311,11 @@ namespace MyFirstExpert
         public Times Time
         {
             get { return new Times(this); }
+        }
+
+        public double ATR
+        {
+            get { return TechnicalIndicators.iATR(this, Symbol, TIME_FRAME.PERIOD_H4, 14, 0); }
         }
     }
 

@@ -80,11 +80,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuyTrailingMethod.cs" />
     <Compile Include="CheckupFunctions.cs" />
     <Compile Include="HappyDayEA.cs" />
     <Compile Include="OrderExtensions.cs" />
     <Compile Include="PredefinedVariable\Closes.cs" />
     <Compile Include="PredefinedVariable\Opens.cs" />
+    <Compile Include="SellTrailingMethod.cs" />
     <Compile Include="Test\ModifyStopTest.cs" />
     <Compile Include="Test\PendingBuyTest.cs" />
     <Compile Include="Test\SellFunctionTest.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PredefinedVariable\Times.cs" />
     <Compile Include="TradingContext.cs" />
+    <Compile Include="ITrailingMethod.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shell.exe.config">

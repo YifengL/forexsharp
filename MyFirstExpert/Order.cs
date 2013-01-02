@@ -8,8 +8,9 @@ namespace MyFirstExpert
         private int ticket;
         private EExpertAdvisor ea;
         private double lots;
-        ORDER_TYPE orderType;
+        private ORDER_TYPE orderType;
         private DateTime NULL_TIME = new DateTime(621355968000000000);
+        private double openPrice;
 
         public Order(int ticket, double lots, ORDER_TYPE orderType, EExpertAdvisor ea)
         {
@@ -22,7 +23,7 @@ namespace MyFirstExpert
         public void Close()
         {
             bool success = false;
-            
+
             if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() != NULL_TIME)
                 return;
 
@@ -57,7 +58,7 @@ namespace MyFirstExpert
         public bool CloseInProfit()
         {
             if (Profit < 0.0) return false;
-            
+
             Close();
 
             return true;
@@ -68,12 +69,55 @@ namespace MyFirstExpert
             bool success = false;
             // should throw exception for each call
             if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
-                success = ea.OrderModify(ticket, ea.OrderOpenPrice(), newStopLoss, ea.OrderTakeProfit(), DateTime.Now.AddDays(100), -1);
+                success = ea.OrderModify(ticket, ea.OrderOpenPrice(), newStopLoss, ea.OrderTakeProfit(),
+                                         DateTime.Now.AddDays(100), -1);
 
             if (!success)
             {
-                ea.ThrowLatestException();    
+                ea.ThrowLatestException();
             }
+        }
+
+        public double OpenPrice
+        {
+            get
+            {
+                if (openPrice == default(double))
+                {
+                    // should throw exception for each call
+                    if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
+                        openPrice = ea.OrderOpenPrice();
+
+                    ea.ThrowLatestException();
+                }
+
+                return openPrice;
+            }
+        }
+
+        public double StopLoss
+        {
+            get
+            {
+                // should cache stop loss 
+
+                bool success = false;
+                // should throw exception for each call
+                if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
+                    return ea.OrderStopLoss();
+
+                if (!success)
+                {
+                    ea.ThrowLatestException();
+                }
+
+                return 0;
+            }
+        }
+
+        public bool IsOpen
+        {
+            get { return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() == NULL_TIME; }
         }
     }
 }

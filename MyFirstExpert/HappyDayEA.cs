@@ -6,10 +6,12 @@ namespace MyFirstExpert
     {
         private DateTime prevtime = default(DateTime);
         private Order order = null;
-        //private bool IsBuy = true;
-        private double stopLoss = 100;
+        private double stopLoss = 200;
+        private ITrailingMethod trailingMethod;
+
         protected override int Init()
         {
+            //stopLoss = ATR;
             prevtime = Time[0];
             return (0);
         }
@@ -32,21 +34,31 @@ namespace MyFirstExpert
 
                 if (IsPreviouslyBulishCandle())
                 {
+                    //order = Buy(0.1, BuyClosePrice - stopLoss, BuyClosePrice + 2 * stopLoss);
                     order = Buy(0.1, BuyClosePrice - (stopLoss * Point), BuyClosePrice + (2 * stopLoss * Point));
-                    //IsBuy = true;
+                    trailingMethod = new BuyTrailingMethod(order, this);
+                    Print("Buy");
                 }
                 else
                 {
+                    //order = Sell(0.1, SellClosePrice + stopLoss, SellClosePrice - 2 * stopLoss);
                     order = Sell(0.1, SellClosePrice + (stopLoss * Point), SellClosePrice - (2 * stopLoss * Point));
-                    //IsBuy = false;
+                    trailingMethod = new SellTrailingMethod(order, this);
+                    Print("Sell");
                 }
             }
             else
             {
+                if (IsThereOpenOrder())
+                {
+                    trailingMethod.Trail();
+                }
+
                 Print("Wait pal");
             }
             return (0);
         }
+
 
         private bool IsNewBar()
         {
@@ -65,15 +77,17 @@ namespace MyFirstExpert
             order = null;
         }
 
-        //private double CloseOrderPrice()
-        //{
-        //    if (IsBuy) return (Bid);
-        //    else return (Ask);
-        //}
-
         private bool IsThereOpenOrder()
         {
-            return (order != null);
+            if (order == null) return false;
+            
+            if (!order.IsOpen)
+            {
+                order = null;
+                return false;
+            }
+
+            return true;
         }
 
         private bool IsPreviouslyBulishCandle()
