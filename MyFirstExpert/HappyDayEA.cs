@@ -6,7 +6,9 @@ namespace MyFirstExpert
     {
         private DateTime prevtime = default(DateTime);
         private Order order = null;
-        private double stopLoss = 200;
+        private double stopLoss = 100;
+        private double takeProfit = 200;
+        private double lotSize = 1;
         private ITrailingMethod trailingMethod;
 
         protected override int Init()
@@ -35,21 +37,34 @@ namespace MyFirstExpert
                 if (IsPreviouslyBulishCandle())
                 {
                     //order = Buy(0.1, BuyClosePrice - stopLoss, BuyClosePrice + 2 * stopLoss);
-                    order = Buy(0.1, BuyClosePrice - (stopLoss * Point), BuyClosePrice + (2 * stopLoss * Point));
+                    //order = Buy(0.1, BuyClosePrice - (stopLoss * Point), BuyClosePrice + (4 * stopLoss * Point));
+                    double buyStopPrice = BuyOpenPrice + 50 * Point;
+                    double buyStopClosePrice = BuyClosePrice + 50 * Point;
+                    //order = PendingBuy(0.1, buyStopPrice, buyStopClosePrice - (stopLoss * Point), buyStopClosePrice + (4 * stopLoss * Point));
+                    order = PendingBuy(lotSize, buyStopPrice, buyStopClosePrice - (stopLoss * Point), buyStopClosePrice + (takeProfit * Point));
                     trailingMethod = new BuyTrailingMethod(order, this);
                     Print("Buy");
                 }
                 else
                 {
                     //order = Sell(0.1, SellClosePrice + stopLoss, SellClosePrice - 2 * stopLoss);
-                    order = Sell(0.1, SellClosePrice + (stopLoss * Point), SellClosePrice - (2 * stopLoss * Point));
+                    //order = Sell(0.1, SellClosePrice + (stopLoss * Point), SellClosePrice - (4 * stopLoss * Point));
+                    double sellStopPrice = SellOpenPrice - 50 * Point;
+                    double sellStopClosePrice = SellClosePrice - 50 * Point;
+                    order = PendingSell(lotSize, sellStopPrice, sellStopClosePrice + (stopLoss * Point), sellStopClosePrice - (takeProfit * Point));
+                    //order = PendingSell(0.1, sellStopPrice, sellStopClosePrice + (stopLoss * Point), sellStopClosePrice - (4 * stopLoss * Point));
                     trailingMethod = new SellTrailingMethod(order, this);
                     Print("Sell");
                 }
             }
             else
             {
-                if (IsThereOpenOrder())
+                //if (IsThereOpenOrder())
+                //{
+                //    trailingMethod.Trail();
+                //}
+
+                if (IsThereRunningOrder())
                 {
                     trailingMethod.Trail();
                 }
@@ -57,6 +72,11 @@ namespace MyFirstExpert
                 Print("Wait pal");
             }
             return (0);
+        }
+
+        private bool IsThereRunningOrder()
+        {
+            return IsThereOpenOrder() && order.IsRunning;
         }
 
 

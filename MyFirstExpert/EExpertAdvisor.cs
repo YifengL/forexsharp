@@ -106,7 +106,7 @@ namespace MyFirstExpert
         public int OrderSend(string symbol, ORDER_TYPE cmd, double volume, double price, int slippage, double stoploss, double takeprofit, string comment = "", int magic = 0, DateTime expiration = default(DateTime), int arrow_color = -1)
         {
             return TradingFunctions.OrderSend(this, symbol, cmd, volume, price, slippage, stoploss, takeprofit, comment,
-                                              magic, expiration, arrow_color);
+                                              magic, DateTime.Now.AddDays(100), arrow_color);
         }
 
         public bool OrderModify(int ticket, double price, double stoploss, double takeprofit, DateTime expiration = default(DateTime), int arrow_color = -1)
@@ -149,6 +149,24 @@ namespace MyFirstExpert
             return CommonFunctions.MarketInfo(this, symbol, mode);
         }
 
+        public double AskFor(string symbol)
+        {
+            return MarketInfo(symbol, MARKER_INFO_MODE.MODE_ASK);
+        }
+
+        public double BidFor(string symbol)
+        {
+            return MarketInfo(symbol, MARKER_INFO_MODE.MODE_BID);
+        }
+
+        public double BuyOpenPriceFor(string symbol) { return AskFor(symbol); }
+
+        public double BuyClosePriceFor(string symbol) { return BidFor(symbol);}
+
+        public double SellOpenPriceFor(string symbol) { return BidFor(symbol); }
+
+        public double SellClosePriceFor(string symbol) { return AskFor(symbol);  }
+
         public double Bid
         {
             get { return PredefinedVariables.Bid(this); }
@@ -162,6 +180,11 @@ namespace MyFirstExpert
         public double Point
         {
             get { return PredefinedVariables.Point(this); }
+        }
+
+        public double PointFor(string symbol)
+        {
+            return MarketInfo(symbol, MARKER_INFO_MODE.MODE_POINT);
         }
 
         internal void ThrowLatestException()
@@ -230,7 +253,7 @@ namespace MyFirstExpert
 
         public double SellClosePrice { get { return Ask; } }
 
-        protected Order PendingBuy(double size, double entry, double stopLoss = 0, double takeProfit = 0)
+        protected Order PendingBuy(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
             if (stopLoss != 0 && stopLoss >= entry) throw new ApplicationException("Stop Loss for Buy have to less than entry price");
@@ -239,7 +262,7 @@ namespace MyFirstExpert
 
             ORDER_TYPE orderType = default(ORDER_TYPE);
 
-            if (BuyOpenPrice < entry)
+            if (BuyOpenPriceFor(symbol) < entry)
             {
                 orderType = ORDER_TYPE.OP_SELLLIMIT;
             }
@@ -248,7 +271,7 @@ namespace MyFirstExpert
                 orderType = ORDER_TYPE.OP_BUYLIMIT;
             }
 
-            int ticket = OrderSend(Symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
+            int ticket = OrderSend(symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
 
             // check if we can create and order to ecn 
 
@@ -263,16 +286,26 @@ namespace MyFirstExpert
             //return new Order(
         }
 
-        protected Order PendingSell(double size, double entry, double stopLoss, double takeProfit)
+        protected Order PendingBuy(double size, double entry, double stopLoss = 0, double takeProfit = 0)
+        {
+            return PendingBuy(Symbol, entry, stopLoss, takeProfit);
+        }
+
+        protected Order PendingSell(double size, double entry, double stopLoss = 0, double takeProfit = 0)
+        {
+            return PendingSell(Symbol, size, entry, stopLoss, takeProfit);
+        }
+
+        protected Order PendingSell(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
-            if (stopLoss != 0 && stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than entry price");
+            if (stopLoss != 0 && stopLoss <= entry) throw new ApplicationException("Stop Loss for Sell have to more than entry price");
 
-            if (takeProfit != 0 && takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than entry price");
+            if (takeProfit != 0 && takeProfit >= entry) throw new ApplicationException("Take profit for Sell have to less than entry price");
 
             ORDER_TYPE orderType = default(ORDER_TYPE);
 
-            if (SellOpenPrice < entry)
+            if (SellOpenPriceFor(symbol) < entry)
             {
                 // sell limit
                 orderType = ORDER_TYPE.OP_BUYSTOP;
@@ -283,7 +316,7 @@ namespace MyFirstExpert
                 orderType = ORDER_TYPE.OP_SELLSTOP;
             }
 
-            int ticket = OrderSend(Symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
+            int ticket = OrderSend(symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
 
             // check if we can create and order to ecn 
 
@@ -316,6 +349,11 @@ namespace MyFirstExpert
         public double ATR
         {
             get { return TechnicalIndicators.iATR(this, Symbol, TIME_FRAME.PERIOD_H4, 14, 0); }
+        }
+
+        public int Digits
+        {
+            get { return PredefinedVariables.Digits(this); }
         }
     }
 

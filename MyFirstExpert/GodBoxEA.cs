@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using TradePlatform.MT4.SDK.API;
 
 namespace MyFirstExpert
 {
-    public class MagicBoxEA : EExpertAdvisor
+    public class GodBoxEA : EExpertAdvisor
     {
-        //private OrderContext orderContext;
-
         //+------------------------------------------------------------------+
         //| Global Variables / Includes                                      |
         //+------------------------------------------------------------------+
         //datetime CurrTime = 0;
         //datetime PrevTime = 0;
-        string Sym = "GBPUSD";
-        int TimeFrame = 0;
+        string Sym = "";
+        //int TimeFrame = 0;
         int Shift = 1;
         int SymDigits = 5;
         double SymPoints = 0.0001;
@@ -31,18 +33,18 @@ namespace MyFirstExpert
         int StopLoss = 18;
         int Slippage = 3;
 
+
         //+------------------------------------------------------------------+
         //| Expert initialization function                                   |
         //+------------------------------------------------------------------+
         protected override int Init()
         {
-            //this.MqlError += this.OnMqlError;
             Sym = Symbol;
-
-            TimeFrame = Period;
-
-            SymPoints = MarketInfo(Sym, MARKER_INFO_MODE.MODE_POINT);
-            SymDigits = (int)MarketInfo(Sym, MARKER_INFO_MODE.MODE_DIGITS);
+            //TimeFrame = Period();
+            //SymPoints = MarketInfo(Sym, MODE_POINT);
+            SymPoints = Point;
+            SymDigits = Digits;
+            //SymDigits = MarketInfo(Sym, MODE_DIGITS);
             //---
             if (SymPoints == 0.001) { SymPoints = 0.01; SymDigits = 3; }
             else if (SymPoints == 0.00001) { SymPoints = 0.0001; SymDigits = 5; }
@@ -50,7 +52,6 @@ namespace MyFirstExpert
             //----
             return (0);
         }
-
         //+------------------------------------------------------------------+
         //| Expert deinitialization function                                 |
         //+------------------------------------------------------------------+
@@ -61,12 +62,15 @@ namespace MyFirstExpert
         //+------------------------------------------------------------------+
         protected override int Start()
         {
+
             if (CountAll(Sym, MagicNumberU) == 0)
             {
+                //Print ("test");
                 EnterLong(Sym, Lots, "");
             }
             else
             {
+                Print(MagicNumberU);
                 UpdateU(Sym, MagicNumberU);
             }
 
@@ -91,11 +95,12 @@ namespace MyFirstExpert
         {
             //---- 
 
-            //int Ticket = -1; int err = 0; bool OrderLoop = false; int TryCount = 0; int tic = 0;
+            int Ticket = -1; int err = 0; bool OrderLoop = false; int TryCount = 0; int tic = 0;
+
 
             for (int i = OrdersTotal() - 1; i >= 0; i--)
             {
-                OrderSelect(i, SELECT_BY.SELECT_BY_POS, POOL_MODES.MODE_TRADES);
+                OrderSelect(i, SELECT_BY.SELECT_BY_POS, MODE_TRADES);
                 if (OrderMagicNumber() != Magic) continue;
                 if (OrderSymbol() != Symbole) continue;
 
@@ -118,7 +123,7 @@ namespace MyFirstExpert
         {
             int Ticket = -1; int err = 0; bool OrderLoop = false; int TryCount = 0;
 
-            //this.MqlError()
+
             while (!OrderLoop)
             {
                 while (IsTradeContextBusy()) { Thread.Sleep(10); }
@@ -130,7 +135,7 @@ namespace MyFirstExpert
 
                 if (OrderSelect(tic, SELECT_BY.SELECT_BY_TICKET))
                     if ((int)OrderType() < 2) continue;
-                { OrderModify(tic, SymBid - 100 * point, StopShrt(SymAsk - 100 * point, StopLoss, SymPoints, SymDigits), TakeShrt(SymBid, ProfitTarget, SymPoints, SymDigits), DateTime.MaxValue, CLR_NONE); }
+                { OrderModify(tic, SymBid - 100 * point, StopShrt(SymAsk - 100 * point, StopLoss, SymPoints, SymDigits), TakeShrt(SymBid, ProfitTarget, SymPoints, SymDigits)); }
 
                 int Err = GetLastError();
 
@@ -220,9 +225,11 @@ namespace MyFirstExpert
 
                 if (OrderSelect(tic, SELECT_BY.SELECT_BY_TICKET))
 
+
+
                     if ((int)OrderType() < 2) continue;
 
-                { OrderModify(tic, SymBid + 100 * point, StopLong(SymBid + 80 * point, StopLoss, SymPoints, SymDigits), TakeLong(SymBid, ProfitTarget, SymPoints, SymDigits), DateTime.MaxValue, CLR_NONE); }
+                { OrderModify(tic, SymBid + 100 * point, StopLong(SymBid + 80 * point, StopLoss, SymPoints, SymDigits), TakeLong(SymBid, ProfitTarget, SymPoints, SymDigits)); }
 
                 int Err = GetLastError();
 
@@ -278,11 +285,10 @@ namespace MyFirstExpert
 
             for (int i = OrdersTotal() - 1; i >= 0; i--)
             {
-                OrderSelect(i, SELECT_BY.SELECT_BY_POS, POOL_MODES.MODE_TRADES);
+                OrderSelect(i, SELECT_BY.SELECT_BY_POS, MODE_TRADES);
                 if (OrderMagicNumber() != Magic) continue;
                 if (OrderSymbol() != Symbole) continue;
 
-                // ORDER TYPE Screw up !!
                 if (OrderType() == ORDER_TYPE.OP_SELLLIMIT) { count++; }
                 else if (OrderType() == ORDER_TYPE.OP_SELLSTOP) { count++; }
             }
@@ -336,10 +342,7 @@ namespace MyFirstExpert
         //+------------------------------------------------------------------+
         int EnterLong(string FinalSymbol, double FinalLots, string EA_Comment)
         {
-            int Ticket = -1; 
-            int err = 0; 
-            bool OrderLoop = false; 
-            int TryCount = 0;
+            int Ticket = -1; int err = 0; bool OrderLoop = false; int TryCount = 0;
 
             while (!OrderLoop)
             {
@@ -350,9 +353,9 @@ namespace MyFirstExpert
                 double SymBid = NormalizeDouble(MarketInfo(FinalSymbol, MODE_BID), SymDigits);
                 double point = MarketInfo(Symbol, MODE_POINT);
 
-                // defect !!! ORDER_TYPE is screw up
-                Ticket = OrderSend(FinalSymbol, ORDER_TYPE.OP_SELLLIMIT, FinalLots, SymBid + 100 * point, 0, StopLong(SymAsk + 100 * point, StopLoss + 200, SymPoints, SymDigits), TakeLong(SymBid, ProfitTarget, SymPoints, SymDigits), "some comment", MagicNumberU, DateTime.MaxValue, CLR_NONE);
-                
+                Ticket = OrderSend(FinalSymbol, ORDER_TYPE.OP_SELLLIMIT, FinalLots, SymBid + 100 * point, 0, StopLong(SymAsk + 100 * point, StopLoss, SymPoints, SymDigits), TakeLong(SymBid, ProfitTarget, SymPoints, SymDigits), "some comment", MagicNumberU);
+
+
                 int Err = GetLastError();
 
                 switch (Err)
@@ -410,7 +413,9 @@ namespace MyFirstExpert
                 double SymBid = NormalizeDouble(MarketInfo(FinalSymbol, MODE_BID), SymDigits);
                 double point = MarketInfo(Symbol, MODE_POINT);
 
-                Ticket = OrderSend(FinalSymbol, ORDER_TYPE.OP_SELLSTOP, FinalLots, SymBid - 100 * point, 0, StopShrt(SymAsk - 100 * point, StopLoss, SymPoints, SymDigits), TakeShrt(SymBid, ProfitTarget, SymPoints, SymDigits), "some comment", MagicNumberD, DateTime.MaxValue, CLR_NONE);
+                // Ticket = OrderSend( FinalSymbol, OP_SELL, FinalLots, SymBid, 0,  0.0,0.0, EA_Comment, MagicNumber, 0, CLR_NONE ); 
+                Ticket = OrderSend(FinalSymbol, ORDER_TYPE.OP_SELLSTOP, FinalLots, SymBid - 100 * point, 0, StopShrt(SymAsk - 100 * point, StopLoss, SymPoints, SymDigits), TakeShrt(SymBid, ProfitTarget, SymPoints, SymDigits), "some comment", MagicNumberD);
+                // ticket=OrderSend(Symbol,OP_SELLSTOP,0.1,price-70*point,0,price+100*point,price-200*point,"some comment",mgnD,0,CLR_NONE);
 
                 int Err = GetLastError();
 
@@ -452,6 +457,5 @@ namespace MyFirstExpert
             return (Ticket);
         }
         //+------------------------------------------------------------------+
-
     }
 }

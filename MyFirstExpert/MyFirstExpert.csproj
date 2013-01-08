@@ -51,6 +51,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\packages\Quartz.2.1.1\lib\net40\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="Shell, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\TradePlatform.NET 2.0.0.0 Beta\Shell\Shell.exe</HintPath>
@@ -82,8 +88,12 @@
   <ItemGroup>
     <Compile Include="BuyTrailingMethod.cs" />
     <Compile Include="CheckupFunctions.cs" />
+    <Compile Include="GodBoxEA.cs" />
     <Compile Include="HappyDayEA.cs" />
-    <Compile Include="OrderExtensions.cs" />
+    <Compile Include="MagicBoxOrder.cs" />
+    <Compile Include="MagicBoxOrderJob.cs" />
+    <Compile Include="NewsReminder.cs" />
+    <Compile Include="NewsShooterEA.cs" />
     <Compile Include="PredefinedVariable\Closes.cs" />
     <Compile Include="PredefinedVariable\Opens.cs" />
     <Compile Include="SellTrailingMethod.cs" />
@@ -97,10 +107,10 @@
     <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PredefinedVariable\Times.cs" />
-    <Compile Include="TradingContext.cs" />
     <Compile Include="ITrailingMethod.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Shell.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

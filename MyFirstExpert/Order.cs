@@ -27,6 +27,7 @@ namespace MyFirstExpert
             if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() != NULL_TIME)
                 return;
 
+            orderType = ea.OrderType();
             // should refactor to hierarcy
 
             if (orderType == ORDER_TYPE.OP_BUY)
@@ -36,6 +37,10 @@ namespace MyFirstExpert
             else if (orderType == ORDER_TYPE.OP_SELL)
             {
                 success = ea.OrderClose(ticket, lots, ea.SellClosePrice, 0);
+            }
+            else
+            {
+                success = ea.OrderDelete(ticket);
             }
 
             if (!success)
@@ -117,7 +122,18 @@ namespace MyFirstExpert
 
         public bool IsOpen
         {
-            get { return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() == NULL_TIME; }
+            get
+            {
+                return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() == NULL_TIME;
+            }
+        }
+
+        public bool IsRunning
+        {
+            get
+            {
+                return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && (ea.OrderType() == ORDER_TYPE.OP_BUY || ea.OrderType() == ORDER_TYPE.OP_SELL);
+            }
         }
     }
 }
