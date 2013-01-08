@@ -88,10 +88,12 @@
   <ItemGroup>
     <Compile Include="BuyTrailingMethod.cs" />
     <Compile Include="CheckupFunctions.cs" />
+    <Compile Include="EconomicEvent.cs" />
     <Compile Include="GodBoxEA.cs" />
     <Compile Include="HappyDayEA.cs" />
     <Compile Include="MagicBoxOrder.cs" />
     <Compile Include="MagicBoxOrderJob.cs" />
+    <Compile Include="EconomicCalendar.cs" />
     <Compile Include="NewsReminder.cs" />
     <Compile Include="NewsShooterEA.cs" />
     <Compile Include="PredefinedVariable\Closes.cs" />

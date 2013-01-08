@@ -10,6 +10,7 @@ namespace MyFirstExpert
         private ISchedulerFactory schedFact = new StdSchedulerFactory();
         private ConcurrentQueue<MagicBoxOrder> orderQueue = new ConcurrentQueue<MagicBoxOrder>();
         private IScheduler sched;
+        private EconomicCalendar calendar = new EconomicCalendar();
 
         public NewsReminder()
         {
@@ -19,6 +20,8 @@ namespace MyFirstExpert
         internal void Start()
         {
             sched.Start();
+
+            var economicEvents = calendar.GetTodaysCriticalEvents();
 
             ScheduleMagicBox(DateTime.Now.AddSeconds(10), new MagicBoxOrder { Symbol = "EURUSD" });
             
