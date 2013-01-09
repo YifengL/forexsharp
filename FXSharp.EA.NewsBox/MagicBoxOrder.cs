@@ -1,5 +1,5 @@
 ﻿
-namespace MyFirstExpert
+namespace FXSharp.EA.NewsBox
 {
     public class MagicBoxOrder
     {

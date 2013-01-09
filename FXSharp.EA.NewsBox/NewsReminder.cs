@@ -2,8 +2,9 @@
 using Quartz.Impl;
 using System;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
-namespace MyFirstExpert
+namespace FXSharp.EA.NewsBox
 {
     public class NewsReminder
     {
@@ -21,10 +22,19 @@ namespace MyFirstExpert
         {
             sched.Start();
 
-            var economicEvents = calendar.GetTodaysCriticalEvents();
+            ScheduleTodayEconomicCalendarAsync();
+
+            // should create async
+        }
+
+        private async Task ScheduleTodayEconomicCalendarAsync()
+        {
+            var economicEvents = await calendar.GetTodaysCriticalEvents();
+
+            // loop for each economic events and decide the schedule when to create pending order
 
             ScheduleMagicBox(DateTime.Now.AddSeconds(10), new MagicBoxOrder { Symbol = "EURUSD" });
-            
+
             ScheduleMagicBox(DateTime.Now.AddSeconds(15), new MagicBoxOrder { Symbol = "USDCAD" });
         }
 

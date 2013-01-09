@@ -1,7 +1,7 @@
 ﻿using Quartz;
 using System.Collections.Concurrent;
 
-namespace MyFirstExpert
+namespace FXSharp.EA.NewsBox
 {
     public class MagicBoxOrderJob : IJob
     {

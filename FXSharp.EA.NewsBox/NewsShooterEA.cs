@@ -1,6 +1,6 @@
 ﻿using FXSharp.TradingPlatform.Exts;
 using System.Collections.Concurrent;
-namespace MyFirstExpert
+namespace FXSharp.EA.NewsBox
 {
     public class NewsShooterEA : EExpertAdvisor
     {
