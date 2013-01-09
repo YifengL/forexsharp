@@ -22,5 +22,11 @@ namespace FXSharp.EA.NewsBox
         {
             state = new OrderAlreadyRunning(this, order);
         }
+
+        internal void MagicBoxCompleted()
+        {
+            // should create default state
+            state = null;
+        }
     }
 }

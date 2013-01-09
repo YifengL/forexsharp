@@ -1,5 +1,4 @@
 ﻿using FXSharp.TradingPlatform.Exts;
-using System;
 
 namespace FXSharp.EA.NewsBox
 {
@@ -7,11 +6,13 @@ namespace FXSharp.EA.NewsBox
     {
         private OrderManager orderManager;
         private Order order;
+        private AutoCloseOrder autoClose;
 
         public OrderAlreadyRunning(OrderManager orderManager, Order order)
         {
             this.orderManager = orderManager;
             this.order = order;
+            this.autoClose = new AutoCloseOrder();
         }
 
         public void Manage()
@@ -20,7 +21,12 @@ namespace FXSharp.EA.NewsBox
 
             // should create timer for expired
 
-            throw new NotImplementedException();
+            if (autoClose.IsExpired)
+            {
+                order.Close();
+                orderManager.MagicBoxCompleted();
+            }
         }
+
     }
 }

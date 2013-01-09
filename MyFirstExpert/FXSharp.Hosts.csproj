@@ -92,6 +92,7 @@
     <None Include="packages.config" />
     <None Include="Shell.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

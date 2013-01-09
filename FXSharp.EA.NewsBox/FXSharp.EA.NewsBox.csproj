@@ -51,19 +51,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCloseOrder.cs" />
     <Compile Include="CurrencyCorrelationAnalyzer.cs" />
-    <Compile Include="DailyEconomicCalendarUpdateJob.cs" />
-    <Compile Include="DailyEconomicScheduler.cs" />
-    <Compile Include="EconomicCalendar.cs" />
-    <Compile Include="EconomicEvent.cs" />
+    <Compile Include="Scheduler\DailyEconomicCalendarUpdateJob.cs" />
+    <Compile Include="Scheduler\DailyEconomicScheduler.cs" />
+    <Compile Include="EconomicCalendar\EconomicCalendar.cs" />
+    <Compile Include="EconomicCalendar\EconomicEvent.cs" />
     <Compile Include="IOrderState.cs" />
-    <Compile Include="MagicBoxCreated.cs" />
+    <Compile Include="OrderState\MagicBoxCreated.cs" />
     <Compile Include="MagicBoxOrder.cs" />
-    <Compile Include="MagicBoxOrderJob.cs" />
-    <Compile Include="MagicBoxScheduler.cs" />
+    <Compile Include="Scheduler\MagicBoxOrderJob.cs" />
+    <Compile Include="Scheduler\MagicBoxScheduler.cs" />
     <Compile Include="NewsReminder.cs" />
     <Compile Include="NewsShooterEA.cs" />
-    <Compile Include="OrderAlreadyRunning.cs" />
+    <Compile Include="OrderState\OrderAlreadyRunning.cs" />
     <Compile Include="OrderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -36,7 +36,7 @@ namespace FXSharp.EA.NewsBox
 
                 if (result == null) continue;
 
-                CreateOrderBox(result);
+                CreateOrderBox(result); // only manage one news at the time, should manage all
             }
 
             orderManager.ManageOrder();

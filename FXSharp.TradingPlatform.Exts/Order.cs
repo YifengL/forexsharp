@@ -11,9 +11,11 @@ namespace FXSharp.TradingPlatform.Exts
         private ORDER_TYPE orderType;
         private DateTime NULL_TIME = new DateTime(621355968000000000);
         private double openPrice;
+        private string symbol;
 
-        public Order(int ticket, double lots, ORDER_TYPE orderType, EExpertAdvisor ea)
+        public Order(string symbol, int ticket, double lots, ORDER_TYPE orderType, EExpertAdvisor ea)
         {
+            this.symbol = symbol;
             this.ticket = ticket;
             this.ea = ea;
             this.lots = lots;
@@ -32,11 +34,11 @@ namespace FXSharp.TradingPlatform.Exts
 
             if (orderType == ORDER_TYPE.OP_BUY)
             {
-                success = ea.OrderClose(ticket, lots, ea.BuyClosePrice, 0);
+                success = ea.OrderClose(ticket, lots, ea.BuyClosePriceFor(symbol), 0);
             }
             else if (orderType == ORDER_TYPE.OP_SELL)
             {
-                success = ea.OrderClose(ticket, lots, ea.SellClosePrice, 0);
+                success = ea.OrderClose(ticket, lots, ea.SellClosePriceFor(symbol), 0);
             }
             else
             {

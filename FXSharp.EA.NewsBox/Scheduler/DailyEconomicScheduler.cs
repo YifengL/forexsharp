@@ -1,6 +1,8 @@
 ﻿using Quartz;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace FXSharp.EA.NewsBox
 {
@@ -23,7 +25,7 @@ namespace FXSharp.EA.NewsBox
 
             var mbox = new MagicBoxScheduler(scheduler, queues);
 
-            foreach (var eventx in criticalEvents)
+            foreach (var eventx in criticalEvents.Where(x => x.DateTime > DateTime.Now))
             {
                 mbox.Schedule(eventx.DateTime.AddMinutes(-3), new MagicBoxOrder { Symbol = analzyer.RelatedCurrencyPair(eventx.Country) });
             }

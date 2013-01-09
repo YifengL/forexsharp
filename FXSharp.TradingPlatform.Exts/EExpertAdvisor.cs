@@ -202,13 +202,35 @@ namespace FXSharp.TradingPlatform.Exts
 
         protected Order Buy(double size, double stopLoss = 0, double takeProfit = 0)
         {
+            //// check if stopLoss and take profit valid for buy
+
+            //if (stopLoss != 0 && stopLoss >= BuyOpenPrice) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
+
+            //if (takeProfit != 0 && takeProfit <= BuyOpenPrice) throw new ApplicationException("Take profit for Buy have to more than Ask");
+
+            //int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134);
+
+            //// check if we can create and order to ecn 
+
+            //// should host compatible handler in server
+
+            //if (ticket == -1)
+            //{
+            //    ThrowLatestException();
+            //}
+
+            return Buy(Symbol, size, stopLoss, takeProfit);
+        }
+
+        protected Order Buy(string symbol, double size, double stopLoss = 0, double takeProfit = 0)
+        {
             // check if stopLoss and take profit valid for buy
 
-            if (stopLoss != 0 && stopLoss >= BuyOpenPrice) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
+            if (stopLoss != 0 && stopLoss >= BuyOpenPriceFor(symbol)) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
 
-            if (takeProfit != 0 && takeProfit <= BuyOpenPrice) throw new ApplicationException("Take profit for Buy have to more than Ask");
+            if (takeProfit != 0 && takeProfit <= BuyOpenPriceFor(symbol)) throw new ApplicationException("Take profit for Buy have to more than Ask");
 
-            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134);
+            int ticket = OrderSend(symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPriceFor(symbol), 3, stopLoss, takeProfit, "", 12134);
 
             // check if we can create and order to ecn 
 
@@ -219,18 +241,23 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(ticket, size, ORDER_TYPE.OP_BUY, this);
+            return new Order(symbol, ticket, size, ORDER_TYPE.OP_BUY, this);
         }
 
         protected Order Sell(double size, double stopLoss = 0, double takeProfit = 0)
         {
+            return Sell(Symbol, size, stopLoss, takeProfit);
+        }
+
+        protected Order Sell(string symbol, double size, double stopLoss = 0, double takeProfit = 0)
+        {
             // check if stopLoss and take profit valid for buy
 
-            if (stopLoss != 0 && stopLoss <= SellOpenPrice) throw new ApplicationException("Stop Loss for Sell have to more than Bid");
+            if (stopLoss != 0 && stopLoss <= SellOpenPriceFor(symbol)) throw new ApplicationException("Stop Loss for Sell have to more than Bid");
 
-            if (takeProfit != 0 && takeProfit >= SellOpenPrice) throw new ApplicationException("Take profit for Sell have to less than Bid");
+            if (takeProfit != 0 && takeProfit >= SellOpenPriceFor(symbol)) throw new ApplicationException("Take profit for Sell have to less than Bid");
 
-            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPrice, 3, stopLoss, takeProfit, "", 12134);
+            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPriceFor(symbol), 3, stopLoss, takeProfit, "", 12134);
 
             // check if we can create and order to ecn 
 
@@ -241,7 +268,7 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(ticket, size, ORDER_TYPE.OP_SELL, this);
+            return new Order(symbol, ticket, size, ORDER_TYPE.OP_SELL, this);
         }
 
         public double BuyOpenPrice { get { return Ask; } }
@@ -281,7 +308,7 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(ticket, size, orderType, this);
+            return new Order(symbol, ticket, size, orderType, this);
             //return new Order(
         }
 
@@ -326,7 +353,7 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(ticket, size, orderType, this);
+            return new Order(symbol, ticket, size, orderType, this);
             //return new Order(
         }
 
