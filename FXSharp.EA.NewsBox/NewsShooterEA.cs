@@ -10,6 +10,7 @@ namespace FXSharp.EA.NewsBox
         private double stopLoss = 100;
 
         private NewsReminder reminder;
+        private OrderManager orderManager;
 
         protected override int DeInit()
         {
@@ -21,6 +22,7 @@ namespace FXSharp.EA.NewsBox
             reminder = new NewsReminder();
             reminder.Start();
 
+            orderManager = new OrderManager();
             return 0;
         }
 
@@ -37,6 +39,8 @@ namespace FXSharp.EA.NewsBox
                 CreateOrderBox(result);
             }
 
+            orderManager.ManageOrder();
+
             // 1. one Cancel another
             // 2. trailing stop and Lock Profit
             // 3. delete after 10 minutes, Expired
@@ -46,15 +50,17 @@ namespace FXSharp.EA.NewsBox
 
         private void CreateOrderBox(MagicBoxOrder magicBox)
         {
-            PendingBuy(magicBox.Symbol, lotSize,
+            var buyOrder = PendingBuy(magicBox.Symbol, lotSize,
                         BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(Symbol),
                         BuyClosePriceFor(magicBox.Symbol) + ((range - stopLoss) * PointFor(Symbol)),
                         BuyClosePriceFor(magicBox.Symbol) + ((range + takeProfit) * PointFor(Symbol)));
 
-            PendingSell(magicBox.Symbol, lotSize,
+            var sellOrder = PendingSell(magicBox.Symbol, lotSize,
                         SellOpenPriceFor(magicBox.Symbol) - range * PointFor(Symbol),
                         SellClosePriceFor(magicBox.Symbol) - ((range - stopLoss) * PointFor(Symbol)),
                         SellClosePriceFor(magicBox.Symbol) - ((range + takeProfit) * PointFor(Symbol)));
+
+            orderManager.AddOneCancelAnother(buyOrder, sellOrder);
         }
     }
 }
