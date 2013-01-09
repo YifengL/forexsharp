@@ -10,51 +10,44 @@ namespace FXSharp.EA.NewsBox
     {
         private ISchedulerFactory schedFact = new StdSchedulerFactory();
         private ConcurrentQueue<MagicBoxOrder> orderQueue = new ConcurrentQueue<MagicBoxOrder>();
+        DailyEconomicScheduler economicScheduler;
         private IScheduler sched;
-        private EconomicCalendar calendar = new EconomicCalendar();
-
+        
         public NewsReminder()
         {
             sched = schedFact.GetScheduler();
+            economicScheduler = new DailyEconomicScheduler(sched, orderQueue);
         }
 
         internal void Start()
         {
             sched.Start();
 
-            ScheduleTodayEconomicCalendarAsync();
+            LoadDailyEconomicCalendar();
 
-            // should create async
+            StartDailyEconomicCalendar();
         }
 
-        private async Task ScheduleTodayEconomicCalendarAsync()
+        private void LoadDailyEconomicCalendar()
         {
-            var economicEvents = await calendar.GetTodaysCriticalEvents();
-
-            // loop for each economic events and decide the schedule when to create pending order
-
-            ScheduleMagicBox(DateTime.Now.AddSeconds(10), new MagicBoxOrder { Symbol = "EURUSD" });
-
-            ScheduleMagicBox(DateTime.Now.AddSeconds(15), new MagicBoxOrder { Symbol = "USDCAD" });
+            var task = economicScheduler.PrepareDailyReminder();
         }
 
-        private void ScheduleMagicBox(DateTime nexttime, MagicBoxOrder magicBox)
+        private void StartDailyEconomicCalendar()
         {
-            IJobDetail jobDetail = JobBuilder.Create<MagicBoxOrderJob>()
-                .WithIdentity(magicBox.Symbol, "group1")
+            var jobDetail = JobBuilder.Create<DailyEconomicCalendarUpdateJob>()
+                .WithIdentity(DateTime.Now.ToString(), "group1")
                 .Build();
 
-            //DateTime nexttime = DateTime.Now.AddSeconds(10);
-
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity(magicBox.Symbol, "group1")
-                .StartAt(DateBuilder.TodayAt(nexttime.Hour, nexttime.Minute, nexttime.Second))
+            var nexttime = DateTime.Now.AddSeconds(2);
+            
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity(DateTime.Now.ToString(), "group1")
+                .StartNow()
+                .WithCronSchedule("0 28 16 * * ?") // everyday at 00 01
                 .Build();
 
-            // should group this together in one command. just execute when arrived there
-
-            jobDetail.JobDataMap.Add("queue", orderQueue);
-            jobDetail.JobDataMap.Add("orders", magicBox);
+            jobDetail.JobDataMap.Add("scheduler", economicScheduler);
 
             sched.ScheduleJob(jobDetail, trigger);
         }

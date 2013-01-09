@@ -51,10 +51,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrencyCorrelationAnalyzer.cs" />
+    <Compile Include="DailyEconomicCalendarUpdateJob.cs" />
+    <Compile Include="DailyEconomicScheduler.cs" />
     <Compile Include="EconomicCalendar.cs" />
     <Compile Include="EconomicEvent.cs" />
     <Compile Include="MagicBoxOrder.cs" />
     <Compile Include="MagicBoxOrderJob.cs" />
+    <Compile Include="MagicBoxScheduler.cs" />
     <Compile Include="NewsReminder.cs" />
     <Compile Include="NewsShooterEA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
