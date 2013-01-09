@@ -86,11 +86,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test\ModifyStopTest.cs" />
-    <Compile Include="Test\PendingBuyTest.cs" />
-    <Compile Include="Test\SellFunctionTest.cs" />
-    <Compile Include="MyExpertAdvisor.cs" />
-    <Compile Include="Test\BuyFunctionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +95,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FXSharp.EA.FirstTest\FXSharp.EA.FirstTest.csproj">
+      <Project>{09d4d2c3-05e1-4586-a2f2-66db0a8c9e83}</Project>
+      <Name>FXSharp.EA.FirstTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FXSharp.EA.HappyDay\FXSharp.EA.HappyDay.csproj">
+      <Project>{5fb94e06-2a61-4323-8fcb-4c9fe3d376ff}</Project>
+      <Name>FXSharp.EA.HappyDay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FXSharp.EA.MagicBox\FXSharp.EA.MagicBox.csproj">
+      <Project>{8d51979f-fd94-4d4e-aee3-c185ca37d9e3}</Project>
+      <Name>FXSharp.EA.MagicBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FXSharp.EA.NewsBox\FXSharp.EA.NewsBox.csproj">
+      <Project>{9808d624-79e6-455f-a601-f35c805d983c}</Project>
+      <Name>FXSharp.EA.NewsBox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FXSharp.TradingPlatform.Exts\FXSharp.TradingPlatform.Exts.csproj">
       <Project>{e33f0f2b-6fbd-4e1c-9981-510dd229c58e}</Project>
       <Name>FXSharp.TradingPlatform.Exts</Name>

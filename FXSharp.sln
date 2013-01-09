@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstExpert", "MyFirstExpert\MyFirstExpert.csproj", "{3CE781FB-63BA-4298-8C9E-2A54CED907CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FXSharp.Hosts", "MyFirstExpert\FXSharp.Hosts.csproj", "{3CE781FB-63BA-4298-8C9E-2A54CED907CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FXSharp.TradingPlatform.Exts", "FXSharp.TradingPlatform.Exts\FXSharp.TradingPlatform.Exts.csproj", "{E33F0F2B-6FBD-4E1C-9981-510DD229C58E}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FXSharp.EA.HappyDay", "FXSharp.EA.HappyDay\FXSharp.EA.HappyDay.csproj", "{5FB94E06-2A61-4323-8FCB-4C9FE3D376FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FXSharp.EA.NewsBox", "FXSharp.EA.NewsBox\FXSharp.EA.NewsBox.csproj", "{9808D624-79E6-455F-A601-F35C805D983C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FXSharp.EA.FirstTest", "FXSharp.EA.FirstTest\FXSharp.EA.FirstTest.csproj", "{09D4D2C3-05E1-4586-A2F2-66DB0A8C9E83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,12 @@ Global
 		{9808D624-79E6-455F-A601-F35C805D983C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9808D624-79E6-455F-A601-F35C805D983C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9808D624-79E6-455F-A601-F35C805D983C}.Release|x86.ActiveCfg = Release|Any CPU
+		{09D4D2C3-05E1-4586-A2F2-66DB0A8C9E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D4D2C3-05E1-4586-A2F2-66DB0A8C9E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D4D2C3-05E1-4586-A2F2-66DB0A8C9E83}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09D4D2C3-05E1-4586-A2F2-66DB0A8C9E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D4D2C3-05E1-4586-A2F2-66DB0A8C9E83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D4D2C3-05E1-4586-A2F2-66DB0A8C9E83}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

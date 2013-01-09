@@ -1,22 +1,20 @@
 ﻿//using TradePlatform.MT4.Data;
 using FXSharp.TradingPlatform.Exts;
-namespace MyFirstExpert
+namespace FXSharp.EA.FirstTest
 {
-    public class MyExpertAdvisor : EExpertAdvisor
+    public class PendingBuyTest : EExpertAdvisor
     {
         Order order = null;
         int count = 0;
-
         protected override int Init()
         {
-            order = Sell(0.1, Ask + 500 * Point, Bid - 500 * Point);
+            order = PendingBuy(0.1, Bid + 100 * Point, Bid - 500 * Point, Bid + 500 * Point);
             
             return 1;
         }
 
         protected override int DeInit()
         {
-            
             return 1;
         }
 
@@ -30,7 +28,7 @@ namespace MyFirstExpert
             }
             else
             {
-                order.ModifyStopLoss(Bid + (count * 100 * Point));
+                order.ModifyStopLoss(Ask - (count * 100 * Point));
             }
 
             //if (order.CloseInProfit())

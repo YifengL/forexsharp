@@ -2,7 +2,7 @@
 using System;
 using FXSharp.TradingPlatform.Exts;
 //using TradePlatform.MT4.Data;
-namespace MyFirstExpert
+namespace FXSharp.EA.FirstTest
 {
     public class SellFunctionTest : EExpertAdvisor
     {
