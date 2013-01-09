@@ -37,10 +37,10 @@ namespace FXSharp.EA.NewsBox
                 CreateOrderBox(result);
             }
 
-            // 1. One Cancel another
-            // 2. Trailing stop and Lock Profit
-            // 3. Delete after 10 minutes, Expired 
-
+            // 1. one Cancel another
+            // 2. trailing stop and Lock Profit
+            // 3. delete after 10 minutes, Expired
+            // 4. money management
             return 0;
         }
 
