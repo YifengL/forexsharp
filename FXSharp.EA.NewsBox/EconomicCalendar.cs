@@ -45,14 +45,21 @@ namespace FXSharp.EA.NewsBox
             }
 
             return results;
-
-            //DateTime,Name,Country,Volatility,Actual,Previous,Consensus
-            //"20130109 17:00:00","Gross Domestic Product s.a. (QoQ)","European Monetary Union","3","","-0.1%","-0.1%"
         }
 
-        private DateTime ParseDateTime(string p)
+        private static DateTime ParseDateTime(string date)
         {
-            return DateTime.Now;
+            var parts = date.Split(' ');
+            string datePart = parts[0];
+            string timePart = parts[1];
+
+            int year = Convert.ToInt32(datePart.Substring(0, 4));
+            int month = Convert.ToInt32(datePart.Substring(4, 2));
+            int day = Convert.ToInt32(datePart.Substring(6, 2));
+
+            var time = DateTime.Parse(timePart);
+
+            return new DateTime(year, month, day, time.Hour, time.Minute, time.Second);
         }
 
         private async Task<string> RequestRawDataToServerAsync()
