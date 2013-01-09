@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FXSharp.TradingPlatform.Exts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TradePlatform.MT4.SDK.API;
 
-namespace MyFirstExpert
+namespace FXSharp.EA.MagicBox
 {
     public class GodBoxEA : EExpertAdvisor
     {

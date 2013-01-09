@@ -1,6 +1,7 @@
-﻿using System;
+﻿using FXSharp.TradingPlatform.Exts;
+using System;
 
-namespace MyFirstExpert
+namespace FXSharp.EA.HappyDay
 {
     public class HappyDayEA : EExpertAdvisor
     {

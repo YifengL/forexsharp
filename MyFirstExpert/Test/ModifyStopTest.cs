@@ -1,4 +1,5 @@
 ﻿//using TradePlatform.MT4.Data;
+using FXSharp.TradingPlatform.Exts;
 namespace MyFirstExpert
 {
     public class ModifyStopTest : EExpertAdvisor

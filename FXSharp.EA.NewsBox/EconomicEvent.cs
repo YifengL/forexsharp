@@ -5,7 +5,8 @@ using System.Text;
 
 namespace MyFirstExpert
 {
-    class EconomicEvent
+    public class EconomicEvent
     {
+
     }
 }

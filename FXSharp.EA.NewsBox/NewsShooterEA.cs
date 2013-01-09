@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using FXSharp.TradingPlatform.Exts;
+using System.Collections.Concurrent;
 namespace MyFirstExpert
 {
     public class NewsShooterEA : EExpertAdvisor

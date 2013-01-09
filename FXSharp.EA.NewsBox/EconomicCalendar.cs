@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
@@ -9,6 +10,9 @@ namespace MyFirstExpert
         internal IList<EconomicEvent> GetTodaysCriticalEvents()
         {
             var client = new WebClient();
+
+            string todayString = DateTime.Now.ToString();
+
             client.Headers.Add("Referer", "http://www.fxstreet.com/fundamental/economic-calendar/");
             client.Headers.Add("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
             client.Encoding = Encoding.UTF8;

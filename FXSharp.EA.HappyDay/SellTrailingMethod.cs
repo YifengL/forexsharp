@@ -1,9 +1,10 @@
-﻿using System;
+﻿using FXSharp.TradingPlatform.Exts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MyFirstExpert
+namespace FXSharp.EA.HappyDay
 {
     public class SellTrailingMethod : ITrailingMethod
     {

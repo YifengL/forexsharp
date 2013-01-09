@@ -1,7 +1,7 @@
 ﻿using System;
 using TradePlatform.MT4.SDK.API;
 
-namespace MyFirstExpert
+namespace FXSharp.TradingPlatform.Exts
 {
     public class Order
     {

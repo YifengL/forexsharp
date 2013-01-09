@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FXSharp.TradingPlatform.Exts;
+using System;
 using System.Threading;
 using TradePlatform.MT4.SDK.API;
 
-namespace MyFirstExpert
+namespace FXSharp.EA.MagicBox
 {
     public class MagicBoxEA : EExpertAdvisor
     {

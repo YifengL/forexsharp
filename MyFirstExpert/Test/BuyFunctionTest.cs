@@ -1,5 +1,6 @@
 ﻿using TradePlatform.MT4.SDK.API;
 using System;
+using FXSharp.TradingPlatform.Exts;
 //using TradePlatform.MT4.Data;
 namespace MyFirstExpert
 {   

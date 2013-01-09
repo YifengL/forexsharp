@@ -1,12 +1,12 @@
 ﻿using TradePlatform.MT4.SDK.API;
 
-namespace MyFirstExpert.PredefinedVariable
+namespace FXSharp.TradingPlatform.Exts
 {
-    public class Closes
+    public class Opens
     {
         private EExpertAdvisor ea;
 
-        public Closes(EExpertAdvisor ea)
+        public Opens(EExpertAdvisor ea)
         {
             this.ea = ea;    
         }
@@ -15,7 +15,7 @@ namespace MyFirstExpert.PredefinedVariable
         {
             get
             {
-                return ea.Close(i);
+                return ea.Open(i);
             }
         }
     }

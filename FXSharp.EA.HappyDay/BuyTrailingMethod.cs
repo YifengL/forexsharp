@@ -1,5 +1,6 @@
 ﻿
-namespace MyFirstExpert
+using FXSharp.TradingPlatform.Exts;
+namespace FXSharp.EA.HappyDay
 {
     public class BuyTrailingMethod : ITrailingMethod
     {

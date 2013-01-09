@@ -1,7 +1,7 @@
 ﻿using TradePlatform.MT4.Core;
 using TradePlatform.MT4.Core.Utils;
 
-namespace MyFirstExpert
+namespace FXSharp.TradingPlatform.Exts
 {
     public static class CheckupFunctions
     {

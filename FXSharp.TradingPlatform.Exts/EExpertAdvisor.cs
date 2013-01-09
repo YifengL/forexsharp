@@ -1,5 +1,4 @@
-﻿using MyFirstExpert.PredefinedVariable;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +8,7 @@ using TradePlatform.MT4.Core.Exceptions;
 using TradePlatform.MT4.SDK.API;
 using TradePlatform.MT4.SDK.Library.Experts;
 
-namespace MyFirstExpert
+namespace FXSharp.TradingPlatform.Exts
 {
     public abstract class EExpertAdvisor : ExpertAdvisor
     {
