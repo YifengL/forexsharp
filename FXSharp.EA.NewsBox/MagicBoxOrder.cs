@@ -36,5 +36,15 @@ namespace FXSharp.EA.NewsBox
         {
             return Symbol.Length + ExecutingTime.Hour;
         }
+
+        public double LotSize { get; set; }
+
+        public double Range { get; set; }
+
+        public double TakeProfit { get; set; }
+
+        public double StopLoss { get; set; }
+
+        public int MinuteExpiracy { get; set; }
     }
 }

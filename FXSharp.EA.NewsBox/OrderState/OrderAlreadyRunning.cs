@@ -6,13 +6,14 @@ namespace FXSharp.EA.NewsBox
     {
         private OrderWatcher orderManager;
         private Order order;
-        private AutoCloseOrder autoClose;
+        //private AutoCloseOrder autoClose;
+        private bool cancel = false;
 
         public OrderAlreadyRunning(OrderWatcher orderManager, Order order)
         {
             this.orderManager = orderManager;
             this.order = order;
-            this.autoClose = new AutoCloseOrder();
+            //this.autoClose = new AutoCloseOrder();
         }
 
         public void Manage()
@@ -21,7 +22,7 @@ namespace FXSharp.EA.NewsBox
 
             // should create timer for expired
 
-            if (autoClose.IsExpired)
+            if (cancel)
             {
                 order.Close();
                 orderManager.MagicBoxCompleted();
@@ -32,5 +33,9 @@ namespace FXSharp.EA.NewsBox
             }
         }
 
+        public void Cancel()
+        {
+            cancel = true;
+        }
     }
 }

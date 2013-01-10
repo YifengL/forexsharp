@@ -7,14 +7,15 @@ namespace FXSharp.EA.NewsBox
         private Order buyOrder;
         private Order sellOrder;
         private OrderWatcher orderManager;
-        private AutoCloseOrder autoClose;
+        private bool cancel = false;
+        //private ExpiracyTimer autoClose;
 
         public MagicBoxCreated(OrderWatcher orderManager, Order buyOrder, Order sellOrder)
         {
             this.orderManager = orderManager;
             this.buyOrder = buyOrder;
             this.sellOrder = sellOrder;
-            this.autoClose = new AutoCloseOrder();
+            //this.autoClose = new ExpiracyTimer();
         }
 
         public void Manage()
@@ -32,13 +33,19 @@ namespace FXSharp.EA.NewsBox
                 buyOrder.Close();
                 orderManager.OrderRunning(sellOrder);
             }
-            else if (autoClose.IsExpired)
+            else if (cancel)
             {
                 buyOrder.Close();
                 sellOrder.Close();
                 orderManager.MagicBoxCompleted(); 
                 // should describe event better, so we can publish it to different endpoint
             }
+        }
+
+
+        public void Cancel()
+        {
+            cancel = true;
         }
     }
 }

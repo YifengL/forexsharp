@@ -1,30 +1,34 @@
-﻿using System.Timers;
+﻿using System;
+using System.Timers;
 
 namespace FXSharp.EA.NewsBox
 {
-    class AutoCloseOrder
+    class ExpiracyTimer
     {
         private Timer timers = new Timer();
-        private bool expired = false;
+        //private bool expired = false;
+        public event EventHandler Expired;
 
-        public AutoCloseOrder()
+        public ExpiracyTimer(double expiredTime)
         {
             this.timers = new Timer();
             this.timers.AutoReset = false;
-            this.timers.Interval = 10 * MINUTE;
+            this.timers.Interval = expiredTime * MINUTE;
             this.timers.Elapsed += timers_Elapsed;
             this.timers.Start();
         }
 
         void timers_Elapsed(object sender, ElapsedEventArgs e)
         {
-            expired = true;
+            if (Expired == null) return;
+            Expired(this, EventArgs.Empty);
+            //expired = true;
         }
 
-        public bool IsExpired
-        {
-            get { return expired; }
-        }
+        //public bool IsExpired
+        //{
+        //    get { return expired; }
+        //}
 
         private int MINUTE
         {

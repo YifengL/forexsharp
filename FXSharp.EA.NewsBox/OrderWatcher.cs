@@ -7,10 +7,22 @@ namespace FXSharp.EA.NewsBox
     {
         IOrderState state;
         public event EventHandler OrderClosed;
+        private ExpiracyTimer expiracyTimer;
+        private double expiredTime;
         
-        public OrderWatcher(Order buyOrder, Order sellOrder)
+        public OrderWatcher(Order buyOrder, Order sellOrder, double expiredTime)
         {
             AddOneCancelAnother(buyOrder, sellOrder);
+            expiracyTimer = new ExpiracyTimer(expiredTime);
+            expiracyTimer.Expired += expiracyTimer_Expired;
+        }
+
+        void expiracyTimer_Expired(object sender, EventArgs e)
+        {
+            if (state == null) return;
+            
+            state.Cancel();
+            expiracyTimer.Expired -= expiracyTimer_Expired;
         }
 
         internal void ManageOrder()
@@ -36,7 +48,6 @@ namespace FXSharp.EA.NewsBox
         {
             // should create default state
             state = null;
-
             OnOrderClosed();
         }
 

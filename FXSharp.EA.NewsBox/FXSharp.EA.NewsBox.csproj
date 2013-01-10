@@ -51,7 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoCloseOrder.cs" />
+    <Compile Include="ExpiracyTimer.cs" />
     <Compile Include="Currency\CurrencyPairRegistry.cs" />
     <Compile Include="Currency\CurrencyRegistry.cs" />
     <Compile Include="OrderWatcherPool.cs" />
