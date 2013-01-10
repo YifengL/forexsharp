@@ -1,33 +1,27 @@
 ﻿using Quartz;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using System.Linq;
-using System;
 
 namespace FXSharp.EA.NewsBox
 {
     public class DailyEconomicScheduler
     {
-        private EconomicCalendar calendar = new EconomicCalendar();
-        private CurrencyPairAnalyzer analzyer = new CurrencyPairAnalyzer();
-        private IScheduler scheduler;
-        private ConcurrentQueue<MagicBoxOrder> queues;
+        
+        private MagicBoxScheduler scheduler;
+        private OrderDecisionProcessor decisionProcessor = new OrderDecisionProcessor(); // currently using polling model, next publish
 
         public DailyEconomicScheduler(IScheduler scheduler, ConcurrentQueue<MagicBoxOrder> queues)
         {
-            this.scheduler = scheduler;
-            this.queues = queues;
+            this.scheduler = new MagicBoxScheduler(scheduler, queues);
         }
 
         public async Task PrepareDailyReminder()
         {
-            var criticalEvents = await calendar.GetTodaysNextCriticalEvents();
+            var magicBoxes = await decisionProcessor.GetTodayMagicBoxOrders();
 
-            var mbox = new MagicBoxScheduler(scheduler, queues);
-
-            foreach (var eventx in criticalEvents)
+            foreach (var order in magicBoxes)
             {
-                mbox.Schedule(eventx.DateTime.AddMinutes(-3), new MagicBoxOrder { Symbol = analzyer.RelatedCurrencyPair(eventx.Country) });
+                scheduler.Schedule(order);
             }
         }
     }

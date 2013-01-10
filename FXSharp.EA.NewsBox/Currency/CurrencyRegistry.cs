@@ -7,7 +7,7 @@ namespace FXSharp.EA.NewsBox
         private static Dictionary<string, string> countryToCurrency = new Dictionary<string, string> 
         {
             {"New Zealand", "NZD"}, 
-            {"Australia", "AUD"},
+            {"Australia", "AUD"}, 
             {"China", "CNY"}, 
             {"Japan", "JPY"}, 
             {"Switzerland", "CHF"}, 
@@ -17,9 +17,9 @@ namespace FXSharp.EA.NewsBox
             {"Portugal", "EUR"}, 
             {"Greece", "EUR"}, 
             {"United Kingdom", "GBP"}, 
-            {"European Monetary Union", "EUR"},
-            {"Canada", "CAD"},
-            {"United States", "USD"}
+            {"European Monetary Union", "EUR"}, 
+            {"Canada", "CAD"}, 
+            {"United States", "USD"} 
         };
         
         internal static string ForCountry(string country)

@@ -1,5 +1,4 @@
 ﻿using Quartz;
-using System;
 using System.Collections.Concurrent;
 
 namespace FXSharp.EA.NewsBox
@@ -15,8 +14,10 @@ namespace FXSharp.EA.NewsBox
             this.orderQueue = orderQueue;
         }
 
-        public void Schedule(DateTime nexttime, MagicBoxOrder magicBox)
+        public void Schedule(MagicBoxOrder magicBox)
         {
+            var nexttime = magicBox.ExecutingTime;
+
             var jobDetail = JobBuilder.Create<MagicBoxOrderJob>()
                 .WithIdentity(magicBox.Symbol, "group1")
                 .Build();
