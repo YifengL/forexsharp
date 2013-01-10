@@ -43,7 +43,7 @@ namespace FXSharp.EA.NewsBox
             var trigger = TriggerBuilder.Create()
                 .WithIdentity(DateTime.Now.ToString(), "group1")
                 .StartNow()
-                .WithCronSchedule("0 28 16 * * ?") // everyday at 00 01
+                .WithCronSchedule("0 01 00 * * ?") // everyday at 00 01
                 .Build();
 
             jobDetail.JobDataMap.Add("scheduler", economicScheduler);
