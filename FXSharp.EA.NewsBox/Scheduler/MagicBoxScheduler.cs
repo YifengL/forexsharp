@@ -19,11 +19,11 @@ namespace FXSharp.EA.NewsBox
             var nexttime = magicBox.ExecutingTime;
 
             var jobDetail = JobBuilder.Create<MagicBoxOrderJob>()
-                .WithIdentity(magicBox.Symbol, "group1")
+                .WithIdentity(magicBox.Id, "group1")
                 .Build();
 
             var trigger = TriggerBuilder.Create()
-                .WithIdentity(magicBox.Symbol, "group1")
+                .WithIdentity(magicBox.Id, "group1")
                 .StartAt(DateBuilder.TodayAt(nexttime.Hour, nexttime.Minute, nexttime.Second))
                 .Build();
 

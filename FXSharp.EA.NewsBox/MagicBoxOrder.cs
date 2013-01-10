@@ -4,8 +4,20 @@ namespace FXSharp.EA.NewsBox
 {
     public class MagicBoxOrder
     {
+        private Guid _unique;
+
+        public string Id 
+        { 
+            get { return string.Format("{0}-{1}", Symbol, _unique.ToString()) ; } 
+        }
+
         public string Symbol { get; set; }
         public DateTime ExecutingTime { get; set; }
+
+        public MagicBoxOrder()
+        {
+            _unique = Guid.NewGuid();
+        }
 
         public override bool Equals(object obj)
         {
