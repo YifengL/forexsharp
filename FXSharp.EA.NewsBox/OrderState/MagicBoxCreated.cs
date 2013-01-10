@@ -6,10 +6,10 @@ namespace FXSharp.EA.NewsBox
     {
         private Order buyOrder;
         private Order sellOrder;
-        private OrderManager orderManager;
+        private OrderWatcher orderManager;
         private AutoCloseOrder autoClose;
 
-        public MagicBoxCreated(OrderManager orderManager, Order buyOrder, Order sellOrder)
+        public MagicBoxCreated(OrderWatcher orderManager, Order buyOrder, Order sellOrder)
         {
             this.orderManager = orderManager;
             this.buyOrder = buyOrder;

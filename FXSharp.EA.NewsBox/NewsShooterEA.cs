@@ -10,7 +10,8 @@ namespace FXSharp.EA.NewsBox
         private double stopLoss = 100;
 
         private NewsReminder reminder;
-        private OrderManager orderManager;
+        //private OrderWatcher orderManager;
+        private OrderWatcherPool orderPool;
 
         protected override int DeInit()
         {
@@ -19,10 +20,12 @@ namespace FXSharp.EA.NewsBox
 
         protected override int Init()
         {
+            orderPool = new OrderWatcherPool();
+
             reminder = new NewsReminder();
             reminder.Start();
 
-            orderManager = new OrderManager();
+            //orderManager = new OrderWatcher();
             return 0;
         }
 
@@ -39,7 +42,9 @@ namespace FXSharp.EA.NewsBox
                 CreateOrderBox(result); // only manage one news at the time, should manage all
             }
 
-            orderManager.ManageOrder();
+            orderPool.ManageAllOrder();
+
+            //orderManager.ManageOrder();
 
             // [x]1. one Cancel another
             // [x]3. delete after 10 minutes, Expired
@@ -62,7 +67,10 @@ namespace FXSharp.EA.NewsBox
                         SellClosePriceFor(magicBox.Symbol) - ((range - stopLoss) * PointFor(Symbol)),
                         SellClosePriceFor(magicBox.Symbol) - ((range + takeProfit) * PointFor(Symbol)));
 
-            orderManager.AddOneCancelAnother(buyOrder, sellOrder);
+            var orderWatcher = new OrderWatcher(buyOrder, sellOrder);
+
+            orderPool.Add(orderWatcher);
+            
         }
     }
 }

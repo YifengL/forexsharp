@@ -4,11 +4,11 @@ namespace FXSharp.EA.NewsBox
 {
     public class OrderAlreadyRunning : IOrderState
     {
-        private OrderManager orderManager;
+        private OrderWatcher orderManager;
         private Order order;
         private AutoCloseOrder autoClose;
 
-        public OrderAlreadyRunning(OrderManager orderManager, Order order)
+        public OrderAlreadyRunning(OrderWatcher orderManager, Order order)
         {
             this.orderManager = orderManager;
             this.order = order;
@@ -24,6 +24,10 @@ namespace FXSharp.EA.NewsBox
             if (autoClose.IsExpired)
             {
                 order.Close();
+                orderManager.MagicBoxCompleted();
+            }
+            else if (!order.IsOpen)
+            {
                 orderManager.MagicBoxCompleted();
             }
         }
