@@ -7,17 +7,21 @@ namespace FXSharp.EA.NewsBox
         private Order buyOrder;
         private Order sellOrder;
         private OrderManager orderManager;
+        private AutoCloseOrder autoClose;
 
         public MagicBoxCreated(OrderManager orderManager, Order buyOrder, Order sellOrder)
         {
             this.orderManager = orderManager;
             this.buyOrder = buyOrder;
             this.sellOrder = sellOrder;
+            this.autoClose = new AutoCloseOrder();
         }
 
         public void Manage()
         {
             // also expired by timer => should attached expired the pending order.. not do it manually. 
+            // i think we should make sure the order dissapear
+
             if (buyOrder.IsRunning)
             {
                 sellOrder.Close();
@@ -28,9 +32,12 @@ namespace FXSharp.EA.NewsBox
                 buyOrder.Close();
                 orderManager.OrderRunning(sellOrder);
             }
-            else
+            else if (autoClose.IsExpired)
             {
-                // check if it's already expired
+                buyOrder.Close();
+                sellOrder.Close();
+                orderManager.MagicBoxCompleted(); 
+                // should describe event better, so we can publish it to different endpoint
             }
         }
     }
