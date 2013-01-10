@@ -8,7 +8,7 @@ namespace FXSharp.EA.NewsBox
 
         internal void ManageAllOrder()
         {
-            var cloned = orderWatchers.ToList();
+            var cloned = orderWatchers.ToList(); // clone to avoid race condition
 
             foreach (var order in cloned)
             {

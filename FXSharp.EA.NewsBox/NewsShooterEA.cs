@@ -10,7 +10,6 @@ namespace FXSharp.EA.NewsBox
         private double stopLoss = 100;
 
         private NewsReminder reminder;
-        //private OrderWatcher orderManager;
         private OrderWatcherPool orderPool;
 
         protected override int DeInit()
@@ -25,7 +24,6 @@ namespace FXSharp.EA.NewsBox
             reminder = new NewsReminder();
             reminder.Start();
 
-            //orderManager = new OrderWatcher();
             return 0;
         }
 
@@ -67,10 +65,7 @@ namespace FXSharp.EA.NewsBox
                         SellClosePriceFor(magicBox.Symbol) - ((range - stopLoss) * PointFor(Symbol)),
                         SellClosePriceFor(magicBox.Symbol) - ((range + takeProfit) * PointFor(Symbol)));
 
-            var orderWatcher = new OrderWatcher(buyOrder, sellOrder);
-
-            orderPool.Add(orderWatcher);
-            
+            orderPool.Add(new OrderWatcher(buyOrder, sellOrder));
         }
     }
 }
