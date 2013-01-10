@@ -52,7 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCloseOrder.cs" />
-    <Compile Include="CurrencyCorrelationAnalyzer.cs" />
+    <Compile Include="Currency\CurrencyPairAnalyzer.cs" />
+    <Compile Include="Currency\CurrencyRegistry.cs" />
     <Compile Include="Scheduler\DailyEconomicCalendarUpdateJob.cs" />
     <Compile Include="Scheduler\DailyEconomicScheduler.cs" />
     <Compile Include="EconomicCalendar\EconomicCalendar.cs" />

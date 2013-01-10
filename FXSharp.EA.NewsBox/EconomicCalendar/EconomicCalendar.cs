@@ -40,7 +40,7 @@ namespace FXSharp.EA.NewsBox
                     break;
 
                 string[] colums = line.Split(',');
-
+                // be careful about not available data, n/a tentative etc etc
                 try
                 {
                     results.Add(new EconomicEvent
@@ -48,6 +48,7 @@ namespace FXSharp.EA.NewsBox
                         DateTime = ParseDateTime(colums[0].Trim('"')),
                         Name = colums[1].Trim('"'),
                         Country = colums[2].Trim('"'),
+                        Currency = CurrencyRegistry.ForCountry(colums[2].Trim('"')),
                         Volatility = colums[3].Trim('"'),
                         Actual = colums[4].Trim('"'),
                         Previous = colums[5].Trim('"'),

@@ -9,7 +9,7 @@ namespace FXSharp.EA.NewsBox
     public class DailyEconomicScheduler
     {
         private EconomicCalendar calendar = new EconomicCalendar();
-        private CurrencyCorrelationAnalyzer analzyer = new CurrencyCorrelationAnalyzer();
+        private CurrencyPairAnalyzer analzyer = new CurrencyPairAnalyzer();
         private IScheduler scheduler;
         private ConcurrentQueue<MagicBoxOrder> queues;
 

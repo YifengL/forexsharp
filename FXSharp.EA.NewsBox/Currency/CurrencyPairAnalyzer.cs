@@ -1,7 +1,7 @@
 ﻿
 namespace FXSharp.EA.NewsBox
 {
-    class CurrencyCorrelationAnalyzer
+    class CurrencyPairAnalyzer
     {
         internal string RelatedCurrencyPair(string symbol)
         {
