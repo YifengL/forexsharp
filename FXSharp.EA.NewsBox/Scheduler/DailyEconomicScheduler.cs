@@ -21,11 +21,11 @@ namespace FXSharp.EA.NewsBox
 
         public async Task PrepareDailyReminder()
         {
-            var criticalEvents = await calendar.GetTodaysCriticalEvents();
+            var criticalEvents = await calendar.GetTodaysNextCriticalEvents();
 
             var mbox = new MagicBoxScheduler(scheduler, queues);
 
-            foreach (var eventx in criticalEvents.Where(x => x.DateTime > DateTime.Now))
+            foreach (var eventx in criticalEvents)
             {
                 mbox.Schedule(eventx.DateTime.AddMinutes(-3), new MagicBoxOrder { Symbol = analzyer.RelatedCurrencyPair(eventx.Country) });
             }

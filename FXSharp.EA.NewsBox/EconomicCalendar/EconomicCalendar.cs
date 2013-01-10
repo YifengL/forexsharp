@@ -4,7 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace FXSharp.EA.NewsBox
 {
     public class EconomicCalendar
@@ -14,6 +14,13 @@ namespace FXSharp.EA.NewsBox
             string rawData = await RequestRawDataToServerAsync();
 
             return await ParseEconomicEventsAsync(rawData);
+        }
+
+        internal async Task<IList<EconomicEvent>> GetTodaysNextCriticalEvents()
+        {
+            var incomingNews = await GetTodaysCriticalEvents();
+
+            return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
         }
 
         private async Task<IList<EconomicEvent>> ParseEconomicEventsAsync(string rawData)
@@ -89,7 +96,7 @@ namespace FXSharp.EA.NewsBox
                 client.Headers.Add("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
                 client.Encoding = Encoding.UTF8;
 
-                string queryString = string.Format("http://calendar.fxstreet.com/eventdate/csv?timezone=SE+Asia+Standard+Time&rows=0&view=range&start={0}&end={0}&countrycode=AU%2CCA%2CCN%2CEMU%2CDE%2CFR%2CDE%2CGR%2CIT%2CJP%2CNZ%2CPT%2CES%2CCH%2CUK%2CUS&volatility=3&culture=en-US&columns=CountryCurrency", todayString);
+                string queryString = string.Format("http://calendar.fxstreet.com/eventdate/csv?timezone=SE+Asia+Standard+Time&rows=0&view=range&start={0}&end={0}&countrycode=AU%2CCA%2CCN%2CEMU%2CDE%2CFR%2CDE%2CGR%2CIT%2CJP%2CNZ%2CPT%2CES%2CCH%2CUK%2CUS&volatility=1&culture=en-US&columns=CountryCurrency", todayString);
                 rawResult = await client.DownloadStringTaskAsync(queryString);
             }
 
