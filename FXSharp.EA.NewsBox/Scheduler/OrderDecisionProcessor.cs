@@ -25,7 +25,7 @@ namespace FXSharp.EA.NewsBox
                     Symbol = analyzer.RelatedCurrencyPair(eventx.Currency), 
                     ExecutingTime = eventx.DateTime.AddMinutes(-2), 
                     LotSize = 0.1, 
-                    Range = 10, 
+                    Range = 100, 
                     TakeProfit = 100, 
                     StopLoss = 150, 
                     MinuteExpiracy = 10
