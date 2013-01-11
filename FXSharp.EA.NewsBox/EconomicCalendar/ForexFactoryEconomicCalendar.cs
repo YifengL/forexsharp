@@ -6,23 +6,23 @@ using System.Net;
 using System.Threading.Tasks;
 namespace FXSharp.EA.NewsBox
 {
-    public class ForexFactoryEconomicCalendar : IEconomicCalendar
+    public class ForexFactoryEconomicCalendar : EconomicCalendar
     {
-        public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
-        {
-            var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
+        //public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
+        //{
+        //    var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
 
-            return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
-        }
+        //    return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
+        //}
 
-        private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()
-        {
-            string rawData = await RequestRawDataToServerAsync().ConfigureAwait(false);
+        //private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()
+        //{
+        //    string rawData = await RequestRawDataToServerAsync().ConfigureAwait(false);
 
-            return await ParseEconomicEventsAsync(rawData).ConfigureAwait(false);
-        }
+        //    return await ParseEconomicEventsAsync(rawData).ConfigureAwait(false);
+        //}
 
-        private Task<IList<EconomicEvent>> ParseEconomicEventsAsync(string rawData)
+        protected override Task<IList<EconomicEvent>> ParseEconomicEventsAsync(string rawData)
         {
             return Task.Run<IList<EconomicEvent>>(() => 
             {
@@ -95,7 +95,7 @@ namespace FXSharp.EA.NewsBox
             }
         }
 
-        private async Task<string> RequestRawDataToServerAsync()
+        protected override async Task<string> RequestRawDataToServerAsync()
         {
             string rawResult = null;
 

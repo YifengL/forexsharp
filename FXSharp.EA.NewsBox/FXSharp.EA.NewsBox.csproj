@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EconomicCalendar\EconomicCalendar.cs" />
     <Compile Include="EconomicCalendar\ForexFactoryEconomicCalendar.cs" />
     <Compile Include="EconomicCalendar\IEconomicCalendar.cs" />
     <Compile Include="ExpiracyTimer.cs" />

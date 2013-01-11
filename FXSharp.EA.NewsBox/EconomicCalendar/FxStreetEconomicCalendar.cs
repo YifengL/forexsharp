@@ -7,23 +7,23 @@ using System.Text;
 using System.Threading.Tasks;
 namespace FXSharp.EA.NewsBox
 {
-    public class FxStreetEconomicCalendar : IEconomicCalendar
+    public class FxStreetEconomicCalendar : EconomicCalendar
     {
-        private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()
-        {
-            string rawData = await RequestRawDataToServerAsync().ConfigureAwait(false);
+        //private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()
+        //{
+        //    string rawData = await RequestRawDataToServerAsync().ConfigureAwait(false);
 
-            return await ParseEconomicEventsAsync(rawData).ConfigureAwait(false);
-        }
+        //    return await ParseEconomicEventsAsync(rawData).ConfigureAwait(false);
+        //}
 
-        public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
-        {
-            var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
+        //public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
+        //{
+        //    var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
 
-            return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
-        }
+        //    return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
+        //}
 
-        private async Task<IList<EconomicEvent>> ParseEconomicEventsAsync(string rawData)
+        protected override async Task<IList<EconomicEvent>> ParseEconomicEventsAsync(string rawData)
         {
             var reader = new StringReader(rawData);
             var results = new List<EconomicEvent>();
@@ -85,7 +85,7 @@ namespace FXSharp.EA.NewsBox
             return new DateTime(year, month, day, time.Hour, time.Minute, time.Second);
         }
 
-        private async Task<string> RequestRawDataToServerAsync()
+        protected override async Task<string> RequestRawDataToServerAsync()
         {
             string rawResult = null;
 
