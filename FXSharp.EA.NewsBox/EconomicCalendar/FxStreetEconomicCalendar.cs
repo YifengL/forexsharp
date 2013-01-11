@@ -7,18 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 namespace FXSharp.EA.NewsBox
 {
-    public class EconomicCalendar
+    public class FxStreetEconomicCalendar : IEconomicCalendar
     {
-        internal async Task<IList<EconomicEvent>> GetTodaysCriticalEvents()
+        private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()
         {
-            string rawData = await RequestRawDataToServerAsync();
+            string rawData = await RequestRawDataToServerAsync().ConfigureAwait(false);
 
-            return await ParseEconomicEventsAsync(rawData);
+            return await ParseEconomicEventsAsync(rawData).ConfigureAwait(false);
         }
 
-        internal async Task<IList<EconomicEvent>> GetTodaysNextCriticalEvents()
+        public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
         {
-            var incomingNews = await GetTodaysCriticalEvents();
+            var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
 
             return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
         }
@@ -28,13 +28,13 @@ namespace FXSharp.EA.NewsBox
             var reader = new StringReader(rawData);
             var results = new List<EconomicEvent>();
             
-            string header = await reader.ReadLineAsync();
+            string header = await reader.ReadLineAsync().ConfigureAwait(false);
 
             VerifyHeader(header);
 
             string line = string.Empty;
 
-            while ((line = await reader.ReadLineAsync()) != null)
+            while ((line = await reader.ReadLineAsync().ConfigureAwait(false)) != null)
             {
                 if (string.IsNullOrEmpty(line)) 
                     break;
@@ -97,8 +97,9 @@ namespace FXSharp.EA.NewsBox
                 client.Headers.Add("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
                 client.Encoding = Encoding.UTF8;
 
-                string queryString = string.Format("http://calendar.fxstreet.com/eventdate/csv?timezone=SE+Asia+Standard+Time&rows=0&view=range&start={0}&end={0}&countrycode=AU%2CCA%2CCN%2CEMU%2CDE%2CFR%2CDE%2CGR%2CIT%2CJP%2CNZ%2CPT%2CES%2CCH%2CUK%2CUS&volatility=1&culture=en-US&columns=CountryCurrency", todayString);
-                rawResult = await client.DownloadStringTaskAsync(queryString);
+                int volatility = 3;
+                string queryString = string.Format("http://calendar.fxstreet.com/eventdate/csv?timezone=SE+Asia+Standard+Time&rows=0&view=range&start={0}&end={0}&countrycode=AU%2CCA%2CCN%2CEMU%2CDE%2CFR%2CDE%2CGR%2CIT%2CJP%2CNZ%2CPT%2CES%2CCH%2CUK%2CUS&volatility={1}&culture=en-US&columns=CountryCurrency", todayString, volatility);
+                rawResult = await client.DownloadStringTaskAsync(queryString).ConfigureAwait(false);
             }
 
             return rawResult;

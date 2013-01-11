@@ -6,12 +6,12 @@ namespace FXSharp.EA.NewsBox
 {
     class OrderDecisionProcessor
     {
-        private EconomicCalendar calendar = new EconomicCalendar();
+        private IEconomicCalendar calendar = new ForexFactoryEconomicCalendar();
         private CurrencyPairRegistry analyzer = new CurrencyPairRegistry();
 
         internal async Task<List<MagicBoxOrder>> GetTodayMagicBoxOrders()
         {
-            var criticalEvents = await calendar.GetTodaysNextCriticalEvents();
+            var criticalEvents = await calendar.GetTodaysNextCriticalEventsAsync();
 
             // [x]should contain logic distict the order for the same event
             // should contain logic how long the order will survive -> expired time
