@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradePlatform.MT4.Core", "TradePlatform.MT4.Core\TradePlatform.MT4.Core.csproj", "{65AA3653-CE56-4029-A9AD-46D5CAA45829}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradePlatform.MT4.SDK.Library", "TradePlatform.MT4.SDK\TradePlatform.MT4.SDK.Library\TradePlatform.MT4.SDK.Library.csproj", "{6B024C9D-EAE3-4450-981B-625D7A56A3ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradePlatform.MT4.SDK.API", "TradePlatform.MT4.SDK\TradePlatform.MT4.SDK.API\TradePlatform.MT4.SDK.API.csproj", "{44136017-54EE-4868-9557-ACB70B85BD7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradePlatform.MT4.SDK.Shell", "TradePlatform.MT4.SDK\TradePlatform.MT4.SDK.Shell\TradePlatform.MT4.SDK.Shell.csproj", "{7DA7D09D-4069-4009-B97A-9B196BD40C16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradePlatform.MT4.SDK.Win", "TradePlatform.MT4.SDK\TradePlatform.MT4.SDK.Win\TradePlatform.MT4.SDK.Win.csproj", "{CE148CA3-0464-445B-9807-EE471462DD5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65AA3653-CE56-4029-A9AD-46D5CAA45829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65AA3653-CE56-4029-A9AD-46D5CAA45829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65AA3653-CE56-4029-A9AD-46D5CAA45829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65AA3653-CE56-4029-A9AD-46D5CAA45829}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B024C9D-EAE3-4450-981B-625D7A56A3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B024C9D-EAE3-4450-981B-625D7A56A3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B024C9D-EAE3-4450-981B-625D7A56A3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B024C9D-EAE3-4450-981B-625D7A56A3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44136017-54EE-4868-9557-ACB70B85BD7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44136017-54EE-4868-9557-ACB70B85BD7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44136017-54EE-4868-9557-ACB70B85BD7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44136017-54EE-4868-9557-ACB70B85BD7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DA7D09D-4069-4009-B97A-9B196BD40C16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DA7D09D-4069-4009-B97A-9B196BD40C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DA7D09D-4069-4009-B97A-9B196BD40C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DA7D09D-4069-4009-B97A-9B196BD40C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE148CA3-0464-445B-9807-EE471462DD5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE148CA3-0464-445B-9807-EE471462DD5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE148CA3-0464-445B-9807-EE471462DD5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE148CA3-0464-445B-9807-EE471462DD5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

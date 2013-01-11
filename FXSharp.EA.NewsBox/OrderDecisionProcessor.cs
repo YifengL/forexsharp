@@ -43,11 +43,11 @@ namespace FXSharp.EA.NewsBox
                 .Select(eventx => new MagicBoxOrder 
                 {
                     Symbol = analyzer.RelatedCurrencyPair(eventx.Currency), 
-                    ExecutingTime = eventx.DateTime.AddMinutes(-2), 
-                    LotSize = 0.1, 
-                    Range = 100, 
-                    TakeProfit = 100, 
-                    StopLoss = 150, 
+                    ExecutingTime = eventx.DateTime.AddMinutes(-1), 
+                    LotSize = 1, 
+                    Range = 50, 
+                    TakeProfit = 150, 
+                    StopLoss = 200, 
                     MinuteExpiracy = 10
                 }).Distinct().ToList();
         }
