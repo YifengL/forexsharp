@@ -95,21 +95,6 @@ namespace FXSharp.EA.NewsBox
             }
         }
 
-        //private static DateTime ParseDateTime(string date)
-        //{
-        //    var parts = date.Split(' ');
-        //    string datePart = parts[0];
-        //    string timePart = parts[1];
-
-        //    int year = Convert.ToInt32(datePart.Substring(0, 4));
-        //    int month = Convert.ToInt32(datePart.Substring(4, 2));
-        //    int day = Convert.ToInt32(datePart.Substring(6, 2));
-
-        //    var time = DateTime.Parse(timePart);
-
-        //    return new DateTime(year, month, day, time.Hour, time.Minute, time.Second);
-        //}
-
         private async Task<string> RequestRawDataToServerAsync()
         {
             string rawResult = null;

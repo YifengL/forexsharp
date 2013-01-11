@@ -19,9 +19,11 @@ namespace FXSharp.EA.NewsBox
             // should add distance, stoploss, takeprofit, expired time
             // should contain logic when the order will get place according to the situation
 
+
+            
             return criticalEvents
                 .Select(eventx => new MagicBoxOrder 
-                { 
+                {
                     Symbol = analyzer.RelatedCurrencyPair(eventx.Currency), 
                     ExecutingTime = eventx.DateTime.AddMinutes(-2), 
                     LotSize = 0.1, 
