@@ -4,11 +4,6 @@ namespace FXSharp.EA.NewsBox
 {
     public class NewsShooterEA : EExpertAdvisor
     {
-        //private double lotSize = 0.1;
-        //private double range = 100;
-        //private double takeProfit = 100;
-        //private double stopLoss = 150;
-
         private NewsReminder reminder;
         private OrderWatcherPool orderPool;
 

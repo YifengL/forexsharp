@@ -6,7 +6,6 @@ namespace FXSharp.EA.NewsBox
     class ExpiracyTimer
     {
         private Timer timers = new Timer();
-        //private bool expired = false;
         public event EventHandler Expired;
 
         public ExpiracyTimer(double expiredTime)
@@ -22,13 +21,7 @@ namespace FXSharp.EA.NewsBox
         {
             if (Expired == null) return;
             Expired(this, EventArgs.Empty);
-            //expired = true;
         }
-
-        //public bool IsExpired
-        //{
-        //    get { return expired; }
-        //}
 
         private int MINUTE
         {

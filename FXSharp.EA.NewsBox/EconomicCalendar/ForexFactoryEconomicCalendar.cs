@@ -1,27 +1,12 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 namespace FXSharp.EA.NewsBox
 {
     public class ForexFactoryEconomicCalendar : EconomicCalendar
     {
-        //public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
-        //{
-        //    var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
-
-        //    return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
-        //}
-
-        //private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()
-        //{
-        //    string rawData = await RequestRawDataToServerAsync().ConfigureAwait(false);
-
-        //    return await ParseEconomicEventsAsync(rawData).ConfigureAwait(false);
-        //}
-
         protected override Task<IList<EconomicEvent>> ParseEconomicEventsAsync(string rawData)
         {
             return Task.Run<IList<EconomicEvent>>(() => 

@@ -6,14 +6,12 @@ namespace FXSharp.EA.NewsBox
     {
         private OrderWatcher orderManager;
         private Order order;
-        //private AutoCloseOrder autoClose;
         private bool cancel = false;
 
         public OrderAlreadyRunning(OrderWatcher orderManager, Order order)
         {
             this.orderManager = orderManager;
             this.order = order;
-            //this.autoClose = new AutoCloseOrder();
         }
 
         public void Manage()

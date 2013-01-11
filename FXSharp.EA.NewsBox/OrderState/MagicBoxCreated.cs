@@ -8,14 +8,12 @@ namespace FXSharp.EA.NewsBox
         private Order sellOrder;
         private OrderWatcher orderManager;
         private bool cancel = false;
-        //private ExpiracyTimer autoClose;
 
         public MagicBoxCreated(OrderWatcher orderManager, Order buyOrder, Order sellOrder)
         {
             this.orderManager = orderManager;
             this.buyOrder = buyOrder;
             this.sellOrder = sellOrder;
-            //this.autoClose = new ExpiracyTimer();
         }
 
         public void Manage()

@@ -9,20 +9,6 @@ namespace FXSharp.EA.NewsBox
 {
     public class FxStreetEconomicCalendar : EconomicCalendar
     {
-        //private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()
-        //{
-        //    string rawData = await RequestRawDataToServerAsync().ConfigureAwait(false);
-
-        //    return await ParseEconomicEventsAsync(rawData).ConfigureAwait(false);
-        //}
-
-        //public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
-        //{
-        //    var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
-
-        //    return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
-        //}
-
         protected override async Task<IList<EconomicEvent>> ParseEconomicEventsAsync(string rawData)
         {
             var reader = new StringReader(rawData);
