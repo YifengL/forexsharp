@@ -381,6 +381,11 @@ namespace FXSharp.TradingPlatform.Exts
         {
             get { return PredefinedVariables.Digits(this); }
         }
+
+        public double Balance
+        {
+            get { return AccountInformation.AccountEquity(this); }
+        }
     }
 
 }

@@ -60,6 +60,7 @@
     <Compile Include="ExpiracyTimer.cs" />
     <Compile Include="Currency\CurrencyPairRegistry.cs" />
     <Compile Include="Currency\CurrencyRegistry.cs" />
+    <Compile Include="MoneyManagement\MoneyManagement.cs" />
     <Compile Include="OrderWatcherPool.cs" />
     <Compile Include="Scheduler\DailyEconomicCalendarUpdateJob.cs" />
     <Compile Include="Scheduler\DailyEconomicScheduler.cs" />

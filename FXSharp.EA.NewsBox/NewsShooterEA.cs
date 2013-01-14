@@ -63,11 +63,14 @@ namespace FXSharp.EA.NewsBox
         private void CreateOrderBox(MagicBoxOrder magicBox)
         {
             /// need to refactor this messs into another class
-            double lotSize = magicBox.LotSize;
+            
             double range = magicBox.Range;
             double takeProfit = magicBox.TakeProfit;
             double stopLoss = magicBox.StopLoss;
             double expiredTime = magicBox.MinuteExpiracy;
+            
+            var moneyManagement = new MoneyManagement(2, this.Balance);
+            double lotSize = moneyManagement.CalculateLotSize(magicBox);
 
             var buyOrder = PendingBuy(magicBox.Symbol, lotSize,
                         BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(Symbol),
