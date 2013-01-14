@@ -1,5 +1,4 @@
 ﻿using FXSharp.TradingPlatform.Exts;
-using System.Collections.Concurrent;
 namespace FXSharp.EA.NewsBox
 {
     public class NewsShooterEA : EExpertAdvisor
@@ -37,19 +36,12 @@ namespace FXSharp.EA.NewsBox
 
                 if (result == null) continue;
 
-                CreateOrderBox(result); // only manage one news at the time, should manage all
+                CreateOrderBox(result);
             }
 
             orderPool.ManageAllOrder();
-
-            //orderManager.ManageOrder();
-
-            // [x]1. one Cancel another
-            // [x]3. delete after 10 minutes, Expired
-
-            // 2. trailing stop and Lock Profit
             
-            // 4. money management
+            // 2. trailing stop and Lock Profit
             return 0;
         }
 
@@ -70,6 +62,7 @@ namespace FXSharp.EA.NewsBox
             double expiredTime = magicBox.MinuteExpiracy;
             
             var moneyManagement = new MoneyManagement(2, this.Balance);
+
             double lotSize = moneyManagement.CalculateLotSize(magicBox);
 
             var buyOrder = PendingBuy(magicBox.Symbol, lotSize,

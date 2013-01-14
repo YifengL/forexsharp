@@ -26,7 +26,7 @@ namespace FXSharp.EA.NewsBox
             TakeProfit = 150
         };
 
-        public IList<MagicBoxOrder> CreateOrdersFromEvents(IList<EconomicEvent> events)
+        public IList<MagicBoxOrder> CreateOrdersFromEvents(IEnumerable<EconomicEvent> events)
         {
             var mgcBoxOrderList = new List<MagicBoxOrder>();
 

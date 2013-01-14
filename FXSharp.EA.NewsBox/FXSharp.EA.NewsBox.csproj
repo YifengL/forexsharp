@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EconomicCalendarPool.cs" />
     <Compile Include="EconomicCalendar\EconomicCalendar.cs" />
     <Compile Include="EconomicCalendar\ForexFactoryEconomicCalendar.cs" />
     <Compile Include="EconomicCalendar\IEconomicCalendar.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Currency\CurrencyRegistry.cs" />
     <Compile Include="MagicBoxConfig.cs" />
     <Compile Include="MoneyManagement\MoneyManagement.cs" />
+    <Compile Include="OrderCreator.cs" />
     <Compile Include="OrderWatcherPool.cs" />
     <Compile Include="Scheduler\DailyEconomicCalendarUpdateJob.cs" />
     <Compile Include="Scheduler\DailyEconomicScheduler.cs" />

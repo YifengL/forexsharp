@@ -56,12 +56,5 @@ namespace FXSharp.EA.NewsBox
         public DateTime NewsTime { get; set; }
 
         public MagicBoxConfig Config { get; set; }
-
-        /*
-         Range = 50,
-                    TakeProfit = 150,
-                    StopLoss = 200,
-                    MinuteExpiracy = 10
-         */
     }
 }

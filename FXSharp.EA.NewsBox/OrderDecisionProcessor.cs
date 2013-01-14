@@ -5,71 +5,26 @@ namespace FXSharp.EA.NewsBox
 {
     class OrderDecisionProcessor
     {
-        private IEconomicCalendar fxFactoryCalendar = new ForexFactoryEconomicCalendar();
-        private IEconomicCalendar fxStreetCalendar = new FxStreetEconomicCalendar();
+        private EconomicCalendarPool calendarPool = new EconomicCalendarPool();
 
         private CurrencyPairRegistry analyzer = new CurrencyPairRegistry();
+        private OrderCreator orderCreator = new OrderCreator();
+
+        public OrderDecisionProcessor()
+        {
+            calendarPool.Add(new ForexFactoryEconomicCalendar());
+            calendarPool.Add(new FxStreetEconomicCalendar());
+        }
 
         internal async Task<List<MagicBoxOrder>> GetTodayMagicBoxOrders()
         {
-            var fxFactoryEventsTask = fxFactoryCalendar.GetTodaysNextCriticalEventsAsync();
-            var fxStreetEventsTask = fxStreetCalendar.GetTodaysNextCriticalEventsAsync();
+            var finalResult = await calendarPool.AllResultsAsync();
 
-            var results = await Task.WhenAll(fxFactoryEventsTask, fxStreetEventsTask);
+            return orderCreator.CreateOrdersFromEvents(finalResult).ToList();
 
-            var finalResult = MergeResult(results);
-
-            // [x] should contain logic distict the order for the same event
-            // [x]should also combine with fxstreet calendar
-
-            // should contain logic how long the order will survive -> expired time
             // should contain logic how the order will be processed, tied event, speech 
-            // should add distance, stoploss, takeprofit, expired time
-            // should contain logic when the order will get place according to the situation
             
-            // if speech then 
-            // if tied with self then 
             // if tied with another currency pair USDCAD => US news and CAD news at the same time
-
-            // group based on time
-
-            var groups = finalResult.GroupBy(x => x.DateTime);
-
-            foreach (var group in groups)
-            {
-                var time = group.Key;
-                var events = group.ToList();
-            }
-            
-            MagicBoxConfig config = new MagicBoxConfig 
-            {
-                MinutePendingExecution = -1, 
-                MinuteExpiracy = 10, 
-                Range = 50, 
-                StopLoss = 200, 
-                TakeProfit = 150
-            };
-
-            return finalResult
-                .Select(eventx => new MagicBoxOrder 
-                {
-                    Symbol = analyzer.RelatedCurrencyPair(eventx.Currency), 
-                    NewsTime = eventx.DateTime,
-                    LotSize = 1, 
-                    Config = config
-                    //ExecutingTime = eventx.DateTime.AddMinutes(-1), 
-                    //Range = 50, 
-                    //TakeProfit = 150, 
-                    //StopLoss = 200, 
-                    //MinuteExpiracy = 10
-                }).Distinct().ToList();
-        }
-
-        private IEnumerable<EconomicEvent> MergeResult(IList<EconomicEvent>[] results)
-        {
-            var fxFactResult = results[0];
-            var fxStreetResult = results[1];
-            return fxFactResult.Concat(fxStreetResult).Distinct();
         }
     }
 }

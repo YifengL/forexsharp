@@ -15,6 +15,7 @@ namespace FXSharp.EA.NewsBox
             {"Spain", "EUR"}, 
             {"Italy", "EUR"}, 
             {"Portugal", "EUR"}, 
+            {"Germany", "EUR"}, 
             {"Greece", "EUR"}, 
             {"United Kingdom", "GBP"}, 
             {"European Monetary Union", "EUR"}, 
