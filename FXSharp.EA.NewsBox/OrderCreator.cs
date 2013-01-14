@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FXSharp.EA.NewsBox.Specs
+namespace FXSharp.EA.NewsBox
 {
     public class OrderCreator
     {
