@@ -47,6 +47,7 @@ namespace FXSharp.EA.NewsBox
         internal void MagicBoxCompleted()
         {
             // should create default state
+            expiracyTimer.Finish();
             state = null;
             OnOrderClosed();
         }

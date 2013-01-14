@@ -32,5 +32,11 @@ namespace FXSharp.EA.NewsBox
         {
             get { return 1000; }
         }
+
+        internal void Finish()
+        {
+            this.timers.Stop();
+            this.timers.Dispose();
+        }
     }
 }

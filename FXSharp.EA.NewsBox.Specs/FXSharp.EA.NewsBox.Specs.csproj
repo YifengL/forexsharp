@@ -42,8 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrderCreator.cs" />
     <Compile Include="When_calculate_lot_size.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="When_decide_the_order_detail.cs" />
+    <Compile Include="When_receive_all_economic_event_with_different_time.cs" />
+    <Compile Include="When_receive_economic_event_with_the_same_time_and_currency.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

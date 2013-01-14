@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace FXSharp.EA.NewsBox
 {
-    class CurrencyPairRegistry
+    public class CurrencyPairRegistry
     {
         private static Dictionary<string, string> currencyToPair = new Dictionary<string, string> 
         {
@@ -17,7 +17,7 @@ namespace FXSharp.EA.NewsBox
             {"USD", "EURUSD"}
         };
 
-        internal string RelatedCurrencyPair(string currency)
+        public string RelatedCurrencyPair(string currency)
         {
             return currencyToPair[currency];
         }
