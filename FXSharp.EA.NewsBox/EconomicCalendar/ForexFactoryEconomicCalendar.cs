@@ -18,6 +18,8 @@ namespace FXSharp.EA.NewsBox
                 doc.LoadHtml(rawData);
                 try
                 {
+                    var currentEventTime = DateTime.Now;
+
                     foreach (HtmlNode evt in doc.DocumentNode.SelectNodes("//tr[@data-eventid]"))
                     {
                         var some = evt.ChildNodes;
@@ -40,11 +42,17 @@ namespace FXSharp.EA.NewsBox
 
                         if (time == "Tentative") continue; // should do something about this, check periodically?
 
-                        if (string.IsNullOrEmpty(time)) continue; // should do something about this, check periodically?
-                        
+                        //var eventTime = currentEventTime;
+
+                        if (!string.IsNullOrEmpty(time)) // if empty then use previous time
+                        {
+                            // update current time
+                            currentEventTime = DateTime.Parse(time);
+                        }
+
                         results.Add(new EconomicEvent
                         {
-                            DateTime = DateTime.Parse(time),
+                            DateTime = currentEventTime,
                             Name = eventTitle,
                             Country = currency,
                             Currency = currency,
