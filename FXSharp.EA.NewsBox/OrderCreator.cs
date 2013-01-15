@@ -21,7 +21,7 @@ namespace FXSharp.EA.NewsBox
         {
             MinutePendingExecution = -1,
             MinuteExpiracy = 10,
-            Range = 50,
+            Range = 100,
             StopLoss = 200,
             TakeProfit = 150
         };
@@ -55,7 +55,7 @@ namespace FXSharp.EA.NewsBox
                     LotSize = 1,
                     Config = speechCfg,
                     NewsTime = eventx.DateTime
-                });
+                }).Distinct();
 
             mgcBoxOrderList.AddRange(result);
         }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace FXSharp.EA.NewsBox
 {
-    class OrderDecisionProcessor
+    public class OrderDecisionProcessor
     {
         private EconomicCalendarPool calendarPool = new EconomicCalendarPool();
 
@@ -16,7 +16,7 @@ namespace FXSharp.EA.NewsBox
             calendarPool.Add(new FxStreetEconomicCalendar());
         }
 
-        internal async Task<List<MagicBoxOrder>> GetTodayMagicBoxOrders()
+        public async Task<List<MagicBoxOrder>> GetTodayMagicBoxOrders()
         {
             var finalResult = await calendarPool.AllResultsAsync();
 

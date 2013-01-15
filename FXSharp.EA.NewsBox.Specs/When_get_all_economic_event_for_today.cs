@@ -39,5 +39,14 @@ namespace FXSharp.EA.NewsBox.Specs
             Console.WriteLine(ori);
         }
 
+        [Test]
+        public void Should_merge_result_from_fxstreet_and_factory()
+        {
+            var ecoPools = new EconomicCalendarPool();
+            ecoPools.Add(new ForexFactoryEconomicCalendar());
+            ecoPools.Add(new FxStreetEconomicCalendar());
+            var result = ecoPools.AllResultsAsync().Result;
+
+        }
     }
 }

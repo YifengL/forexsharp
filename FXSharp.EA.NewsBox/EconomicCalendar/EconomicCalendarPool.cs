@@ -8,12 +8,12 @@ namespace FXSharp.EA.NewsBox
     {
         IList<IEconomicCalendar> calendars = new List<IEconomicCalendar>();
 
-        internal void Add(IEconomicCalendar calendar)
+        public void Add(IEconomicCalendar calendar)
         {
             calendars.Add(calendar);
         }
 
-        internal async Task<IList<EconomicEvent>> AllResultsAsync()
+        public async Task<IList<EconomicEvent>> AllResultsAsync()
         {
             var tasks = from cal in calendars
                          select cal.GetTodaysNextCriticalEventsAsync();
@@ -32,7 +32,7 @@ namespace FXSharp.EA.NewsBox
                 allEvents = allEvents.Concat(rs);
             }
 
-            return allEvents.Distinct();
+            return allEvents.Distinct().OrderBy(x => x.DateTime);
         }
     }
 }

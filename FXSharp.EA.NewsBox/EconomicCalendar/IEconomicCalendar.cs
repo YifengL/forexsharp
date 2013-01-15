@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace FXSharp.EA.NewsBox
 {
-    interface IEconomicCalendar
+    public interface IEconomicCalendar
     {
         Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync();
     }

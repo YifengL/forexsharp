@@ -38,7 +38,9 @@ namespace FXSharp.EA.NewsBox
                         var forecast = evt.ChildNodes[15].InnerText;
                         var previous = evt.ChildNodes[17].InnerText;
 
-                        if (time == "Tentative") continue;
+                        if (time == "Tentative") continue; // should do something about this, check periodically?
+
+                        if (string.IsNullOrEmpty(time)) continue; // should do something about this, check periodically?
                         
                         results.Add(new EconomicEvent
                         {
