@@ -10,20 +10,20 @@ namespace FXSharp.EA.NewsBox
         
         MagicBoxConfig speechCfg = new MagicBoxConfig
         {
-            MinutePendingExecution = -1,
-            MinuteExpiracy = 30,
-            Range = 250,
+            MinutePendingExecution = -1, // test for 2 minutes and change range
+            MinuteExpiracy = 30, // 20 - 30 minutes
+            Range = 150, // 20-25  minutes
             StopLoss = 200,
-            TakeProfit = 150
+            TakeProfit = 100
         };
         
         MagicBoxConfig commonCfg = new MagicBoxConfig
         {
-            MinutePendingExecution = -1,
-            MinuteExpiracy = 10,
-            Range = 100,
+            MinutePendingExecution = -1, // 2-1 minute
+            MinuteExpiracy = 10, 
+            Range = 50, // 5-10 pips 
             StopLoss = 200,
-            TakeProfit = 150
+            TakeProfit = 100
         };
 
         public IList<MagicBoxOrder> CreateOrdersFromEvents(IEnumerable<EconomicEvent> events)
