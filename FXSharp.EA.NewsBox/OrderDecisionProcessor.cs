@@ -12,7 +12,7 @@ namespace FXSharp.EA.NewsBox
 
         public OrderDecisionProcessor()
         {
-            //calendarPool.Add(new ForexFactoryEconomicCalendar());
+            calendarPool.Add(new ForexFactoryEconomicCalendar());
             calendarPool.Add(new FxStreetEconomicCalendar());
         }
 

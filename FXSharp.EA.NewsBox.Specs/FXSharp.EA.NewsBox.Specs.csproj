@@ -47,6 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_creating_magic_box.cs" />
     <Compile Include="When_decide_the_order_detail.cs" />
+    <Compile Include="When_generated_currency_pair.cs" />
     <Compile Include="When_get_all_economic_event_for_today.cs" />
     <Compile Include="When_receive_all_economic_event_with_different_time.cs" />
     <Compile Include="When_receive_economic_event_with_the_same_time_and_currency.cs" />

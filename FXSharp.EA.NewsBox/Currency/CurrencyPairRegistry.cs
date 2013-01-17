@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 namespace FXSharp.EA.NewsBox
 {
     public class CurrencyPairRegistry
@@ -17,9 +18,36 @@ namespace FXSharp.EA.NewsBox
             {"USD", "EURUSD"}
         };
 
+        private static IList<string> currenciesPriorities = new List<string>
+                                                                {
+                                                                    "EUR", "GBP", "AUD", "NZD", "USD", "CAD", "CHF", "JPY"
+                                                                };
+
+        private static IList<string> currencyPairs = new List<string>();
+
+        static CurrencyPairRegistry()
+        {
+            for (int i = 0; i < currenciesPriorities.Count - 1; i++)
+            {
+                for (int j = i+1; j < currenciesPriorities.Count; j++)
+                {
+                    currencyPairs.Add(string.Format("{0}{1}", currenciesPriorities[i], currenciesPriorities[j]));
+                }
+            }
+        }
+
         public string RelatedCurrencyPair(string currency)
         {
             return currencyToPair[currency];
+        }
+
+        public IEnumerable<string> RelatedCurrencyPairs(string currency)
+        {
+            var result = from s in currencyPairs
+                         where s.Contains(currency)
+                         select s;
+
+            return result;
         }
     }
 }

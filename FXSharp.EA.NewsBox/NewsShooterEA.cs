@@ -66,14 +66,14 @@ namespace FXSharp.EA.NewsBox
             double lotSize = moneyManagement.CalculateLotSize(magicBox);
 
             var buyOrder = PendingBuy(magicBox.Symbol, lotSize,
-                        BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(Symbol),
-                        BuyClosePriceFor(magicBox.Symbol) + ((range - stopLoss) * PointFor(Symbol)),
-                        BuyClosePriceFor(magicBox.Symbol) + ((range + takeProfit) * PointFor(Symbol)));
+                        BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(magicBox.Symbol),
+                        BuyClosePriceFor(magicBox.Symbol) + ((range - stopLoss) * PointFor(magicBox.Symbol)),
+                        BuyClosePriceFor(magicBox.Symbol) + ((range + takeProfit) * PointFor(magicBox.Symbol)));
 
             var sellOrder = PendingSell(magicBox.Symbol, lotSize,
-                        SellOpenPriceFor(magicBox.Symbol) - range * PointFor(Symbol),
-                        SellClosePriceFor(magicBox.Symbol) - ((range - stopLoss) * PointFor(Symbol)),
-                        SellClosePriceFor(magicBox.Symbol) - ((range + takeProfit) * PointFor(Symbol)));
+                        SellOpenPriceFor(magicBox.Symbol) - range * PointFor(magicBox.Symbol),
+                        SellClosePriceFor(magicBox.Symbol) - ((range - stopLoss) * PointFor(magicBox.Symbol)),
+                        SellClosePriceFor(magicBox.Symbol) - ((range + takeProfit) * PointFor(magicBox.Symbol)));
 
             orderPool.Add(new OrderWatcher(buyOrder, sellOrder, expiredTime));
         }

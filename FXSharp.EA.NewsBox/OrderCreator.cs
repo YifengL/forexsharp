@@ -49,28 +49,55 @@ namespace FXSharp.EA.NewsBox
 
         private void AddMagicBoxGroup(List<MagicBoxOrder> mgcBoxOrderList, IGrouping<DateTime, EconomicEvent> eventGroup)
         {
-            var result = eventGroup.Distinct().Select(eventx => new MagicBoxOrder
-                {
-                    Symbol = analyzer.RelatedCurrencyPair(eventx.Currency),
-                    LotSize = 1,
-                    Config = speechCfg,
-                    NewsTime = eventx.DateTime
-                }).Distinct();
+            // refactor the this events
 
-            mgcBoxOrderList.AddRange(result);
+            var currencyPairsCandidate = new List<MagicBoxOrder>();
+
+            foreach (var economicEvent in eventGroup.Distinct())
+            {
+                var relatedCurrencies = analyzer.RelatedCurrencyPairs(economicEvent.Currency);
+
+                foreach (var relatedCurrency in relatedCurrencies)
+                {
+                    currencyPairsCandidate.Add(new MagicBoxOrder
+                    {
+                        Symbol = relatedCurrency,
+                        LotSize = 1,
+                        Config = speechCfg,
+                        NewsTime = economicEvent.DateTime
+                    });
+                }
+            }
+
+            //var result = eventGroup.Distinct().Select(eventx => new MagicBoxOrder
+            //    {
+            //        Symbol = analyzer.RelatedCurrencyPair(eventx.Currency),
+            //        LotSize = 1,
+            //        Config = speechCfg,
+            //        NewsTime = eventx.DateTime
+            //    }).Distinct();
+
+            mgcBoxOrderList.AddRange(currencyPairsCandidate.Distinct());
         }
 
         private void AddSingleMagicBox(List<MagicBoxOrder> mgcBoxOrderList, IGrouping<DateTime, EconomicEvent> eventGroup)
         {
             var singleEvent = eventGroup.Single();
 
-            mgcBoxOrderList.Add(new MagicBoxOrder
+            // refactor the this events => duplication
+
+            var relatedCurrencies = analyzer.RelatedCurrencyPairs(singleEvent.Currency);
+
+            foreach (var relatedCurrency in relatedCurrencies)
             {
-                Symbol = analyzer.RelatedCurrencyPair(singleEvent.Currency),
-                LotSize = 1,
-                Config = SelectConfig(singleEvent),
-                NewsTime = singleEvent.DateTime
-            });
+                mgcBoxOrderList.Add(new MagicBoxOrder
+                {
+                    Symbol = relatedCurrency,
+                    LotSize = 1,
+                    Config = SelectConfig(singleEvent),
+                    NewsTime = singleEvent.DateTime
+                });   
+            }
         }
 
         private static bool IsSingleEvent(IGrouping<DateTime, EconomicEvent> item)
