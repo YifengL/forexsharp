@@ -83,6 +83,9 @@ namespace FXSharp.EA.NewsBox
 
         public IEnumerable<string> RelatedCurrencyPairs(string currency)
         {
+            if (currency == "CNY")
+                currency = "AUD";
+
             var result = from s in currencyPairs
                          where s.Contains(currency)
                          select s;
