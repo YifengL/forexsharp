@@ -1,5 +1,10 @@
-﻿//using TradePlatform.MT4.Data;
+﻿using System;
+using FXSharp.EA.NewsBox;
+//using TradePlatform.MT4.Data;
 using FXSharp.TradingPlatform.Exts;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace FXSharp.EA.FirstTest
 {
     public class MyExpertAdvisor : EExpertAdvisor
@@ -9,7 +14,7 @@ namespace FXSharp.EA.FirstTest
 
         protected override int Init()
         {
-            order = Sell(0.1, Ask + 500 * Point, Bid - 500 * Point);
+            //order = Sell(0.1, Ask + 500 * Point, Bid - 500 * Point);
             
             return 1;
         }
@@ -22,16 +27,30 @@ namespace FXSharp.EA.FirstTest
 
         protected override int Start()
         {
-            count++;
+            var pairs = CurrencyPairRegistry.CurrencyPairs;
 
-            if (order == null)
+            var spreadInfos = new List<SpreadInfo>();
+
+            foreach (var pair in pairs)
             {
-                Init();
+                var spread = MarketInfo(pair, TradePlatform.MT4.SDK.API.MARKER_INFO_MODE.MODE_SPREAD);
+                spreadInfos.Add(new SpreadInfo {Symbol = pair, Spread = spread });
             }
-            else
-            {
-                order.ModifyStopLoss(Bid + (count * 100 * Point));
-            }
+
+            var pSp = spreadInfos.OrderBy(x => x.Spread).Select(x => x.ToString());
+
+            CurrencyPairRegistry.FilterCurrencyForMinimalSpread(this);
+            var currencies = CurrencyPairRegistry.CurrencyPairs;
+            //count++;
+
+            //if (order == null)
+            //{
+            //    Init();
+            //}
+            //else
+            //{
+            //    order.ModifyStopLoss(Bid + (count * 100 * Point));
+            //}
 
             //if (order.CloseInProfit())
             //    order = null;

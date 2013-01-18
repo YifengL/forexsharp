@@ -11,7 +11,7 @@ namespace FXSharp.EA.NewsBox
         {
             var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
 
-            return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
+            return incomingNews.Where(x => x.DateTime > DateTime.Now.AddMinutes(-130) && x.DateTime.Date == DateTime.Now.Date).ToList();
         }
 
         private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()

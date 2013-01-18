@@ -15,6 +15,9 @@ namespace FXSharp.EA.NewsBox
 
         protected override int Init()
         {
+            // should filter when the order is created. currently just do this simple things
+            CurrencyPairRegistry.FilterCurrencyForMinimalSpread(this);
+
             orderPool = new OrderWatcherPool();
 
             reminder = new NewsReminder();

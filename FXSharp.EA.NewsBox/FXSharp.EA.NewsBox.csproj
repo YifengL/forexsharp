@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Currency\SpreadInfo.cs" />
     <Compile Include="EconomicCalendar\EconomicCalendarPool.cs" />
     <Compile Include="EconomicCalendar\EconomicCalendar.cs" />
     <Compile Include="EconomicCalendar\ForexFactoryEconomicCalendar.cs" />
