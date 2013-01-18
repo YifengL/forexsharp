@@ -24,12 +24,12 @@ namespace FXSharp.EA.NewsBox
             if (buyOrder.IsRunning)
             {
                 sellOrder.Close();
-                orderManager.OrderRunning(buyOrder);
+                orderManager.OrderRunning(buyOrder, new BuyTrailingMethod(new OrderTrailingInfo(buyOrder)));
             }
             else if (sellOrder.IsRunning)
             {
                 buyOrder.Close();
-                orderManager.OrderRunning(sellOrder);
+                orderManager.OrderRunning(sellOrder, new SellTrailingMethod(new OrderTrailingInfo(sellOrder)));
             }
             else if (cancel)
             {

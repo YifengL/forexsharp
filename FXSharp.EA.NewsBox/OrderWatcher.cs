@@ -38,9 +38,9 @@ namespace FXSharp.EA.NewsBox
         }
 
         // we should use event based for this
-        internal void OrderRunning(Order order)
+        internal void OrderRunning(Order order, ITrailingMethod trailing)
         {
-            state = new OrderAlreadyRunning(this, order);
+            state = new OrderAlreadyRunning(this, order, trailing);
         }
 
         // we should use event based for this

@@ -386,6 +386,11 @@ namespace FXSharp.TradingPlatform.Exts
         {
             get { return AccountInformation.AccountEquity(this); }
         }
+
+        public int DigitsFor(string symbol)
+        {
+            return (int)MarketInfo(symbol, MARKER_INFO_MODE.MODE_DIGITS);
+        }
     }
 
 }

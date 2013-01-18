@@ -137,5 +137,39 @@ namespace FXSharp.TradingPlatform.Exts
                 return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && (ea.OrderType() == ORDER_TYPE.OP_BUY || ea.OrderType() == ORDER_TYPE.OP_SELL);
             }
         }
+
+        public string Symbol
+        {
+            get { return symbol; }
+        }
+
+        public double ProfitPoints
+        {
+            get
+            {
+                if (orderType == ORDER_TYPE.OP_BUY)
+                {
+                    return ea.BuyClosePriceFor(this.symbol) - OpenPrice;
+                }
+                else if (orderType == ORDER_TYPE.OP_SELL)
+                {
+                    return OpenPrice - ea.SellClosePriceFor(this.symbol);
+                }
+                else
+                {
+                    throw  new ApplicationException("Only market order has profit");
+                }
+            }
+        }
+
+        public int Digits
+        {
+            get { return ea.DigitsFor(symbol); }
+        }
+
+        public double Points
+        {
+            get { return ea.PointFor(symbol); }
+        }
     }
 }

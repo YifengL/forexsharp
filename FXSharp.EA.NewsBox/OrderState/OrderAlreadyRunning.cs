@@ -7,11 +7,13 @@ namespace FXSharp.EA.NewsBox
         private OrderWatcher orderManager;
         private Order order;
         private bool cancel = false;
+        private ITrailingMethod trailing;
 
-        public OrderAlreadyRunning(OrderWatcher orderManager, Order order)
+        public OrderAlreadyRunning(OrderWatcher orderManager, Order order, ITrailingMethod trailing)
         {
             this.orderManager = orderManager;
             this.order = order;
+            this.trailing = trailing;
         }
 
         public void Manage()
@@ -28,6 +30,10 @@ namespace FXSharp.EA.NewsBox
             else if (!order.IsOpen)
             {
                 orderManager.MagicBoxCompleted();
+            }
+            else
+            {
+                trailing.Trail();
             }
         }
 
