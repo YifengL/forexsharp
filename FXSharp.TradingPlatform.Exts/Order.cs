@@ -8,18 +8,18 @@ namespace FXSharp.TradingPlatform.Exts
         private int ticket;
         private EExpertAdvisor ea;
         private double lots;
-        private ORDER_TYPE orderType;
+        //private ORDER_TYPE orderType;
         private DateTime NULL_TIME = new DateTime(621355968000000000);
         private double openPrice;
         private string symbol;
 
-        public Order(string symbol, int ticket, double lots, ORDER_TYPE orderType, EExpertAdvisor ea)
+        public Order(string symbol, int ticket, double lots, EExpertAdvisor ea)
         {
             this.symbol = symbol;
             this.ticket = ticket;
             this.ea = ea;
             this.lots = lots;
-            this.orderType = orderType;
+            //this.orderType = orderType;
         }
 
         public void Close()
@@ -29,7 +29,7 @@ namespace FXSharp.TradingPlatform.Exts
             if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() != NULL_TIME)
                 return;
 
-            orderType = ea.OrderType();
+            var orderType = ea.OrderType();
             // should refactor to hierarcy
 
             if (orderType == ORDER_TYPE.OP_BUY)
@@ -147,6 +147,8 @@ namespace FXSharp.TradingPlatform.Exts
         {
             get
             {
+                var orderType = ea.OrderType();
+
                 if (orderType == ORDER_TYPE.OP_BUY)
                 {
                     return ea.BuyClosePriceFor(this.symbol) - OpenPrice;

@@ -220,7 +220,7 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(symbol, ticket, size, ORDER_TYPE.OP_BUY, this);
+            return new Order(symbol, ticket, size, this);
         }
 
         protected Order Sell(double size, double stopLoss = 0, double takeProfit = 0)
@@ -247,7 +247,7 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(symbol, ticket, size, ORDER_TYPE.OP_SELL, this);
+            return new Order(symbol, ticket, size, this);
         }
 
         public double BuyOpenPrice { get { return Ask; } }
@@ -287,7 +287,7 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(symbol, ticket, size, orderType, this);
+            return new Order(symbol, ticket, size, this);
             //return new Order(
         }
 
@@ -332,7 +332,7 @@ namespace FXSharp.TradingPlatform.Exts
                 ThrowLatestException();
             }
 
-            return new Order(symbol, ticket, size, orderType, this);
+            return new Order(symbol, ticket, size, this);
             //return new Order(
         }
 
