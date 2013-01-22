@@ -71,6 +71,9 @@
   <ItemGroup>
     <Compile Include="CheckupFunctions.cs" />
     <Compile Include="EExpertAdvisor.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="MQLError.cs" />
+    <Compile Include="MQLException.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="PredefinedVariable\Closes.cs" />
     <Compile Include="PredefinedVariable\Opens.cs" />

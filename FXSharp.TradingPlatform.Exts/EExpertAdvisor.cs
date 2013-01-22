@@ -17,25 +17,6 @@ namespace FXSharp.TradingPlatform.Exts
         public static readonly MARKER_INFO_MODE MODE_POINT = MARKER_INFO_MODE.MODE_POINT;
         public static readonly POOL_MODES MODE_TRADES = POOL_MODES.MODE_TRADES;
 
-        #region Error codes returned from trade server
-        public const int ERR_NO_ERROR = 0;
-        public const int ERR_NO_RESULT = 1;
-        public const int ERR_SERVER_BUSY = 4;
-        public const int ERR_NO_CONNECTION = 6;
-        public const int ERR_INVALID_PRICE = 129;
-        public const int ERR_INVALID_STOPS = 130;
-        public const int ERR_INVALID_TRADE_VOLUME = 131;
-        public const int ERR_MARKET_CLOSED = 132;
-        public const int ERR_TRADE_DISABLED = 133;
-        public const int ERR_NOT_ENOUGH_MONEY = 134;
-        public const int ERR_PRICE_CHANGED = 135;
-        public const int ERR_OFF_QUOTES = 136;
-        public const int ERR_BROKER_BUSY = 137;
-        public const int ERR_REQUOTE = 138;
-        public const int ERR_TRADE_CONTEXT_BUSY = 146;
-        public const int ERR_TRADE_TOO_MANY_ORDERS = 148;
-        #endregion
-
         #region Special Constant
         public const int CLR_NONE = -1;
         #endregion
@@ -69,7 +50,6 @@ namespace FXSharp.TradingPlatform.Exts
             int lastErr = lastError;
             lastError = 0;
             return lastErr;
-            //return CheckupFunctions.GetLastError(this);
         }
 
         public int OrdersTotal()
@@ -104,8 +84,24 @@ namespace FXSharp.TradingPlatform.Exts
 
         public int OrderSend(string symbol, ORDER_TYPE cmd, double volume, double price, int slippage, double stoploss, double takeprofit, string comment = "", int magic = 0, DateTime expiration = default(DateTime), int arrow_color = -1)
         {
-            return TradingFunctions.OrderSend(this, symbol, cmd, volume, price, slippage, stoploss, takeprofit, comment,
+            int ticket = TradingFunctions.OrderSend(this, symbol, cmd, volume, price, slippage, stoploss, takeprofit, comment,
                                               magic, DateTime.Now.AddDays(100), arrow_color);
+
+            if (ticket == -1)
+            {
+                ThrowLatestOrderException();
+            }
+
+            return ticket;
+        }
+
+        private void ThrowLatestOrderException()
+        {
+            int lastError = this.OrderReliableLastErr();
+
+            if (lastError == 0) return;
+
+            throw CreateException(lastError);
         }
 
         public bool OrderModify(int ticket, double price, double stoploss, double takeprofit, DateTime expiration = default(DateTime), int arrow_color = -1)
@@ -197,28 +193,11 @@ namespace FXSharp.TradingPlatform.Exts
 
         private Exception CreateException(int lastError)
         {
-            throw new NotImplementedException();
+            return ErrorHandler.CreateException(lastError);
         }
 
         protected Order Buy(double size, double stopLoss = 0, double takeProfit = 0)
         {
-            //// check if stopLoss and take profit valid for buy
-
-            //if (stopLoss != 0 && stopLoss >= BuyOpenPrice) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
-
-            //if (takeProfit != 0 && takeProfit <= BuyOpenPrice) throw new ApplicationException("Take profit for Buy have to more than Ask");
-
-            //int ticket = OrderSend(Symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPrice, 3, stopLoss, takeProfit, "", 12134);
-
-            //// check if we can create and order to ecn 
-
-            //// should host compatible handler in server
-
-            //if (ticket == -1)
-            //{
-            //    ThrowLatestException();
-            //}
-
             return Buy(Symbol, size, stopLoss, takeProfit);
         }
 

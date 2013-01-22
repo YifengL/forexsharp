@@ -135,34 +135,34 @@ namespace FXSharp.EA.MagicBox
 
                 int Err = GetLastError();
 
-                switch (Err)
+                switch ((MQLError)Err)
                 {
                     //---- Success
-                    case ERR_NO_ERROR: OrderLoop = true;
+                    case MQLError.ERR_NO_ERROR: OrderLoop = true;
                         //     if( OrderSelect( Ticket, SELECT_BY_TICKET ) )
                         //      { OrderModify( Ticket, OrderOpenPrice(), StopLong(SymBid,StopLoss, SymPoints,SymDigits), TakeLong(SymAsk,ProfitTarget,SymPoints,SymDigits), 0, CLR_NONE ); }
                         break;
 
                     //---- Retry Error     
-                    case ERR_SERVER_BUSY:
-                    case ERR_NO_CONNECTION:
-                    case ERR_INVALID_PRICE:
-                    case ERR_OFF_QUOTES:
-                    case ERR_BROKER_BUSY:
-                    case ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
-                    case ERR_PRICE_CHANGED:
-                    case ERR_REQUOTE: continue;
+                    case MQLError.ERR_SERVER_BUSY:
+                    case MQLError.ERR_NO_CONNECTION:
+                    case MQLError.ERR_INVALID_PRICE:
+                    case MQLError.ERR_OFF_QUOTES:
+                    case MQLError.ERR_BROKER_BUSY:
+                    case MQLError.ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
+                    case MQLError.ERR_PRICE_CHANGED:
+                    case MQLError.ERR_REQUOTE: continue;
 
                     //---- Fatal known Error 
-                    case ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
-                    case ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
-                    case ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
-                    case ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
-                    case ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
-                    case ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
+                    case MQLError.ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
+                    case MQLError.ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
+                    case MQLError.ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
+                    case MQLError.ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
+                    case MQLError.ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
+                    case MQLError.ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
 
                     //---- Fatal Unknown Error
-                    case ERR_NO_RESULT:
+                    case MQLError.ERR_NO_RESULT:
                     default: OrderLoop = true; Print("Unknown Error - " + Err); break;
                     //----                         
                 }
@@ -227,32 +227,32 @@ namespace FXSharp.EA.MagicBox
 
                 int Err = GetLastError();
 
-                switch (Err)
+                switch ((MQLError)Err)
                 {
                     //---- Success
-                    case ERR_NO_ERROR: OrderLoop = true;
+                    case MQLError.ERR_NO_ERROR: OrderLoop = true;
                         break;
 
                     //---- Retry Error     
-                    case ERR_SERVER_BUSY:
-                    case ERR_NO_CONNECTION:
-                    case ERR_INVALID_PRICE:
-                    case ERR_OFF_QUOTES:
-                    case ERR_BROKER_BUSY:
-                    case ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
-                    case ERR_PRICE_CHANGED:
-                    case ERR_REQUOTE: continue;
+                    case MQLError.ERR_SERVER_BUSY:
+                    case MQLError.ERR_NO_CONNECTION:
+                    case MQLError.ERR_INVALID_PRICE:
+                    case MQLError.ERR_OFF_QUOTES:
+                    case MQLError.ERR_BROKER_BUSY:
+                    case MQLError.ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
+                    case MQLError.ERR_PRICE_CHANGED:
+                    case MQLError.ERR_REQUOTE: continue;
 
                     //---- Fatal known Error 
-                    case ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
-                    case ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
-                    case ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
-                    case ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
-                    case ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
-                    case ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
+                    case MQLError.ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
+                    case MQLError.ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
+                    case MQLError.ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
+                    case MQLError.ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
+                    case MQLError.ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
+                    case MQLError.ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
 
                     //---- Fatal Unknown Error
-                    case ERR_NO_RESULT:
+                    case MQLError.ERR_NO_RESULT:
                     default: OrderLoop = true; Print("Unknown Error - " + Err); break;
                     //----                         
                 }
@@ -356,7 +356,7 @@ namespace FXSharp.EA.MagicBox
                 
                 int Err = GetLastError();
 
-                switch (Err)
+                switch ((MQLError)Err)
                 {
                     //---- Success
                     // case               ERR_NO_ERROR: OrderLoop = true; 
@@ -365,25 +365,25 @@ namespace FXSharp.EA.MagicBox
                     //      break;
 
                     //---- Retry Error     
-                    case ERR_SERVER_BUSY:
-                    case ERR_NO_CONNECTION:
-                    case ERR_INVALID_PRICE:
-                    case ERR_OFF_QUOTES:
-                    case ERR_BROKER_BUSY:
-                    case ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
-                    case ERR_PRICE_CHANGED:
-                    case ERR_REQUOTE: continue;
+                    case MQLError.ERR_SERVER_BUSY:
+                    case MQLError.ERR_NO_CONNECTION:
+                    case MQLError.ERR_INVALID_PRICE:
+                    case MQLError.ERR_OFF_QUOTES:
+                    case MQLError.ERR_BROKER_BUSY:
+                    case MQLError.ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
+                    case MQLError.ERR_PRICE_CHANGED:
+                    case MQLError.ERR_REQUOTE: continue;
 
                     //---- Fatal known Error 
-                    case ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
-                    case ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
-                    case ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
-                    case ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
-                    case ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
-                    case ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
+                    case MQLError.ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
+                    case MQLError.ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
+                    case MQLError.ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
+                    case MQLError.ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
+                    case MQLError.ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
+                    case MQLError.ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
 
                     //---- Fatal Unknown Error
-                    case ERR_NO_RESULT:
+                    case MQLError.ERR_NO_RESULT:
                     default: OrderLoop = true; Print("Unknown Error - " + Err); break;
                     //----                         
                 }
@@ -415,7 +415,7 @@ namespace FXSharp.EA.MagicBox
 
                 int Err = GetLastError();
 
-                switch (Err)
+                switch ((MQLError)Err)
                 {
                     //---- Success
                     //    case               ERR_NO_ERROR: OrderLoop = true;
@@ -424,25 +424,25 @@ namespace FXSharp.EA.MagicBox
                     // break;
 
                     //---- Retry Error     
-                    case ERR_SERVER_BUSY:
-                    case ERR_NO_CONNECTION:
-                    case ERR_INVALID_PRICE:
-                    case ERR_OFF_QUOTES:
-                    case ERR_BROKER_BUSY:
-                    case ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
-                    case ERR_PRICE_CHANGED:
-                    case ERR_REQUOTE: continue;
+                    case MQLError.ERR_SERVER_BUSY:
+                    case MQLError.ERR_NO_CONNECTION:
+                    case MQLError.ERR_INVALID_PRICE:
+                    case MQLError.ERR_OFF_QUOTES:
+                    case MQLError.ERR_BROKER_BUSY:
+                    case MQLError.ERR_TRADE_CONTEXT_BUSY: TryCount++; break;
+                    case MQLError.ERR_PRICE_CHANGED:
+                    case MQLError.ERR_REQUOTE: continue;
 
                     //---- Fatal known Error 
-                    case ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
-                    case ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
-                    case ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
-                    case ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
-                    case ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
-                    case ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
+                    case MQLError.ERR_INVALID_STOPS: OrderLoop = true; Print("Invalid Stops"); break;
+                    case MQLError.ERR_INVALID_TRADE_VOLUME: OrderLoop = true; Print("Invalid Lots"); break;
+                    case MQLError.ERR_MARKET_CLOSED: OrderLoop = true; Print("Market Close"); break;
+                    case MQLError.ERR_TRADE_DISABLED: OrderLoop = true; Print("Trades Disabled"); break;
+                    case MQLError.ERR_NOT_ENOUGH_MONEY: OrderLoop = true; Print("Not Enough Money"); break;
+                    case MQLError.ERR_TRADE_TOO_MANY_ORDERS: OrderLoop = true; Print("Too Many Orders"); break;
 
                     //---- Fatal Unknown Error
-                    case ERR_NO_RESULT:
+                    case MQLError.ERR_NO_RESULT:
                     default: OrderLoop = true; Print("Unknown Error - " + Err); break;
                     //----                         
                 }

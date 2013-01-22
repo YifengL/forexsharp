@@ -18,5 +18,12 @@ namespace FXSharp.TradingPlatform.Exts
 
             return Convertor.ToInt(returnValue);
         }
+
+        public static int OrderReliableLastErr(this MqlHandler handler)
+        {
+            string returnValue = handler.CallMqlMethod("OrderReliableLastErr", null);
+
+            return Convertor.ToInt(returnValue);
+        }
     }
 }

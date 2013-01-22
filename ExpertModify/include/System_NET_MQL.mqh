@@ -12,6 +12,9 @@ string System_NET_MQL(string message[])
    if(message[1] == "GetLastError")
 	return(GetLastError());
 	
+	if(message[1] == "OrderReliableLastErr")
+	return(OrderReliableLastErr());
+	
 	if(result == "###NORESULT###")
 	{
 		result = System_NET_MQL_Custom(message);
