@@ -34,11 +34,11 @@ namespace FXSharp.TradingPlatform.Exts
 
             if (orderType == ORDER_TYPE.OP_BUY)
             {
-                success = ea.OrderClose(ticket, lots, ea.BuyClosePriceFor(symbol), 0);
+                success = ea.OrderClose(ticket, lots, ea.BuyClosePriceFor(symbol), 3);
             }
             else if (orderType == ORDER_TYPE.OP_SELL)
             {
-                success = ea.OrderClose(ticket, lots, ea.SellClosePriceFor(symbol), 0);
+                success = ea.OrderClose(ticket, lots, ea.SellClosePriceFor(symbol), 3);
             }
             else
             {
