@@ -14,17 +14,7 @@ namespace FXSharp.EA.NewsBox
         public OrderTrailingInfo(Order order)
         {
             _order = order;
-            //_expert = ea;
         }
-
-        //public double Bid
-        //{
-        //    get { return _expert.BidFor(_order.Symbol); }
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
 
         public double OpenPrice
         {
@@ -44,29 +34,10 @@ namespace FXSharp.EA.NewsBox
             }
         }
 
-        //public double Point
-        //{
-        //    get { return _expert.PointFor(_order.Symbol); }
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
         public void ModifyStopLoss(double lastProtectedPoint)
         {
             _order.ModifyStopLoss(lastProtectedPoint);
         }
-
-        //public double Ask
-        //{
-        //    get { return _expert.AskFor(_order.Symbol); }
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
 
         public double ProfitPoints
         {

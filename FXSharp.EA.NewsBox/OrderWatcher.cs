@@ -9,9 +9,11 @@ namespace FXSharp.EA.NewsBox
         public event EventHandler OrderClosed;
         private ExpiracyTimer expiracyTimer;
         private double expiredTime;
-        
-        public OrderWatcher(Order buyOrder, Order sellOrder, double expiredTime)
+        private MagicBoxConfig mbConfig;
+
+        public OrderWatcher(Order buyOrder, Order sellOrder, double expiredTime, MagicBoxConfig config)
         {
+            mbConfig = config;
             AddOneCancelAnother(buyOrder, sellOrder);
             expiracyTimer = new ExpiracyTimer(expiredTime);
             expiracyTimer.Expired += expiracyTimer_Expired;
@@ -34,7 +36,7 @@ namespace FXSharp.EA.NewsBox
 
         private void AddOneCancelAnother(Order buyOrder, Order sellOrder)
         {
-            state = new MagicBoxCreated(this, buyOrder, sellOrder);
+            state = new MagicBoxCreated(this, buyOrder, sellOrder, mbConfig);
         }
 
         // we should use event based for this

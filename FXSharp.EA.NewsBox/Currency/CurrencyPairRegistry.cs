@@ -37,14 +37,11 @@ namespace FXSharp.EA.NewsBox
             }
 
             RemoveUnregisteredCurrencies();
-
-            //RemoveHighSpreadCurrencies();
         }
 
         public static void FilterCurrencyForMinimalSpread(EExpertAdvisor ea)
         {
             currencyPairs = GetLowSpreadsCurrencies(ea).ToList();
-            //currencyPairs.Remove("GBPNZD");
         }
 
         private static IEnumerable<string> GetLowSpreadsCurrencies(EExpertAdvisor ea)

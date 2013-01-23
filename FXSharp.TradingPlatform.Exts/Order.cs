@@ -85,19 +85,32 @@ namespace FXSharp.TradingPlatform.Exts
             }
         }
 
+        public void ModifyTakeProfit(double newTakeProfit)
+        {
+            bool success = false;
+            // should throw exception for each call
+            if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
+                success = ea.OrderModify(ticket, ea.OrderOpenPrice(), ea.OrderStopLoss(), newTakeProfit,
+                                         DateTime.Now.AddDays(100), -1);
+
+            if (!success)
+            {
+                ea.ThrowLatestException();
+            }
+        }
+
         public double OpenPrice
         {
             get
             {
-                if (openPrice == default(double))
-                {
-                    // should throw exception for each call
-                    if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
-                        openPrice = ea.OrderOpenPrice();
+                if (openPrice != default(double)) 
+                    return openPrice;
 
-                    ea.ThrowLatestException();
-                }
+                // should throw exception for each call
+                if (!ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
+                    return openPrice;
 
+                openPrice = ea.OrderOpenPrice();
                 return openPrice;
             }
         }
@@ -172,6 +185,55 @@ namespace FXSharp.TradingPlatform.Exts
         public double Points
         {
             get { return ea.PointFor(symbol); }
+        }
+
+        private ORDER_TYPE OrderType
+        {
+            get
+            {
+                if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
+                    return ea.OrderType();
+
+                ea.ThrowLatestException();
+
+                return default(ORDER_TYPE);
+            }
+        }
+
+        public void ChangeTakeProfitInPoints(double tpPoints)
+        {
+            var orderType = OrderType;
+
+            var newTp = 0.0;
+
+            if (orderType == ORDER_TYPE.OP_BUY)
+            {
+                newTp = ea.BuyClosePriceFor(symbol) + (tpPoints * Points);
+            }
+            else if (orderType == ORDER_TYPE.OP_SELL)
+            {
+                newTp = ea.SellClosePriceFor(symbol) - (tpPoints * Points);
+            }
+
+            ModifyTakeProfit(newTp);
+        }
+
+        public void ChangeStopLossInPoints(double slPoints)
+        {
+            var orderType = OrderType;
+
+            var newSl = 0.0;
+
+            if (orderType == ORDER_TYPE.OP_BUY)
+            {
+                newSl = ea.BuyClosePriceFor(symbol) - (slPoints * Points);
+            }
+            else if (orderType == ORDER_TYPE.OP_SELL)
+            {
+                newSl = ea.SellClosePriceFor(symbol) + (slPoints * Points);
+            }
+
+            ModifyStopLoss(newSl);
         }
     }
 }

@@ -83,7 +83,7 @@ namespace FXSharp.EA.NewsBox
                 client.Headers.Add("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
                 client.Encoding = Encoding.UTF8;
 
-                int volatility = 3;
+                int volatility = 1;
                 string queryString = string.Format("http://calendar.fxstreet.com/eventdate/csv?timezone=SE+Asia+Standard+Time&rows=0&view=current&countrycode=AU%2CCA%2CCN%2CEMU%2CDE%2CFR%2CDE%2CGR%2CIT%2CJP%2CNZ%2CPT%2CES%2CCH%2CUK%2CUS&volatility={0}&culture=en-US&columns=CountryCurrency", volatility);
                 //string queryString = string.Format("http://calendar.fxstreet.com/eventdate/csv?timezone=SE+Asia+Standard+Time&rows=0&view=range&start={0}&end={0}&countrycode=AU%2CCA%2CCN%2CEMU%2CDE%2CFR%2CDE%2CGR%2CIT%2CJP%2CNZ%2CPT%2CES%2CCH%2CUK%2CUS&volatility={1}&culture=en-US&columns=CountryCurrency", todayString, volatility);
                 rawResult = await client.DownloadStringTaskAsync(queryString).ConfigureAwait(false);

@@ -60,25 +60,21 @@ namespace FXSharp.EA.NewsBox
             /// need to refactor this messs into another class
             
             double range = magicBox.Range;
-            double takeProfit = magicBox.TakeProfit;
-            double stopLoss = magicBox.StopLoss;
+            double takeProfit = 0; // nullify take profit 
+            double stopLoss = 0; // nullify stop loss, should set after enter the trade.
             double expiredTime = magicBox.MinuteExpiracy;
             
-            var moneyManagement = new MoneyManagement(2, this.Balance);
+            var moneyManagement = new MoneyManagement(5, this.Balance);
 
             double lotSize = moneyManagement.CalculateLotSize(magicBox);
 
             var buyOrder = PendingBuy(magicBox.Symbol, lotSize,
-                        BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(magicBox.Symbol),
-                        BuyClosePriceFor(magicBox.Symbol) + ((range - stopLoss) * PointFor(magicBox.Symbol)),
-                        BuyClosePriceFor(magicBox.Symbol) + ((range + takeProfit) * PointFor(magicBox.Symbol)));
+                        BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(magicBox.Symbol));
 
             var sellOrder = PendingSell(magicBox.Symbol, lotSize,
-                        SellOpenPriceFor(magicBox.Symbol) - range * PointFor(magicBox.Symbol),
-                        SellClosePriceFor(magicBox.Symbol) - ((range - stopLoss) * PointFor(magicBox.Symbol)),
-                        SellClosePriceFor(magicBox.Symbol) - ((range + takeProfit) * PointFor(magicBox.Symbol)));
+                        SellOpenPriceFor(magicBox.Symbol) - range * PointFor(magicBox.Symbol));
 
-            orderPool.Add(new OrderWatcher(buyOrder, sellOrder, expiredTime));
+            orderPool.Add(new OrderWatcher(buyOrder, sellOrder, expiredTime, magicBox.Config));
         }
     }
 }

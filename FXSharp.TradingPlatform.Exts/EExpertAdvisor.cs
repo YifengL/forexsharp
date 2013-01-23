@@ -116,7 +116,13 @@ namespace FXSharp.TradingPlatform.Exts
 
         public bool OrderSelect(int index, SELECT_BY select, POOL_MODES pool = POOL_MODES.MODE_TRADES)
         {
-            return TradingFunctions.OrderSelect(this, index, select, pool);
+            if (!TradingFunctions.OrderSelect(this, index, select, pool))
+            {
+                ThrowLatestException();
+                return false;
+            }
+
+            return true;
         }
 
         public void Print(object text)
@@ -156,11 +162,11 @@ namespace FXSharp.TradingPlatform.Exts
 
         public double BuyOpenPriceFor(string symbol) { return AskFor(symbol); }
 
-        public double BuyClosePriceFor(string symbol) { return BidFor(symbol);}
+        public double BuyClosePriceFor(string symbol) { return BidFor(symbol); }
 
         public double SellOpenPriceFor(string symbol) { return BidFor(symbol); }
 
-        public double SellClosePriceFor(string symbol) { return AskFor(symbol);  }
+        public double SellClosePriceFor(string symbol) { return AskFor(symbol); }
 
         public double Bid
         {
@@ -186,9 +192,14 @@ namespace FXSharp.TradingPlatform.Exts
         {
             int lastError = GetLastError();
 
-            if (lastError == 0) return;
+            if (IsIgnorableError(lastError)) return;
 
             throw CreateException(lastError);
+        }
+
+        private bool IsIgnorableError(int lastError)
+        {
+            return lastError == 0 || lastError == 4008 || lastError == 4002 || lastError == 4009 || lastError == 4021;
         }
 
         private Exception CreateException(int lastError)
