@@ -23,7 +23,7 @@ namespace FXSharp.EA.NewsBox
             if (profitPoints >= _latestProtectedLevel * _detail.Point)
             {
                 ProtectProfit(profitPoints);
-                _latestProtectedLevel = profitPoints;
+                _latestProtectedLevel = profitPoints / _detail.Point;
             }
         }
 

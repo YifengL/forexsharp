@@ -40,6 +40,12 @@ namespace FXSharp.EA.NewsBox.Specs
             trailing.Trail();
 
             Assert.AreEqual(0.0016, orderDetail.StopLoss);
+
+            orderDetail.ProfitPoints = 7 * 0.0001;
+
+            trailing.Trail();
+
+            Assert.AreEqual(0.0016, orderDetail.StopLoss);
         }
     }
 }
