@@ -13,9 +13,9 @@ namespace FXSharp.EA.NewsBox.Specs
         [Test]
         public void Should_retrieve_all_currency_for_code()
         {
-            CurrencyPairRegistry a = new CurrencyPairRegistry();
-            
-            var lists = a.RelatedCurrencyPairs("USD");
+            //CurrencyPairRegistry a = new CurrencyPairRegistry();
+
+            var lists = CurrencyPairRegistry.RelatedCurrencyPairs("USD").Take(100);
 
         }
     }

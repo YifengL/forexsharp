@@ -1,4 +1,5 @@
 ﻿using FXSharp.TradingPlatform.Exts;
+using System.Linq;
 namespace FXSharp.EA.NewsBox
 {
     public class NewsShooterEA : EExpertAdvisor
@@ -16,7 +17,7 @@ namespace FXSharp.EA.NewsBox
         protected override int Init()
         {
             // should filter when the order is created. currently just do this simple things
-            CurrencyPairRegistry.FilterCurrencyForMinimalSpread(this);
+            //CurrencyPairRegistry.FilterCurrencyForMinimalSpread(this);
 
             orderPool = new OrderWatcherPool();
 
@@ -68,13 +69,16 @@ namespace FXSharp.EA.NewsBox
 
             double lotSize = moneyManagement.CalculateLotSize(magicBox);
 
-            var buyOrder = PendingBuy(magicBox.Symbol, lotSize,
-                        BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(magicBox.Symbol));
+            foreach (var currencyPairs in CurrencyPairRegistry.RelatedCurrencyPairsForMinimalSpread(this, magicBox.Symbol).Take(4))
+            {
+                var buyOrder = PendingBuy(currencyPairs, lotSize,
+                            BuyOpenPriceFor(currencyPairs) + range * PointFor(currencyPairs));
 
-            var sellOrder = PendingSell(magicBox.Symbol, lotSize,
-                        SellOpenPriceFor(magicBox.Symbol) - range * PointFor(magicBox.Symbol));
+                var sellOrder = PendingSell(currencyPairs, lotSize,
+                            SellOpenPriceFor(currencyPairs) - range * PointFor(currencyPairs));
 
-            orderPool.Add(new OrderWatcher(buyOrder, sellOrder, expiredTime, magicBox.Config));
+                orderPool.Add(new OrderWatcher(buyOrder, sellOrder, expiredTime, magicBox.Config));    
+            }
         }
     }
 }

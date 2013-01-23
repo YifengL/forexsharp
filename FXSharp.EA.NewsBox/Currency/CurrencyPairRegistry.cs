@@ -78,7 +78,7 @@ namespace FXSharp.EA.NewsBox
             return currencyToPair[currency];
         }
 
-        public IEnumerable<string> RelatedCurrencyPairs(string currency)
+        public static IEnumerable<string> RelatedCurrencyPairs(string currency)
         {
             if (currency == "CNY")
                 currency = "AUD";
@@ -88,6 +88,24 @@ namespace FXSharp.EA.NewsBox
                          select s;
 
             return result;
+        }
+
+        public static IEnumerable<string> RelatedCurrencyPairsForMinimalSpread(EExpertAdvisor ea, string currency)
+        {
+            var spreadInfos = new List<SpreadInfo>();
+
+            foreach (var pair in RelatedCurrencyPairs(currency))
+            {
+                var spread = ea.MarketInfo(pair, TradePlatform.MT4.SDK.API.MARKER_INFO_MODE.MODE_SPREAD);
+                spreadInfos.Add(new SpreadInfo { Symbol = pair, Spread = spread });
+            }
+
+            var results = from s in spreadInfos
+                          where s.Spread <= 20
+                          orderby s.Spread ascending
+                          select s.Symbol;
+
+            return results;
         }
     }
 }

@@ -55,18 +55,26 @@ namespace FXSharp.EA.NewsBox
 
             foreach (var economicEvent in eventGroup.Distinct())
             {
-                var relatedCurrencies = analyzer.RelatedCurrencyPairs(economicEvent.Currency);
+                //var relatedCurrencies = analyzer.RelatedCurrencyPairs(economicEvent.Currency);
 
-                foreach (var relatedCurrency in relatedCurrencies)
+                //foreach (var relatedCurrency in relatedCurrencies)
+                //{
+                //    currencyPairsCandidate.Add(new MagicBoxOrder
+                //    {
+                //        Symbol = relatedCurrency,
+                //        LotSize = 1,
+                //        Config = speechCfg,
+                //        NewsTime = economicEvent.DateTime
+                //    });
+                //}
+
+                currencyPairsCandidate.Add(new MagicBoxOrder
                 {
-                    currencyPairsCandidate.Add(new MagicBoxOrder
-                    {
-                        Symbol = relatedCurrency,
-                        LotSize = 1,
-                        Config = speechCfg,
-                        NewsTime = economicEvent.DateTime
-                    });
-                }
+                    Symbol = economicEvent.Currency,
+                    LotSize = 1,
+                    Config = speechCfg,
+                    NewsTime = economicEvent.DateTime
+                });
             }
 
             //var result = eventGroup.Distinct().Select(eventx => new MagicBoxOrder
@@ -86,18 +94,26 @@ namespace FXSharp.EA.NewsBox
 
             // refactor the this events => duplication
 
-            var relatedCurrencies = analyzer.RelatedCurrencyPairs(singleEvent.Currency);
+            //var relatedCurrencies = analyzer.RelatedCurrencyPairs(singleEvent.Currency);
 
-            foreach (var relatedCurrency in relatedCurrencies)
+            //foreach (var relatedCurrency in relatedCurrencies)
+            //{
+            //    mgcBoxOrderList.Add(new MagicBoxOrder
+            //    {
+            //        Symbol = relatedCurrency,
+            //        LotSize = 1,
+            //        Config = SelectConfig(singleEvent),
+            //        NewsTime = singleEvent.DateTime
+            //    });   
+            //}
+
+            mgcBoxOrderList.Add(new MagicBoxOrder
             {
-                mgcBoxOrderList.Add(new MagicBoxOrder
-                {
-                    Symbol = relatedCurrency,
-                    LotSize = 1,
-                    Config = SelectConfig(singleEvent),
-                    NewsTime = singleEvent.DateTime
-                });   
-            }
+                Symbol = singleEvent.Currency,
+                LotSize = 1,
+                Config = SelectConfig(singleEvent),
+                NewsTime = singleEvent.DateTime
+            });   
         }
 
         private static bool IsSingleEvent(IGrouping<DateTime, EconomicEvent> item)
