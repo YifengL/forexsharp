@@ -1,4 +1,5 @@
-﻿using TradePlatform.MT4.Core;
+﻿using System;
+using TradePlatform.MT4.Core;
 using TradePlatform.MT4.Core.Utils;
 
 namespace FXSharp.TradingPlatform.Exts
@@ -23,7 +24,14 @@ namespace FXSharp.TradingPlatform.Exts
         {
             string returnValue = handler.CallMqlMethod("OrderReliableLastErr", null);
 
-            return Convertor.ToInt(returnValue);
+            try
+            {
+                return Convertor.ToInt(returnValue);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

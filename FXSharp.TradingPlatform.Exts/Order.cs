@@ -31,14 +31,14 @@ namespace FXSharp.TradingPlatform.Exts
 
             var orderType = ea.OrderType();
             // should refactor to hierarcy
-
+            
             if (orderType == ORDER_TYPE.OP_BUY)
-            {
-                success = ea.OrderClose(ticket, lots, ea.BuyClosePriceFor(symbol), 3);
+            {    
+                success = ea.OrderClose(ticket, lots, ea.BuyClosePriceFor(symbol), 50);
             }
             else if (orderType == ORDER_TYPE.OP_SELL)
             {
-                success = ea.OrderClose(ticket, lots, ea.SellClosePriceFor(symbol), 3);
+                success = ea.OrderClose(ticket, lots, ea.SellClosePriceFor(symbol), 50);
             }
             else
             {
@@ -103,7 +103,7 @@ namespace FXSharp.TradingPlatform.Exts
         {
             get
             {
-                if (openPrice != default(double)) 
+                if (openPrice != default(double))
                     return openPrice;
 
                 // should throw exception for each call
@@ -137,17 +137,15 @@ namespace FXSharp.TradingPlatform.Exts
 
         public bool IsOpen
         {
-            get
-            {
-                return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() == NULL_TIME;
-            }
+            get { return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() == NULL_TIME; }
         }
 
         public bool IsRunning
         {
             get
             {
-                return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && (ea.OrderType() == ORDER_TYPE.OP_BUY || ea.OrderType() == ORDER_TYPE.OP_SELL);
+                return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) &&
+                       (ea.OrderType() == ORDER_TYPE.OP_BUY || ea.OrderType() == ORDER_TYPE.OP_SELL);
             }
         }
 
@@ -172,7 +170,7 @@ namespace FXSharp.TradingPlatform.Exts
                 }
                 else
                 {
-                    throw  new ApplicationException("Only market order has profit");
+                    throw new ApplicationException("Only market order has profit");
                 }
             }
         }
@@ -208,11 +206,11 @@ namespace FXSharp.TradingPlatform.Exts
 
             if (orderType == ORDER_TYPE.OP_BUY)
             {
-                newTp = ea.BuyClosePriceFor(symbol) + (tpPoints * Points);
+                newTp = OpenPrice + (tpPoints * Points) + Spread;
             }
             else if (orderType == ORDER_TYPE.OP_SELL)
             {
-                newTp = ea.SellClosePriceFor(symbol) - (tpPoints * Points);
+                newTp = OpenPrice - (tpPoints * Points) - Spread;
             }
 
             ModifyTakeProfit(newTp);
@@ -226,14 +224,20 @@ namespace FXSharp.TradingPlatform.Exts
 
             if (orderType == ORDER_TYPE.OP_BUY)
             {
-                newSl = ea.BuyClosePriceFor(symbol) - (slPoints * Points);
+                newSl = OpenPrice - (slPoints * Points) - Spread;
             }
             else if (orderType == ORDER_TYPE.OP_SELL)
             {
-                newSl = ea.SellClosePriceFor(symbol) + (slPoints * Points);
+                newSl = OpenPrice + (slPoints * Points) + Spread;
             }
 
             ModifyStopLoss(newSl);
         }
+
+        public double Spread
+        {
+            get { return ea.AskFor(Symbol) - ea.BidFor(Symbol); }
+        }
     }
 }
+

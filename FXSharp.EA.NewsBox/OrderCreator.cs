@@ -12,7 +12,7 @@ namespace FXSharp.EA.NewsBox
         {
             MinutePendingExecution = -1, // test for 2 minutes and change range
             MinuteExpiracy = 30, // 20 - 30 minutes
-            Range = 150, // 20-25  minutes
+            Range = 200, // 20-25  minutes
             StopLoss = 200,
             TakeProfit = 100
         };
@@ -21,7 +21,7 @@ namespace FXSharp.EA.NewsBox
         {
             MinutePendingExecution = -1, // 2-1 minute
             MinuteExpiracy = 10, 
-            Range = 50, // 5-10 pips 
+            Range = 100, // 5-10 pips 
             StopLoss = 200,
             TakeProfit = 100
         };

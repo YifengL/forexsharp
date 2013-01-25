@@ -152,11 +152,13 @@ namespace FXSharp.TradingPlatform.Exts
 
         public double AskFor(string symbol)
         {
+            RefreshRates();
             return MarketInfo(symbol, MARKER_INFO_MODE.MODE_ASK);
         }
 
         public double BidFor(string symbol)
         {
+            RefreshRates();
             return MarketInfo(symbol, MARKER_INFO_MODE.MODE_BID);
         }
 
@@ -170,12 +172,20 @@ namespace FXSharp.TradingPlatform.Exts
 
         public double Bid
         {
-            get { return PredefinedVariables.Bid(this); }
+            get
+            {
+                RefreshRates();
+                return PredefinedVariables.Bid(this);
+            }
         }
 
         public double Ask
         {
-            get { return PredefinedVariables.Ask(this); }
+            get
+            {
+                RefreshRates();
+                return PredefinedVariables.Ask(this);
+            }
         }
 
         public double Point
