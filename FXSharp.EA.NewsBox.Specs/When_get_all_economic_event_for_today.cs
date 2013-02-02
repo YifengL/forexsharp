@@ -48,5 +48,12 @@ namespace FXSharp.EA.NewsBox.Specs
             var result = ecoPools.AllResultsAsync().Result;
 
         }
+
+        [Test]
+        public void Should_get_result_for_date()
+        {
+            var fxFactory = new ForexFactoryEconomicCalendar();
+            var result = fxFactory.GetCriticalEventsForDateAsync(DateTime.Now.AddDays(2)).Result;
+        }
     }
 }

@@ -12,8 +12,8 @@ namespace FXSharp.EA.NewsBox
 
         public OrderDecisionProcessor()
         {
-            //calendarPool.Add(new ForexFactoryEconomicCalendar());
-            calendarPool.Add(new FxStreetEconomicCalendar());
+            calendarPool.Add(new ForexFactoryEconomicCalendar());
+            //calendarPool.Add(new FxStreetEconomicCalendar());
         }
 
         public async Task<List<MagicBoxOrder>> GetTodayMagicBoxOrders()

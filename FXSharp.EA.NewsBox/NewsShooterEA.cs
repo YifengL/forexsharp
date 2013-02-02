@@ -65,7 +65,7 @@ namespace FXSharp.EA.NewsBox
             double stopLoss = 0; // nullify stop loss, should set after enter the trade.
             double expiredTime = magicBox.MinuteExpiracy;
             
-            var moneyManagement = new MoneyManagement(5, this.Balance);
+            var moneyManagement = new MoneyManagement(1, this.Balance);
 
             double lotSize = moneyManagement.CalculateLotSize(magicBox);
 

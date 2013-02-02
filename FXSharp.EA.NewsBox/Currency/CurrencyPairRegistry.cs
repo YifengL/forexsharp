@@ -101,7 +101,7 @@ namespace FXSharp.EA.NewsBox
             }
 
             var results = from s in spreadInfos
-                          where s.Spread <= 20
+                          //where s.Spread <= 20
                           orderby s.Spread ascending
                           select s.Symbol;
 
