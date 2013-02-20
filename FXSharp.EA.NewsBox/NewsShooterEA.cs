@@ -11,6 +11,7 @@ namespace FXSharp.EA.NewsBox
 
         protected override int DeInit()
         {
+            reminder.Stop();
             return 0;
         }
 

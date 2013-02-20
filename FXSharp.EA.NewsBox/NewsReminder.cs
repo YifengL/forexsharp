@@ -60,5 +60,10 @@ namespace FXSharp.EA.NewsBox
         {
             get { return orderQueue.Count > 0; }
         }
+
+        internal void Stop()
+        {
+            sched.Shutdown();
+        }
     }
 }
