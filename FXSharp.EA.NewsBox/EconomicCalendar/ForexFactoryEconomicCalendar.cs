@@ -42,6 +42,8 @@ namespace FXSharp.EA.NewsBox
 
                         if (time == "Tentative") continue; // should do something about this, check periodically?
 
+                        if (time.StartsWith("Day")) continue;
+                        
                         //var eventTime = currentEventTime;
 
                         if (!string.IsNullOrEmpty(time)) // if empty then use previous time

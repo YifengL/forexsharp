@@ -6,7 +6,7 @@ namespace FXSharp.EA.NewsBox
     {
         private NewsReminder reminder;
         private OrderWatcherPool orderPool;
-
+        private ICurrencyRepository currencyRepository;
         private bool initialized = false;
 
         protected override int DeInit()
@@ -24,6 +24,7 @@ namespace FXSharp.EA.NewsBox
             reminder = new NewsReminder();
             reminder.Start();
 
+            currencyRepository = new MajorRelatedPairsRepository();
             initialized = true;
             return 0;
         }
@@ -68,9 +69,11 @@ namespace FXSharp.EA.NewsBox
             var moneyManagement = new MoneyManagement(1, this.Balance);
 
             double lotSize = moneyManagement.CalculateLotSize(magicBox);
-
-            foreach (var currencyPairs in CurrencyPairRegistry.RelatedCurrencyPairsForMinimalSpread(this, magicBox.Symbol).Take(4))
+            
+            foreach (var currencyPairs in currencyRepository.GetRelatedCurrencyPairs(this, magicBox.Symbol))
             {
+                // check if the order has been created for this pair
+
                 var buyOrder = PendingBuy(currencyPairs, lotSize,
                             BuyOpenPriceFor(currencyPairs) + range * PointFor(currencyPairs));
 

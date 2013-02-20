@@ -13,7 +13,7 @@ namespace FXSharp.EA.NewsBox
             MinutePendingExecution = -1, // test for 2 minutes and change range
             MinuteExpiracy = 30, // 20 - 30 minutes
             Range = 200, // 20-25  minutes
-            StopLoss = 150,
+            StopLoss = 200,
             TakeProfit = 500
         };
         
@@ -23,7 +23,7 @@ namespace FXSharp.EA.NewsBox
             MinuteExpiracy = 10, 
             Range = 100, // 5-10 pips 
             StopLoss = 150,
-            TakeProfit = 500
+            TakeProfit = 300
         };
 
         public IList<MagicBoxOrder> CreateOrdersFromEvents(IEnumerable<EconomicEvent> events)

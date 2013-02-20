@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Currency\MajorRelatedPairsRepository.cs" />
     <Compile Include="Currency\SpreadInfo.cs" />
     <Compile Include="EconomicCalendar\EconomicCalendarPool.cs" />
     <Compile Include="EconomicCalendar\EconomicCalendar.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="ExpiracyTimer.cs" />
     <Compile Include="Currency\CurrencyPairRegistry.cs" />
     <Compile Include="Currency\CurrencyRegistry.cs" />
+    <Compile Include="ICurrencyRepository.cs" />
+    <Compile Include="Currency\LowestSpreadsRelatedPairsRepository.cs" />
     <Compile Include="MagicBoxConfig.cs" />
     <Compile Include="MoneyManagement\MoneyManagement.cs" />
     <Compile Include="OrderCreator.cs" />

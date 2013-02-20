@@ -24,6 +24,14 @@ namespace FXSharp.TradingPlatform.Exts
 
         public void Close()
         {
+            while (IsOpen)
+            {
+                CloseInternal();    
+            }
+        }
+
+        private void CloseInternal()
+        {
             bool success = false;
 
             if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() != NULL_TIME)
@@ -31,9 +39,9 @@ namespace FXSharp.TradingPlatform.Exts
 
             var orderType = ea.OrderType();
             // should refactor to hierarcy
-            
+
             if (orderType == ORDER_TYPE.OP_BUY)
-            {    
+            {
                 success = ea.OrderClose(ticket, lots, ea.BuyClosePriceFor(symbol), 50);
             }
             else if (orderType == ORDER_TYPE.OP_SELL)

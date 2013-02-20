@@ -4,6 +4,8 @@ using FXSharp.EA.NewsBox;
 using FXSharp.TradingPlatform.Exts;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Text;
 
 namespace FXSharp.EA.FirstTest
 {
@@ -21,11 +23,33 @@ namespace FXSharp.EA.FirstTest
 
         protected override int DeInit()
         {
+
             
             return 1;
         }
 
         protected override int Start()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                var builder = new StringBuilder();
+
+                for (int j = 31; j >= 0; j--)
+                {
+                    var idx = j * i;
+                    var close = this.Close[i];
+                    builder.Append(close);
+                    builder.Append(",");
+                }
+
+                File.WriteAllText(string.Format("dataset-{0}.csv", i), builder.ToString());
+            }
+
+            //TestSpread();
+            return 1;
+        }
+
+        private void TestSpread()
         {
             var pairs = CurrencyPairRegistry.CurrencyPairs;
 
@@ -34,7 +58,7 @@ namespace FXSharp.EA.FirstTest
             foreach (var pair in pairs)
             {
                 var spread = MarketInfo(pair, TradePlatform.MT4.SDK.API.MARKER_INFO_MODE.MODE_SPREAD);
-                spreadInfos.Add(new SpreadInfo {Symbol = pair, Spread = spread });
+                spreadInfos.Add(new SpreadInfo {Symbol = pair, Spread = spread});
             }
 
             var pSp = spreadInfos.OrderBy(x => x.Spread).Select(x => x.ToString());
@@ -54,7 +78,6 @@ namespace FXSharp.EA.FirstTest
 
             //if (order.CloseInProfit())
             //    order = null;
-            return 1;
         }
     }
 }

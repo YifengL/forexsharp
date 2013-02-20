@@ -19,6 +19,8 @@ namespace FXSharp.EA.NewsBox
             {"USD", "EURUSD"}
         };
 
+        private static IList<string> majorPairs = new List<string> { "AUDUSD", "NZDUSD", "USDJPY", "USDCHF", "EURUSD", "GBPUSD", "USDCAD" };
+
         private static IList<string> currenciesPriorities = new List<string>
                                                                 {
                                                                     "EUR", "GBP", "AUD", "NZD", "USD", "CAD", "CHF", "JPY"
@@ -102,6 +104,35 @@ namespace FXSharp.EA.NewsBox
 
             var results = from s in spreadInfos
                           //where s.Spread <= 20
+                          orderby s.Spread ascending
+                          select s.Symbol;
+
+            return results;
+        }
+
+        public static IEnumerable<string> RelatedMajorCurrencyPairs(string currency)
+        {
+            if (currency == "CNY")
+                currency = "AUD";
+
+            var result = from s in majorPairs
+                         where s.Contains(currency)
+                         select s;
+
+            return result;
+        }
+
+        public static IEnumerable<string> RelatedMajorCurrencyPairsForMinimalSpread(EExpertAdvisor ea, string currency)
+        {
+            var spreadInfos = new List<SpreadInfo>();
+
+            foreach (var pair in RelatedMajorCurrencyPairs(currency))
+            {
+                var spread = ea.MarketInfo(pair, TradePlatform.MT4.SDK.API.MARKER_INFO_MODE.MODE_SPREAD);
+                spreadInfos.Add(new SpreadInfo { Symbol = pair, Spread = spread });
+            }
+
+            var results = from s in spreadInfos
                           orderby s.Spread ascending
                           select s.Symbol;
 
