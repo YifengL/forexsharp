@@ -16,8 +16,10 @@ namespace FXSharp.EA.FirstTest
 
         protected override int Init()
         {
-            //order = Sell(0.1, Ask + 500 * Point, Bid - 500 * Point);
-            
+            order = this.PendingBuy("EURUSD", 1, 1.3404);
+
+            order.ModifyStopLoss(1.3104);
+            order.ModifyTakeProfit(1.4000);
             return 1;
         }
 
@@ -30,20 +32,20 @@ namespace FXSharp.EA.FirstTest
 
         protected override int Start()
         {
-            for (int i = 1; i <= 5; i++)
-            {
-                var builder = new StringBuilder();
+            //for (int i = 1; i <= 5; i++)
+            //{
+            //    var builder = new StringBuilder();
 
-                for (int j = 31; j >= 0; j--)
-                {
-                    var idx = j * i;
-                    var close = this.Close[i];
-                    builder.Append(close);
-                    builder.Append(",");
-                }
+            //    for (int j = 31; j >= 0; j--)
+            //    {
+            //        var idx = j * i;
+            //        var close = this.Close[i];
+            //        builder.Append(close);
+            //        builder.Append(",");
+            //    }
 
-                File.WriteAllText(string.Format("dataset-{0}.csv", i), builder.ToString());
-            }
+            //    File.WriteAllText(string.Format("dataset-{0}.csv", i), builder.ToString());
+            //}
 
             //TestSpread();
             return 1;

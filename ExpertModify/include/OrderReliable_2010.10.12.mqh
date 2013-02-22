@@ -154,7 +154,8 @@ int OrderSendReliable(string symbol, int cmd, double volume, double price,
 					  string comment, int magic, datetime expiration = 0, 
 					  color arrow_color = CLR_NONE) 
 {
-
+   expiration = 0;
+   arrow_color = CLR_NONE;
 	// ------------------------------------------------
 	// Check basic conditions see if trade is possible. 
 	// ------------------------------------------------
@@ -485,6 +486,8 @@ bool OrderModifyReliable(int ticket, double price, double stoploss,
 						 double takeprofit, datetime expiration, 
 						 color arrow_color = CLR_NONE) 
 {
+   expiration = 0;
+   arrow_color = CLR_NONE;
 	OrderReliable_Fname = "OrderModifyReliable";
 
 	OrderReliablePrint(" attempted modify of #" + ticket + " price:" + price + 
@@ -660,6 +663,8 @@ bool OrderModifyReliableSymbol(string symbol, int ticket, double price,
 							   double stoploss, double takeprofit, 
 							   datetime expiration, color arrow_color = CLR_NONE) 
 {
+   expiration = 0;
+   arrow_color = CLR_NONE;
 	int digits = MarketInfo(symbol, MODE_DIGITS);
 	
 	if (digits > 0) 
@@ -704,6 +709,7 @@ bool OrderModifyReliableSymbol(string symbol, int ticket, double price,
 bool OrderCloseReliable(int ticket, double lots, double price, 
 						int slippage, color arrow_color = CLR_NONE) 
 {
+   arrow_color = CLR_NONE;
 	OrderReliable_Fname = "OrderCloseReliable";
    		if(OrderSelect(ticket,SELECT_BY_TICKET,MODE_TRADES)==true)
             {

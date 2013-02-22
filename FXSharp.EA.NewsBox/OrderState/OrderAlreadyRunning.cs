@@ -33,7 +33,7 @@ namespace FXSharp.EA.NewsBox
             }
             else
             {
-                trailing.Trail();
+                //trailing.Trail();
             }
         }
 

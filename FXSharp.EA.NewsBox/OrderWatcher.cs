@@ -15,7 +15,10 @@ namespace FXSharp.EA.NewsBox
         {
             mbConfig = config;
             AddOneCancelAnother(buyOrder, sellOrder);
-            expiracyTimer = new ExpiracyTimer(expiredTime);
+            
+            this.expiredTime = expiredTime;
+
+            expiracyTimer = new ExpiracyTimer(expiredTime / 2);
             expiracyTimer.Expired += expiracyTimer_Expired;
         }
 
@@ -42,7 +45,17 @@ namespace FXSharp.EA.NewsBox
         // we should use event based for this
         internal void OrderRunning(Order order, ITrailingMethod trailing)
         {
+            ResetExpiracy();
+
             state = new OrderAlreadyRunning(this, order, trailing);
+        }
+
+        private void ResetExpiracy()
+        {
+            expiracyTimer.Finish();
+            expiracyTimer.Expired -= expiracyTimer_Expired;
+            expiracyTimer = new ExpiracyTimer(expiredTime);
+            expiracyTimer.Expired += expiracyTimer_Expired;
         }
 
         // we should use event based for this
@@ -50,6 +63,8 @@ namespace FXSharp.EA.NewsBox
         {
             // should create default state
             expiracyTimer.Finish();
+            expiracyTimer.Expired -= expiracyTimer_Expired;
+
             state = null;
             OnOrderClosed();
         }
