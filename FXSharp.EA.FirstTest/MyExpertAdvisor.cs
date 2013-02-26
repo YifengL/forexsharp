@@ -1,11 +1,6 @@
-﻿using System;
-using FXSharp.EA.NewsBox;
-//using TradePlatform.MT4.Data;
+﻿//using TradePlatform.MT4.Data;
 using FXSharp.TradingPlatform.Exts;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
+using System;
 
 namespace FXSharp.EA.FirstTest
 {
@@ -14,72 +9,93 @@ namespace FXSharp.EA.FirstTest
         Order order = null;
         int count = 0;
 
+        private QuoteBeat beat;
+
+        private double threshold = 3;
+
+        private bool isInitialize;
+
         protected override int Init()
         {
-            order = this.PendingBuy("EURUSD", 1, 1.3404);
+            beat = new QuoteBeat();
+            beat.Add(new Quote(Bid, Ask));
 
-            order.ModifyStopLoss(1.3104);
-            order.ModifyTakeProfit(1.4000);
+            isInitialize = true;
+
             return 1;
         }
 
         protected override int DeInit()
         {
-
             
             return 1;
         }
 
         protected override int Start()
         {
-            //for (int i = 1; i <= 5; i++)
-            //{
-            //    var builder = new StringBuilder();
+            if (!isInitialize)
+            {
+                Init();
+            }
 
-            //    for (int j = 31; j >= 0; j--)
-            //    {
-            //        var idx = j * i;
-            //        var close = this.Close[i];
-            //        builder.Append(close);
-            //        builder.Append(",");
-            //    }
+            // should introduce event and directly buy or sell 
+            // should create new object for decision making. 
 
-            //    File.WriteAllText(string.Format("dataset-{0}.csv", i), builder.ToString());
-            //}
+            beat.Add(new Quote(Bid, Ask));
 
-            //TestSpread();
+            PrintReport(beat);
+
+            if (beat.MaxUp >= threshold)
+            {
+                if (IsNoOpenOrder())
+                {
+                    order = Buy(0.1);
+                }
+                else
+                {
+                    if (IsAlreadyOpenBuy()) return 1;
+
+                    order.Close();
+                    order = Buy(0.1);
+                }
+            }
+            else if (Math.Abs(beat.MaxDown) >= threshold)
+            {
+                if (IsNoOpenOrder())
+                {
+                    order = Sell(0.1);
+                }
+                else
+                {
+                    if (IsAlreadyOpenSell()) return 1;
+
+                    order.Close();
+                    order = Sell(0.1);
+                }
+            }
+
             return 1;
         }
 
-        private void TestSpread()
+        private void PrintReport(QuoteBeat beat)
         {
-            var pairs = CurrencyPairRegistry.CurrencyPairs;
+            Console.WriteLine("Delta Bid : {0}, Ask : {1}", beat.DeltaBid, beat.DeltaAsk);
+            Console.WriteLine("Max Up : {0}, Down : {1}", beat.MaxUp, beat.MaxDown);
+        }
 
-            var spreadInfos = new List<SpreadInfo>();
+        private bool IsAlreadyOpenSell()
+        {
+            return order.OrderType == TradePlatform.MT4.SDK.API.ORDER_TYPE.OP_SELL;
+        }
 
-            foreach (var pair in pairs)
-            {
-                var spread = MarketInfo(pair, TradePlatform.MT4.SDK.API.MARKER_INFO_MODE.MODE_SPREAD);
-                spreadInfos.Add(new SpreadInfo {Symbol = pair, Spread = spread});
-            }
+        private bool IsAlreadyOpenBuy()
+        {
+            return order.OrderType == TradePlatform.MT4.SDK.API.ORDER_TYPE.OP_BUY;
+        }
 
-            var pSp = spreadInfos.OrderBy(x => x.Spread).Select(x => x.ToString());
-
-            CurrencyPairRegistry.FilterCurrencyForMinimalSpread(this);
-            var currencies = CurrencyPairRegistry.CurrencyPairs;
-            //count++;
-
-            //if (order == null)
-            //{
-            //    Init();
-            //}
-            //else
-            //{
-            //    order.ModifyStopLoss(Bid + (count * 100 * Point));
-            //}
-
-            //if (order.CloseInProfit())
-            //    order = null;
+        private bool IsNoOpenOrder()
+        {
+            return order == null;
         }
     }
 }

@@ -193,7 +193,7 @@ namespace FXSharp.TradingPlatform.Exts
             get { return ea.PointFor(symbol); }
         }
 
-        private ORDER_TYPE OrderType
+        public ORDER_TYPE OrderType
         {
             get
             {

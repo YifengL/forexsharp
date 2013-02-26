@@ -48,6 +48,8 @@
     <Compile Include="CurrencyPairRegistry.cs" />
     <Compile Include="MyExpertAdvisor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quote.cs" />
+    <Compile Include="QuoteBeat.cs" />
     <Compile Include="SpreadInfo.cs" />
     <Compile Include="Test\BuyFunctionTest.cs" />
     <Compile Include="Test\ModifyStopTest.cs" />
