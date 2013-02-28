@@ -19,6 +19,7 @@ namespace FXSharp.TradingPlatform.Exts
             this.ticket = ticket;
             this.ea = ea;
             this.lots = lots;
+            NULL_TIME = CloseTime;
             //this.orderType = orderType;
         }
 
@@ -143,9 +144,20 @@ namespace FXSharp.TradingPlatform.Exts
             }
         }
 
+        public DateTime CloseTime
+        {
+            get
+            {
+                if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET))
+                    return ea.OrderCloseTime();
+                return default(DateTime);
+                //return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() == NULL_TIME;
+            }
+        }
+
         public bool IsOpen
         {
-            get { return ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() == NULL_TIME; }
+            get { return CloseTime == NULL_TIME; }
         }
 
         public bool IsRunning

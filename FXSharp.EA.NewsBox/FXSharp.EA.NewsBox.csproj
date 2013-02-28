@@ -47,12 +47,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TradePlatform.MT4.Core">
-      <HintPath>..\TradePlatform.NET 2.0.0.0 Beta\Shell\TradePlatform.MT4.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="TradePlatform.MT4.SDK.API">
-      <HintPath>..\TradePlatform.NET 2.0.0.0 Beta\Shell\TradePlatform.MT4.SDK.API.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Currency\MajorRelatedPairsRepository.cs" />
@@ -95,6 +89,14 @@
     <ProjectReference Include="..\FXSharp.TradingPlatform.Exts\FXSharp.TradingPlatform.Exts.csproj">
       <Project>{e33f0f2b-6fbd-4e1c-9981-510dd229c58e}</Project>
       <Name>FXSharp.TradingPlatform.Exts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradePlatform.MT4\TradePlatform.MT4.Core\TradePlatform.MT4.Core.csproj">
+      <Project>{65aa3653-ce56-4029-a9ad-46d5caa45829}</Project>
+      <Name>TradePlatform.MT4.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradePlatform.MT4\TradePlatform.MT4.SDK\TradePlatform.MT4.SDK.API\TradePlatform.MT4.SDK.API.csproj">
+      <Project>{44136017-54ee-4868-9557-acb70b85bd7c}</Project>
+      <Name>TradePlatform.MT4.SDK.API</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

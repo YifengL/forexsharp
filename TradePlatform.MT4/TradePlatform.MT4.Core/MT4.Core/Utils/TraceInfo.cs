@@ -7,11 +7,11 @@ namespace TradePlatform.MT4.Core.Utils
 	{
 		public BridgeTraceErrorType Type;
 
-		public Exception Exception;
+		public System.Exception Exception;
 
 		public string Message;
 
-		public TraceInfo(BridgeTraceErrorType type, Exception exception = null, string message = "")
+		public TraceInfo(BridgeTraceErrorType type, System.Exception exception = null, string message = "")
 		{
 			object obj;
 			this.Type = type;
@@ -25,14 +25,7 @@ namespace TradePlatform.MT4.Core.Utils
 			{
 				obj1 = "";
 			}
-			if (exception == null)
-			{
-				obj = message;
-			}
-			else
-			{
-				obj = exception.Message;
-			}
+			obj = (exception == null ? message : exception.Message);
 			traceInfo.Message = string.Format(str, now, obj1, obj);
 		}
 

@@ -28,11 +28,11 @@ namespace TradePlatform.MT4.Core.Config
 			}
 		}
 
-		public IPAddress IPAddress
+		public System.Net.IPAddress IPAddress
 		{
 			get
 			{
-				return IPAddress.Parse(this.ipAddress);
+				return System.Net.IPAddress.Parse(this.ipAddress);
 			}
 		}
 

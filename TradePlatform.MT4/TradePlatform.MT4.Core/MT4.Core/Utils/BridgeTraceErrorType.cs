@@ -1,3 +1,5 @@
+using System;
+
 namespace TradePlatform.MT4.Core.Utils
 {
 	public enum BridgeTraceErrorType

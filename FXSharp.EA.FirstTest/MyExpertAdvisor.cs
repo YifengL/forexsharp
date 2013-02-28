@@ -1,6 +1,7 @@
 ﻿//using TradePlatform.MT4.Data;
 using FXSharp.TradingPlatform.Exts;
 using System;
+using System.Threading;
 
 namespace FXSharp.EA.FirstTest
 {
@@ -27,7 +28,7 @@ namespace FXSharp.EA.FirstTest
 
         protected override int DeInit()
         {
-            
+
             return 1;
         }
 
@@ -41,38 +42,58 @@ namespace FXSharp.EA.FirstTest
             // should introduce event and directly buy or sell 
             // should create new object for decision making. 
 
-            beat.Add(new Quote(Bid, Ask));
-
-            PrintReport(beat);
-
-            if (beat.MaxUp >= threshold)
+            while (true)
             {
-                if (IsNoOpenOrder())
-                {
-                    order = Buy(0.1);
-                }
-                else
-                {
-                    if (IsAlreadyOpenBuy()) return 1;
+                RefreshRates();
 
-                    order.Close();
-                    order = Buy(0.1);
-                }
-            }
-            else if (Math.Abs(beat.MaxDown) >= threshold)
-            {
-                if (IsNoOpenOrder())
-                {
-                    order = Sell(0.1);
-                }
-                else
-                {
-                    if (IsAlreadyOpenSell()) return 1;
+                beat.Add(new Quote(Bid, Ask));
 
-                    order.Close();
-                    order = Sell(0.1);
+                PrintReport(beat);
+
+                if (beat.LastDelta >= threshold)
+                {
+                    if (IsNoOpenOrder())
+                    {
+                        Console.WriteLine("No Open Order");
+                        order = Buy(1);
+
+                        order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(20);
+                    }
+                    else
+                    {
+                        if (IsAlreadyOpenBuy()) return 1;
+
+                        order.Close();
+
+                        order = Buy(1);
+                        order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(20);
+                    }
                 }
+                else if (Math.Abs(beat.LastDelta) >= threshold)
+                {
+                    if (IsNoOpenOrder())
+                    {
+                        Console.WriteLine("No Open Order");
+                        order = Sell(1);
+                        order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(20);
+                    }
+                    else
+                    {
+                        if (IsAlreadyOpenSell()) return 1;
+
+                        order.Close();
+                        order = Sell(1);
+                        order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(20);
+                    }
+                }
+
+                Thread.Sleep(500);
             }
+
 
             return 1;
         }
@@ -95,7 +116,7 @@ namespace FXSharp.EA.FirstTest
 
         private bool IsNoOpenOrder()
         {
-            return order == null;
+            return order == null || !order.IsOpen;
         }
     }
 }

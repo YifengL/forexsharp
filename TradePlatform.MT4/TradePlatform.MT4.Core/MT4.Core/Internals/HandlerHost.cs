@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using TradePlatform.MT4.Core.Config;
@@ -59,89 +61,92 @@ namespace TradePlatform.MT4.Core.Internals
 		{
 			int length = s.Length;
 			int num = 0;
-			for (int i = s.IndexOf(c, 0, length); i != -1; i = s.IndexOf(c, num, length - num))
+			int num1 = s.IndexOf(c, 0, length);
+			if (num1 != -1)
 			{
-				if (i - num > 0)
+				while (num1 != -1)
 				{
-					yield return s.Substring(num, i - num);
+					if (num1 - num > 0)
+					{
+						yield return s.Substring(num, num1 - num);
+					}
+					num = num1 + 1;
+					num1 = s.IndexOf(c, num, length - num);
 				}
-				num = i + 1;
+				if (num < length)
+				{
+					yield return s.Substring(num, length - num);
+				}
+			}
+			else
+			{
+				yield return s;
 			}
 		}
 
 		private void HandleClientComm(object client)
 		{
 			string str;
-			string empty;
-            //HandlerHost.HandlerHost variable = new HandlerHost.HandlerHost();
+			string str1;
 			TcpClient tcpClient = (TcpClient)client;
 			Trace.Write(new TraceInfo(BridgeTraceErrorType.HostInfo, null, "Connection opened"));
-            HandlerProvider handlerProvider = null;
+			HandlerProvider orCreate = null;
 			try
 			{
 				try
 				{
-					ParameterizedThreadStart parameterizedThreadStart = null;
 					NetworkStream stream = tcpClient.GetStream();
 					string[] message = this.GetMessage(stream);
 					if ((int)message.Length >= 3)
 					{
 						MethodCallInfo methodCallInfo = new MethodCallInfo(message[2], message.Skip<string>(3));
 						ExpertInfo expertInfo = new ExpertInfo(message[0], message[1], methodCallInfo);
-                        //variable.handlerProvider = HandlerProvider.GetOrCreate(expertInfo, this.HostConfiguration);
-                        handlerProvider = HandlerProvider.GetOrCreate(expertInfo, this.HostConfiguration);
-						lock (handlerProvider.Locker)
+						orCreate = HandlerProvider.GetOrCreate(expertInfo, this.HostConfiguration);
+						lock (orCreate.Locker)
 						{
-							handlerProvider.BeginTime = DateTime.Now;
-							handlerProvider.ServerMethod = methodCallInfo;
-							handlerProvider.ClientMethod = null;
-							if (parameterizedThreadStart == null)
-							{
-								parameterizedThreadStart = (object x) => {
+							orCreate.BeginTime = DateTime.Now;
+							orCreate.ServerMethod = methodCallInfo;
+							orCreate.ClientMethod = null;
+							Thread thread = new Thread((object x) => {
+								try
+								{
 									try
 									{
-										try
-										{
-											((HandlerProvider)x).ProceedServerMethod();
-										}
-										catch (Exception exception1)
-										{
-											Exception exception = exception1;
-											HandlerExecutionException handlerExecutionException = new HandlerExecutionException(expertInfo, exception);
-                                            //MethodCallInfo methodCallInfo1.ErrorMessage = handlerExecutionException.Message;
-											var ErrorMessage = handlerExecutionException.Message;
-											Trace.Write(new TraceInfo(BridgeTraceErrorType.HandlerExecutionError, handlerExecutionException, ""));
-										}
+										((HandlerProvider)x).ProceedServerMethod();
 									}
-									finally
+									catch (Exception exception1)
 									{
-                                        handlerProvider.ClientCallSemaphore.Set();
-                                        //LambdaVar2.Set();
+										Exception exception = exception1;
+										HandlerExecutionException handlerExecutionException = new HandlerExecutionException(expertInfo, exception);
+										orCreate.ServerMethod.ErrorMessage = handlerExecutionException.Message;
+										Trace.Write(new TraceInfo(BridgeTraceErrorType.HandlerExecutionError, handlerExecutionException, ""));
 									}
 								}
-								;
-							}
-							Thread thread = new Thread(parameterizedThreadStart);
+								finally
+								{
+									orCreate.ClientCallSemaphore.Set();
+								}
+							});
 							thread.IsBackground = this._isBackground;
 							Thread cultureInfo = thread;
 							cultureInfo.CurrentCulture = new CultureInfo("en-US");
 							cultureInfo.Name = string.Concat(tcpClient.Client.RemoteEndPoint, " > ", this._tcpListener.Server.LocalEndPoint);
-							cultureInfo.Start(handlerProvider);
-							handlerProvider.ClientCallSemaphore.WaitOne();
-							while (handlerProvider.ClientMethod != null)
+							cultureInfo.Start(orCreate);
+							orCreate.ClientCallSemaphore.WaitOne();
+							while (orCreate.ClientMethod != null)
 							{
-								string[] methodName = new string[2 + handlerProvider.ClientMethod.Parameters.Count<string>()];
+								string[] methodName = new string[2 + orCreate.ClientMethod.Parameters.Count<string>()];
 								methodName[0] = "###MQL###";
-								methodName[1] = handlerProvider.ClientMethod.MethodName;
+								methodName[1] = orCreate.ClientMethod.MethodName;
 								for (int i = 2; i < (int)methodName.Length; i++)
 								{
-									methodName[i] = handlerProvider.ClientMethod.Parameters[i - 2];
+									methodName[i] = orCreate.ClientMethod.Parameters[i - 2];
 								}
 								this.WriteMessage(stream, methodName);
 								string[] strArrays = this.GetMessage(stream);
 								if ((int)strArrays.Length >= 2)
 								{
-									MethodCallInfo clientMethod = handlerProvider.ClientMethod;
+									MethodCallInfo clientMethod = orCreate.ClientMethod;
 									if (strArrays[0] == "0:no error")
 									{
 										str = null;
@@ -151,35 +156,25 @@ namespace TradePlatform.MT4.Core.Internals
 										str = strArrays[0];
 									}
 									clientMethod.ErrorMessage = str;
-									MethodCallInfo clientMethod1 = handlerProvider.ClientMethod;
-									if (strArrays[1] == "###EMPTY###")
-									{
-										empty = string.Empty;
-									}
-									else
-									{
-										empty = strArrays[1];
-									}
-									clientMethod1.ReturnValue = empty;
-									handlerProvider.ServerCallSemaphore.Set();
-									handlerProvider.ClientCallSemaphore.WaitOne();
+									MethodCallInfo clientMethod1 = orCreate.ClientMethod;
+									str1 = (strArrays[1] == "###EMPTY###" ? string.Empty : strArrays[1]);
+									clientMethod1.ReturnValue = str1;
+									orCreate.ServerCallSemaphore.Set();
+									orCreate.ClientCallSemaphore.WaitOne();
 								}
 								else
 								{
 									throw new MessageException(strArrays, 2, "lastError|returnValue");
 								}
 							}
-							if (handlerProvider.ServerMethod.ErrorMessage != null)
+							if (orCreate.ServerMethod.ErrorMessage != null)
 							{
-								string[] errorMessage = new string[2];
-								errorMessage[0] = "###ERR###";
-								errorMessage[1] = handlerProvider.ServerMethod.ErrorMessage;
+								string[] errorMessage = new string[] { "###ERR###", orCreate.ServerMethod.ErrorMessage };
 								this.WriteMessage(stream, errorMessage);
 							}
-							if (handlerProvider.ServerMethod.ReturnValue != null)
+							if (orCreate.ServerMethod.ReturnValue != null)
 							{
-								string[] returnValue = new string[1];
-								returnValue[0] = handlerProvider.ServerMethod.ReturnValue;
+								string[] returnValue = new string[] { orCreate.ServerMethod.ReturnValue };
 								this.WriteMessage(stream, returnValue);
 							}
 						}
@@ -197,10 +192,10 @@ namespace TradePlatform.MT4.Core.Internals
 			}
 			finally
 			{
-				if (handlerProvider != null)
+				if (orCreate != null)
 				{
-					handlerProvider.EndTime = DateTime.Now;
-					TimeSpan endTime = handlerProvider.EndTime - handlerProvider.BeginTime;
+					orCreate.EndTime = DateTime.Now;
+					TimeSpan endTime = orCreate.EndTime - orCreate.BeginTime;
 					Trace.Write(new TraceInfo(BridgeTraceErrorType.Service, null, string.Concat("Method execution time: ", endTime.TotalMilliseconds, " ms.")));
 				}
 				tcpClient.Close();
@@ -211,12 +206,7 @@ namespace TradePlatform.MT4.Core.Internals
 		private void ListenForClients()
 		{
 			this._tcpListener.Start();
-			object[] pAddress = new object[5];
-			pAddress[0] = "TCP listening for MT4 at ";
-			pAddress[1] = this.HostConfiguration.IPAddress;
-			pAddress[2] = ":";
-			pAddress[3] = this.HostConfiguration.Port;
-			pAddress[4] = "\n";
+			object[] pAddress = new object[] { "TCP listening for MT4 at ", this.HostConfiguration.IPAddress, ":", this.HostConfiguration.Port, "\n" };
 			Trace.Write(new TraceInfo(BridgeTraceErrorType.HostInfo, null, string.Concat(pAddress)));
 			while (true)
 			{
@@ -238,11 +228,7 @@ namespace TradePlatform.MT4.Core.Internals
 		{
 			ASCIIEncoding aSCIIEncoding = new ASCIIEncoding();
 			string str = "";
-			message.ToList<string>().ForEach((string x) => {
-                //HandlerHost.HandlerHost variable = this;
-				str = string.Concat(str, x, "|");
-			}
-			);
+			message.ToList<string>().ForEach((string x) => str = string.Concat(str, x, "|"));
 			byte[] bytes = aSCIIEncoding.GetBytes(str);
 			Trace.Write(new TraceInfo(BridgeTraceErrorType.CommunicationWorkflow, null, string.Concat(" <-- ", str)));
 			stream.Write(bytes, 0, (int)bytes.Length);

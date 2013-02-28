@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using TradePlatform.MT4.Core;
+using TradePlatform.MT4.Core.Config;
 using TradePlatform.MT4.Core.Exceptions;
 
 namespace TradePlatform.MT4.Core.Utils
@@ -17,9 +18,9 @@ namespace TradePlatform.MT4.Core.Utils
 		{
 			try
 			{
-				if (TraceInfo is TraceInfo)
+				if (TraceInfo is TradePlatform.MT4.Core.Utils.TraceInfo)
 				{
-					TraceInfo traceInfo = TraceInfo as TraceInfo;
+					TradePlatform.MT4.Core.Utils.TraceInfo traceInfo = TraceInfo as TradePlatform.MT4.Core.Utils.TraceInfo;
 					this.Output(traceInfo);
 					if ((traceInfo.Type == BridgeTraceErrorType.Execption || traceInfo.Type == BridgeTraceErrorType.HandlerExecutionError) && Bridge.Configuration.UseEventLog)
 					{

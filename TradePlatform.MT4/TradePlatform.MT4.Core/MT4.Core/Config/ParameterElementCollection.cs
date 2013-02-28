@@ -1,6 +1,8 @@
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace TradePlatform.MT4.Core.Config
 {

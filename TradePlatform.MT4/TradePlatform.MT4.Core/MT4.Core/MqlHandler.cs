@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using TradePlatform.MT4.Core.Exceptions;
 using TradePlatform.MT4.Core.Utils;
 
@@ -29,9 +30,7 @@ namespace TradePlatform.MT4.Core
 				else
 				{
 					object[] objArray = parameters;
-					strs = (IEnumerable<string>)objArray.Select<object, string>((object x) => x.ToString());
-
-                    
+					strs = objArray.Select<object, string>((object x) => x.ToString());
 				}
 				IEnumerable<string> strs1 = strs;
 				if (this.CallMqlInternal != null)

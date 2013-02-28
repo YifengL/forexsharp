@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using TradePlatform.MT4.Core.Exceptions;
 
 namespace TradePlatform.MT4.Core
 {
@@ -9,7 +13,7 @@ namespace TradePlatform.MT4.Core
 
 		private readonly static object _listernerLock;
 
-		private readonly Queue<Action<MqlHandler>> _functionsBuffer;
+		private readonly Queue<Action<MqlHandler>> _functionsBuffer = new Queue<Action<MqlHandler>>();
 
 		public int AccountNumber
 		{
@@ -31,9 +35,19 @@ namespace TradePlatform.MT4.Core
 
 		private MetaTrader4(int accountNumber, string symbol)
 		{
-			this._functionsBuffer = new Queue<Action<MqlHandler>>();
 			this.AccountNumber = accountNumber;
 			this.Symbol = symbol;
+		}
+
+		internal static List<MetaTrader4> All()
+		{
+			List<MetaTrader4> list;
+			lock (MetaTrader4._listernerLock)
+			{
+				Dictionary<string, MetaTrader4> strs = MetaTrader4._listeners;
+				list = strs.Select<KeyValuePair<string, MetaTrader4>, MetaTrader4>((KeyValuePair<string, MetaTrader4> x) => x.Value).ToList<MetaTrader4>();
+			}
+			return list;
 		}
 
 		internal static MetaTrader4 For(int accountNumber, string symbol)
@@ -61,19 +75,29 @@ namespace TradePlatform.MT4.Core
 			this._functionsBuffer.Enqueue(mqlScope);
 		}
 
-		internal void OnQuote(MqlHandler mqlHandler)
+		public void OnMqlError(MqlErrorException mqlErrorException)
+		{
+			if (this.MqlError != null)
+			{
+				this.MqlError(mqlErrorException);
+			}
+		}
+
+		internal void OnQuote(QuoteListener quoteListener)
 		{
 			while (this._functionsBuffer.Count > 0)
 			{
 				Action<MqlHandler> action = this._functionsBuffer.Dequeue();
-				action(mqlHandler);
+				action(quoteListener);
 			}
 			if (this.QuoteRecieved != null)
 			{
-				this.QuoteRecieved(mqlHandler);
+				this.QuoteRecieved(quoteListener);
 			}
 		}
 
-		public event Action<MqlHandler> QuoteRecieved;
+		public event Action<MqlErrorException> MqlError;
+
+		public event Action<QuoteListener> QuoteRecieved;
 	}
 }

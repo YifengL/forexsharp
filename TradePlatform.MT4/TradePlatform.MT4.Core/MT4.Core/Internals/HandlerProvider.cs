@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using TradePlatform.MT4.Core;
 using TradePlatform.MT4.Core.Config;
@@ -13,15 +16,15 @@ namespace TradePlatform.MT4.Core.Internals
 {
 	internal sealed class HandlerProvider
 	{
-		private readonly static Dictionary<string, HandlerProvider> _storage;
+		private readonly static ConcurrentDictionary<string, HandlerProvider> _storage;
 
 		private readonly static object _storageLocker;
 
-		internal readonly AutoResetEvent ClientCallSemaphore;
+		internal readonly AutoResetEvent ClientCallSemaphore = new AutoResetEvent(false);
 
-		internal readonly object Locker;
+		internal readonly object Locker = new object();
 
-		internal readonly AutoResetEvent ServerCallSemaphore;
+		internal readonly AutoResetEvent ServerCallSemaphore = new AutoResetEvent(false);
 
 		private readonly MqlHandler _mqlHandler;
 
@@ -33,7 +36,7 @@ namespace TradePlatform.MT4.Core.Internals
 
 		internal DateTime EndTime;
 
-		internal ExpertInfo ExpertInfo
+		internal TradePlatform.MT4.Core.Utils.ExpertInfo ExpertInfo
 		{
 			get;
 			set;
@@ -47,22 +50,19 @@ namespace TradePlatform.MT4.Core.Internals
 
 		static HandlerProvider()
 		{
-			HandlerProvider._storage = new Dictionary<string, HandlerProvider>();
+			HandlerProvider._storage = new ConcurrentDictionary<string, HandlerProvider>();
 			HandlerProvider._storageLocker = new object();
 		}
 
-		private HandlerProvider(MqlHandler mqlHandler, HandlerElement handlerElement, ExpertInfo expertInfo)
+		private HandlerProvider(MqlHandler mqlHandler, HandlerElement handlerElement, TradePlatform.MT4.Core.Utils.ExpertInfo expertInfo)
 		{
-			this.ClientCallSemaphore = new AutoResetEvent(false);
-			this.Locker = new object();
-			this.ServerCallSemaphore = new AutoResetEvent(false);
 			this._mqlHandler = mqlHandler;
 			this._mqlHandler.CallMqlInternal = new Func<string, IEnumerable<string>, string>(this.OnCallMqlMethod);
 			this.HandlerConfiguration = handlerElement;
 			this.ExpertInfo = expertInfo;
 		}
 
-		internal static HandlerProvider GetOrCreate(ExpertInfo expertInfo, HostElement hostElement)
+		internal static HandlerProvider GetOrCreate(TradePlatform.MT4.Core.Utils.ExpertInfo expertInfo, HostElement hostElement)
 		{
 			Assembly assembly;
 			Type type;
@@ -118,7 +118,7 @@ namespace TradePlatform.MT4.Core.Internals
 							throw new HandlerLoadException(expertInfo, "Can't set input parameters for expert", exception6);
 						}
 						HandlerProvider handlerProvider = new HandlerProvider(mqlHandler, handlerElement, expertInfo);
-						HandlerProvider._storage.Add(expertInfo.Discriminator, handlerProvider);
+						HandlerProvider._storage.TryAdd(expertInfo.Discriminator, handlerProvider);
 						item = handlerProvider;
 					}
 					else

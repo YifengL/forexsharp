@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using TradePlatform.MT4.Core.Utils;
 
 namespace TradePlatform.MT4.Core

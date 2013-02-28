@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace TradePlatform.MT4.Core.Utils
 {
@@ -25,14 +26,15 @@ namespace TradePlatform.MT4.Core.Utils
 		public MethodCallInfo(string methodName, IEnumerable<string> parameters)
 		{
 			this.MethodName = methodName;
+            Parameters = new List<string>(parameters);
             //MethodCallInfo strs = this;
-			IEnumerable<string> strs1 = parameters;
-            IEnumerable<string> u00210s = strs1;
-			if (strs1 == null)
-			{
-				u00210s = (IEnumerable<string>)(new string[0]);
-			}
-			this.Parameters = new List<string>(u00210s);
+            //IEnumerable<string> strs1 = parameters;
+            //IEnumerable<u00210> u00210s = strs1;
+            //if (strs1 == null)
+            //{
+            //    u00210s = (IEnumerable<string>)(new string[0]);
+            //}
+            //strs.Parameters = new List<string>(u00210s);
 			this.ReturnValue = null;
 			this.ErrorMessage = null;
 		}
@@ -43,9 +45,7 @@ namespace TradePlatform.MT4.Core.Utils
 			List<string> parameters = this.Parameters;
 			string str1 = str;
 			str = parameters.Aggregate<string, string>(str1, (string current, string prm) => string.Concat(current, prm, ", "));
-			char[] chrArray = new char[2];
-			chrArray[0] = ',';
-			chrArray[1] = ' ';
+			char[] chrArray = new char[] { ',', ' ' };
 			str = str.TrimEnd(chrArray);
 			return string.Concat(str, ")");
 		}
