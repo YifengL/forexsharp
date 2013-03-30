@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{55C80730-D36C-4561-8664-0DD936F0E047}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FXSharp.EA.PinBar</RootNamespace>
+    <AssemblyName>FXSharp.EA.PinBar</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IOrderManager.cs" />
+    <Compile Include="IProfitProtector.cs" />
+    <Compile Include="MoneyManagement.cs" />
+    <Compile Include="StateManager\NoOrderCreatedManager.cs" />
+    <Compile Include="StateManager\OrderRunningManager.cs" />
+    <Compile Include="StateManager\PendingOrderCreatedManager.cs" />
+    <Compile Include="PinBarEA.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreeLevelProfitProtector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FXSharp.TradingPlatform.Exts\FXSharp.TradingPlatform.Exts.csproj">
+      <Project>{e33f0f2b-6fbd-4e1c-9981-510dd229c58e}</Project>
+      <Name>FXSharp.TradingPlatform.Exts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradePlatform.MT4\TradePlatform.MT4.Core\TradePlatform.MT4.Core.csproj">
+      <Project>{65aa3653-ce56-4029-a9ad-46d5caa45829}</Project>
+      <Name>TradePlatform.MT4.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradePlatform.MT4\TradePlatform.MT4.SDK\TradePlatform.MT4.SDK.API\TradePlatform.MT4.SDK.API.csproj">
+      <Project>{44136017-54ee-4868-9557-acb70b85bd7c}</Project>
+      <Name>TradePlatform.MT4.SDK.API</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

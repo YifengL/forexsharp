@@ -13,10 +13,11 @@ namespace FXSharp.EA.HappyDay
         private double range = 100;
         private bool isInitialize = false;
         private MoneyManagement _moneyManagement;
+
         protected override int Init()
         {
             _orderManagement = new NoOrderCreatedManager(this);
-            _moneyManagement = new MoneyManagement(2, this.Balance);
+            
             prevtime = Time[0];
             isInitialize = true;
             return (0);
@@ -25,6 +26,7 @@ namespace FXSharp.EA.HappyDay
         internal void CreatedMagicBoxFromPreviousCandle()
         {
             var slPoints = (High[1] - Low[1]) / Point + 2*range;
+            _moneyManagement = new MoneyManagement(2, this.Balance);
             var lotSize = _moneyManagement.CalculateLotSize(slPoints);
             var tpPoints = Math.Max(1000 * Point, 2 * slPoints * Point);
             //var tpPoints = 200 * Point;

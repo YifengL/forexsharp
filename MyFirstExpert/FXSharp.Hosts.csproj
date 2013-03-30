@@ -92,6 +92,10 @@
       <Project>{9808d624-79e6-455f-a601-f35c805d983c}</Project>
       <Name>FXSharp.EA.NewsBox</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FXSharp.EA.PinBar\FXSharp.EA.PinBar.csproj">
+      <Project>{55c80730-d36c-4561-8664-0dd936f0e047}</Project>
+      <Name>FXSharp.EA.PinBar</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FXSharp.TradingPlatform.Exts\FXSharp.TradingPlatform.Exts.csproj">
       <Project>{e33f0f2b-6fbd-4e1c-9981-510dd229c58e}</Project>
       <Name>FXSharp.TradingPlatform.Exts</Name>

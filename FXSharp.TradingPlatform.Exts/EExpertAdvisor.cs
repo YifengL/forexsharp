@@ -372,6 +372,11 @@ namespace FXSharp.TradingPlatform.Exts
             get { return new Opens(this); }
         }
 
+        public Closes Close
+        {
+            get { return new Closes(this); }
+        }
+
         public Times Time
         {
             get { return new Times(this); }

@@ -285,6 +285,28 @@ namespace FXSharp.TradingPlatform.Exts
 
             ModifyStopLoss(newSl);
         }
+
+        private bool IsKindOfBuyOrder
+        {
+            get
+            {
+                return OrderType == ORDER_TYPE.OP_BUY || OrderType == ORDER_TYPE.OP_BUYLIMIT ||
+                       OrderType == ORDER_TYPE.OP_BUYSTOP;
+            }
+        }
+
+        private double CurrentClosingPrice
+        {
+            get { return IsKindOfBuyOrder ? ea.BuyClosePriceFor(this.symbol) : ea.SellClosePriceFor(this.symbol); }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                return IsKindOfBuyOrder ? StopLoss < CurrentClosingPrice : StopLoss > CurrentClosingPrice;
+            }
+        }
     }
 }
 
