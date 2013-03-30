@@ -217,12 +217,12 @@ namespace FXSharp.TradingPlatform.Exts
             return ErrorHandler.CreateException(lastError);
         }
 
-        protected Order Buy(double size, double stopLoss = 0, double takeProfit = 0)
+        public Order Buy(double size, double stopLoss = 0, double takeProfit = 0)
         {
             return Buy(Symbol, size, stopLoss, takeProfit);
         }
 
-        protected Order Buy(string symbol, double size, double stopLoss = 0, double takeProfit = 0)
+        public Order Buy(string symbol, double size, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
 
@@ -244,12 +244,12 @@ namespace FXSharp.TradingPlatform.Exts
             return new Order(symbol, ticket, size, this);
         }
 
-        protected Order Sell(double size, double stopLoss = 0, double takeProfit = 0)
+        public Order Sell(double size, double stopLoss = 0, double takeProfit = 0)
         {
             return Sell(Symbol, size, stopLoss, takeProfit);
         }
 
-        protected Order Sell(string symbol, double size, double stopLoss = 0, double takeProfit = 0)
+        public Order Sell(string symbol, double size, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
 
@@ -279,7 +279,7 @@ namespace FXSharp.TradingPlatform.Exts
 
         public double SellClosePrice { get { return Ask; } }
 
-        protected Order PendingBuy(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
+        public Order PendingBuy(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
             if (stopLoss != 0 && stopLoss >= entry) throw new ApplicationException("Stop Loss for Buy have to less than entry price");
@@ -290,7 +290,7 @@ namespace FXSharp.TradingPlatform.Exts
 
             if (BuyOpenPriceFor(symbol) < entry)
             {
-                orderType = ORDER_TYPE.OP_SELLLIMIT;
+                orderType = ORDER_TYPE.OP_BUYSTOP;
             }
             else
             {
@@ -312,17 +312,17 @@ namespace FXSharp.TradingPlatform.Exts
             //return new Order(
         }
 
-        protected Order PendingBuy(double size, double entry, double stopLoss = 0, double takeProfit = 0)
+        public Order PendingBuy(double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             return PendingBuy(Symbol, entry, stopLoss, takeProfit);
         }
 
-        protected Order PendingSell(double size, double entry, double stopLoss = 0, double takeProfit = 0)
+        public Order PendingSell(double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             return PendingSell(Symbol, size, entry, stopLoss, takeProfit);
         }
 
-        protected Order PendingSell(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
+        public Order PendingSell(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
             if (stopLoss != 0 && stopLoss <= entry) throw new ApplicationException("Stop Loss for Sell have to more than entry price");
@@ -334,7 +334,7 @@ namespace FXSharp.TradingPlatform.Exts
             if (SellOpenPriceFor(symbol) < entry)
             {
                 // sell limit
-                orderType = ORDER_TYPE.OP_BUYSTOP;
+                orderType = ORDER_TYPE.OP_SELLLIMIT;
             }
             else
             {
@@ -357,9 +357,14 @@ namespace FXSharp.TradingPlatform.Exts
             //return new Order(
         }
 
-        public Closes Close
+        public Highs High
         {
-            get { return new Closes(this); }
+            get { return new Highs(this); }
+        }
+
+        public Lows Low
+        {
+            get { return new Lows(this); }
         }
 
         public Opens Open

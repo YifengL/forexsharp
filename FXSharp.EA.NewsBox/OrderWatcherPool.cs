@@ -29,5 +29,10 @@ namespace FXSharp.EA.NewsBox
             orderWatchers.Remove(watcher);
             watcher.OrderClosed -= watcher_OrderClosed;
         }
+
+        internal bool ContainsOrderForSymbol(string currencyPairs)
+        {
+            return orderWatchers.FirstOrDefault(x => x.Symbol == currencyPairs) != null;
+        }
     }
 }

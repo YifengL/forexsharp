@@ -1,85 +1,59 @@
-﻿using FXSharp.TradingPlatform.Exts;
-using System;
-
+﻿using System;
+using FXSharp.TradingPlatform.Exts;
+using TradePlatform.MT4.SDK.API;
 namespace FXSharp.EA.HappyDay
 {
     public class HappyDayEA : EExpertAdvisor
     {
+        private IOrderManager _orderManagement;
+        private const double LotSize = 1;
+        private Order _buyOrder = null;
+        private Order _sellOrder = null;
         private DateTime prevtime = default(DateTime);
-        private Order order = null;
-        private double stopLoss = 100;
-        private double takeProfit = 200;
-        private double lotSize = 1;
-        private ITrailingMethod trailingMethod;
-
+        private double range = 100;
+        private bool isInitialize = false;
+        private MoneyManagement _moneyManagement;
         protected override int Init()
         {
-            //stopLoss = ATR;
+            _orderManagement = new NoOrderCreatedManager(this);
+            _moneyManagement = new MoneyManagement(2, this.Balance);
             prevtime = Time[0];
+            isInitialize = true;
             return (0);
         }
 
-        private int deinit()
+        internal void CreatedMagicBoxFromPreviousCandle()
         {
-            return (0);
+            var slPoints = (High[1] - Low[1]) / Point + 2*range;
+            var lotSize = _moneyManagement.CalculateLotSize(slPoints);
+            var tpPoints = Math.Max(1000 * Point, 2 * slPoints * Point);
+            //var tpPoints = 200 * Point;
+            // risk reward ratio = 2 * slPoints
+
+            _buyOrder = PendingBuy(Symbol, lotSize, High[1] + range * Point, Low[1] - range * Point, High[1] + tpPoints);
+
+            _sellOrder = PendingSell(Symbol, lotSize, Low[1] - range * Point, High[1] + range * Point, Low[1] - tpPoints);
+
+            this.ObjectsDeleteAll();
         }
 
         protected override int Start()
         {
+            if (!isInitialize)
+            {
+                Init();
+            }
+
             if (IsNewBar())
             {
-                Print("Hei theres a new bar");
-
-                if (IsThereOpenOrder())
-                {
-                    CloseOpenOrder();
-                }
-
-                if (IsPreviouslyBulishCandle())
-                {
-                    //order = Buy(0.1, BuyClosePrice - stopLoss, BuyClosePrice + 2 * stopLoss);
-                    //order = Buy(0.1, BuyClosePrice - (stopLoss * Point), BuyClosePrice + (4 * stopLoss * Point));
-                    double buyStopPrice = BuyOpenPrice + 50 * Point;
-                    double buyStopClosePrice = BuyClosePrice + 50 * Point;
-                    //order = PendingBuy(0.1, buyStopPrice, buyStopClosePrice - (stopLoss * Point), buyStopClosePrice + (4 * stopLoss * Point));
-                    order = PendingBuy(lotSize, buyStopPrice, buyStopClosePrice - (stopLoss * Point), buyStopClosePrice + (takeProfit * Point));
-                    trailingMethod = new BuyTrailingMethod(order, this);
-                    Print("Buy");
-                }
-                else
-                {
-                    //order = Sell(0.1, SellClosePrice + stopLoss, SellClosePrice - 2 * stopLoss);
-                    //order = Sell(0.1, SellClosePrice + (stopLoss * Point), SellClosePrice - (4 * stopLoss * Point));
-                    double sellStopPrice = SellOpenPrice - 50 * Point;
-                    double sellStopClosePrice = SellClosePrice - 50 * Point;
-                    order = PendingSell(lotSize, sellStopPrice, sellStopClosePrice + (stopLoss * Point), sellStopClosePrice - (takeProfit * Point));
-                    //order = PendingSell(0.1, sellStopPrice, sellStopClosePrice + (stopLoss * Point), sellStopClosePrice - (4 * stopLoss * Point));
-                    trailingMethod = new SellTrailingMethod(order, this);
-                    Print("Sell");
-                }
+                _orderManagement.OnNewBar();
             }
             else
             {
-                //if (IsThereOpenOrder())
-                //{
-                //    trailingMethod.Trail();
-                //}
-
-                if (IsThereRunningOrder())
-                {
-                    trailingMethod.Trail();
-                }
-
-                Print("Wait pal");
+                _orderManagement.OnTick();
             }
             return (0);
         }
-
-        private bool IsThereRunningOrder()
-        {
-            return IsThereOpenOrder() && order.IsRunning;
-        }
-
 
         private bool IsNewBar()
         {
@@ -92,33 +66,24 @@ namespace FXSharp.EA.HappyDay
             return (false);
         }
 
-        private void CloseOpenOrder()
-        {
-            order.Close();
-            order = null;
-        }
-
-        private bool IsThereOpenOrder()
-        {
-            if (order == null) return false;
-            
-            if (!order.IsOpen)
-            {
-                order = null;
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool IsPreviouslyBulishCandle()
-        {
-            return (Close[1] >= Open[1]);
-        }
-
         protected override int DeInit()
         {
             return 0;
+        }
+
+        internal void ChangeStateToBoxAlreadyCreated()
+        {
+            _orderManagement = new BoxAlreadyCreatedManager(_buyOrder, _sellOrder, this);
+        }
+
+        internal void ChangeStateToOrderRunning(Order order)
+        {
+            _orderManagement = new OrderRunningManager(order, this);
+        }
+
+        internal void OrderCompleted()
+        {
+            _orderManagement = new NoOrderCreatedManager(this);
         }
     }
 }

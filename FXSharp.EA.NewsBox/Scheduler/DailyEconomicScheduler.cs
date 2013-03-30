@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using System;
+using Quartz;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace FXSharp.EA.NewsBox
 
             foreach (var order in magicBoxes)
             {
+                Console.WriteLine("Scheduled : {0} @ {1}", order.Symbol, order.ExecutingTime);
                 scheduler.Schedule(order);
             }
         }

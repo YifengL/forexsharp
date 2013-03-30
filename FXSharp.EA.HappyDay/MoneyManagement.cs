@@ -1,6 +1,6 @@
 ﻿
 using System;
-namespace FXSharp.EA.NewsBox
+namespace FXSharp.EA.HappyDay
 {
     // should be careful about margin level and margin call
     public class MoneyManagement

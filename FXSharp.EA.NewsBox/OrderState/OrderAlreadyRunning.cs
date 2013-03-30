@@ -18,10 +18,6 @@ namespace FXSharp.EA.NewsBox
 
         public void Manage()
         {
-            // should trail and lock profit
-
-            // should create timer for expired
-
             if (cancel)
             {
                 order.Close();

@@ -57,8 +57,8 @@ namespace FXSharp.EA.FirstTest
                         Console.WriteLine("No Open Order");
                         order = Buy(1);
 
-                        order.ChangeStopLossInPoints(100);
-                        order.ChangeTakeProfitInPoints(20);
+                        //order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(40);
                     }
                     else
                     {
@@ -67,8 +67,8 @@ namespace FXSharp.EA.FirstTest
                         order.Close();
 
                         order = Buy(1);
-                        order.ChangeStopLossInPoints(100);
-                        order.ChangeTakeProfitInPoints(20);
+                        //order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(40);
                     }
                 }
                 else if (Math.Abs(beat.LastDelta) >= threshold)
@@ -77,8 +77,8 @@ namespace FXSharp.EA.FirstTest
                     {
                         Console.WriteLine("No Open Order");
                         order = Sell(1);
-                        order.ChangeStopLossInPoints(100);
-                        order.ChangeTakeProfitInPoints(20);
+                        //order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(40);
                     }
                     else
                     {
@@ -86,8 +86,8 @@ namespace FXSharp.EA.FirstTest
 
                         order.Close();
                         order = Sell(1);
-                        order.ChangeStopLossInPoints(100);
-                        order.ChangeTakeProfitInPoints(20);
+                        //order.ChangeStopLossInPoints(100);
+                        order.ChangeTakeProfitInPoints(40);
                     }
                 }
 

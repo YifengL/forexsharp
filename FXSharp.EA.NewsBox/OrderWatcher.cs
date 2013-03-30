@@ -11,10 +11,13 @@ namespace FXSharp.EA.NewsBox
         private double expiredTime;
         private MagicBoxConfig mbConfig;
 
+        public string Symbol { get; set; }
+
         public OrderWatcher(Order buyOrder, Order sellOrder, double expiredTime, MagicBoxConfig config)
         {
             mbConfig = config;
             AddOneCancelAnother(buyOrder, sellOrder);
+            Symbol = buyOrder.Symbol;
             
             this.expiredTime = expiredTime;
 

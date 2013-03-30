@@ -39,11 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuyTrailingMethod.cs" />
+    <Compile Include="MoneyManagement.cs" />
+    <Compile Include="StateManager\BoxAlreadyCreatedManager.cs" />
+    <Compile Include="IProfitProtector.cs" />
+    <Compile Include="Trailing\ThreeLevelProfitProtector.cs" />
+    <Compile Include="Trailing\BuyTrailingMethod.cs" />
     <Compile Include="HappyDayEA.cs" />
+    <Compile Include="IOrderManager.cs" />
     <Compile Include="ITrailingMethod.cs" />
+    <Compile Include="StateManager\NoOrderCreatedManager.cs" />
+    <Compile Include="StateManager\OrderRunningManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SellTrailingMethod.cs" />
+    <Compile Include="Trailing\SellTrailingMethod.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FXSharp.TradingPlatform.Exts\FXSharp.TradingPlatform.Exts.csproj">
@@ -53,6 +60,10 @@
     <ProjectReference Include="..\TradePlatform.MT4\TradePlatform.MT4.Core\TradePlatform.MT4.Core.csproj">
       <Project>{65aa3653-ce56-4029-a9ad-46d5caa45829}</Project>
       <Name>TradePlatform.MT4.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradePlatform.MT4\TradePlatform.MT4.SDK\TradePlatform.MT4.SDK.API\TradePlatform.MT4.SDK.API.csproj">
+      <Project>{44136017-54ee-4868-9557-acb70b85bd7c}</Project>
+      <Name>TradePlatform.MT4.SDK.API</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

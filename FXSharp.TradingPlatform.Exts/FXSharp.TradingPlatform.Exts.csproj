@@ -60,6 +60,8 @@
     <Compile Include="CheckupFunctions.cs" />
     <Compile Include="EExpertAdvisor.cs" />
     <Compile Include="ErrorHandler.cs" />
+    <Compile Include="PredefinedVariable\Highs.cs" />
+    <Compile Include="PredefinedVariable\Lows.cs" />
     <Compile Include="MQLError.cs" />
     <Compile Include="MQLException.cs" />
     <Compile Include="Order.cs" />

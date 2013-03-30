@@ -14,7 +14,7 @@ namespace FXSharp.EA.NewsBox
             MinuteExpiracy = 30, // 20 - 30 minutes
             Range = 200, // 20-25  minutes
             StopLoss = 200,
-            TakeProfit = 300
+            TakeProfit = 500
         };
         
         MagicBoxConfig commonCfg = new MagicBoxConfig
@@ -23,7 +23,7 @@ namespace FXSharp.EA.NewsBox
             MinuteExpiracy = 10, 
             Range = 100, // 5-10 pips 
             StopLoss = 150,
-            TakeProfit = 100
+            TakeProfit = 300
         };
 
         public IList<MagicBoxOrder> CreateOrdersFromEvents(IEnumerable<EconomicEvent> events)

@@ -60,6 +60,7 @@
     <Compile Include="Constants\POOL_MODES.cs" />
     <Compile Include="Constants\SELECT_BY.cs" />
     <Compile Include="Constants\MARKER_INFO_MODE.cs" />
+    <Compile Include="ObjectsFunction.cs" />
     <Compile Include="WindowFunctions.cs" />
     <Compile Include="PredefinedVariables.cs" />
     <Compile Include="TechnicalIndicators.cs" />

@@ -27,7 +27,7 @@ namespace FXSharp.TradingPlatform.Exts
         {
             while (IsOpen)
             {
-                CloseInternal();    
+                CloseInternal();
             }
         }
 
@@ -37,6 +37,8 @@ namespace FXSharp.TradingPlatform.Exts
 
             if (ea.OrderSelect(ticket, SELECT_BY.SELECT_BY_TICKET) && ea.OrderCloseTime() != NULL_TIME)
                 return;
+
+            //ea.Print("try to close");
 
             var orderType = ea.OrderType();
             // should refactor to hierarcy
@@ -52,6 +54,7 @@ namespace FXSharp.TradingPlatform.Exts
             else
             {
                 success = ea.OrderDelete(ticket);
+                ea.Print("delete ticket " + success);
             }
 
             if (!success)
@@ -157,7 +160,13 @@ namespace FXSharp.TradingPlatform.Exts
 
         public bool IsOpen
         {
-            get { return CloseTime == NULL_TIME; }
+            get
+            {
+                //ea.Print("Time : " + CloseTime);
+                //ea.Print("Null Time : " + NULL_TIME);
+
+                return CloseTime == NULL_TIME;
+            }
         }
 
         public bool IsRunning
@@ -182,11 +191,11 @@ namespace FXSharp.TradingPlatform.Exts
 
                 if (orderType == ORDER_TYPE.OP_BUY)
                 {
-                    return ea.BuyClosePriceFor(this.symbol) - OpenPrice;
+                    return (ea.BuyClosePriceFor(this.symbol) - OpenPrice) / ea.PointFor(this.symbol);
                 }
                 else if (orderType == ORDER_TYPE.OP_SELL)
                 {
-                    return OpenPrice - ea.SellClosePriceFor(this.symbol);
+                    return (OpenPrice - ea.SellClosePriceFor(this.symbol)) / ea.PointFor(this.symbol);
                 }
                 else
                 {
@@ -257,6 +266,24 @@ namespace FXSharp.TradingPlatform.Exts
         public double Spread
         {
             get { return ea.AskFor(Symbol) - ea.BidFor(Symbol); }
+        }
+
+        public void ProtectProfit(double pointsValue)
+        {
+            var orderType = OrderType;
+
+            var newSl = 0.0;
+
+            if (orderType == ORDER_TYPE.OP_BUY)
+            {
+                newSl = OpenPrice + (pointsValue * Points) + Spread;
+            }
+            else if (orderType == ORDER_TYPE.OP_SELL)
+            {
+                newSl = OpenPrice - (pointsValue * Points) - Spread;
+            }
+
+            ModifyStopLoss(newSl);
         }
     }
 }
