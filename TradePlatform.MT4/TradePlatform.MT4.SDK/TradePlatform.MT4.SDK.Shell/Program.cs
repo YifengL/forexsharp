@@ -1,19 +1,16 @@
-﻿namespace TradePlatform.MT4.SDK.Shell
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
+using TradePlatform.MT4.Core;
+
+namespace TradePlatform.MT4.SDK.Shell
 {
-    using System;
-    using System.Data.Services;
-    using System.Diagnostics;
-    using System.Reflection;
-    using System.ServiceModel;
-    using System.ServiceModel.Activation;
-    using System.ServiceModel.Web;
-    using TradePlatform.MT4.Core;
     //using TradePlatform.MT4.Data;
 
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -38,13 +35,13 @@
             Console.BufferHeight = Int16.MaxValue - 1;
         }
 
-        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (!Debugger.IsAttached)
             {
                 Console.BackgroundColor = ConsoleColor.Red;
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(((Exception)e.ExceptionObject).Message);
+                Console.WriteLine(((Exception) e.ExceptionObject).Message);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.WriteLine("Press any key to exit");

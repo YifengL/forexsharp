@@ -4,19 +4,16 @@ namespace FXSharp.TradingPlatform.Exts
 {
     public class Opens
     {
-        private EExpertAdvisor ea;
+        private readonly EExpertAdvisor ea;
 
         public Opens(EExpertAdvisor ea)
         {
-            this.ea = ea;    
+            this.ea = ea;
         }
 
         public double this[int i]
         {
-            get
-            {
-                return ea.Open(i);
-            }
+            get { return ea.Open(i); }
         }
     }
 }

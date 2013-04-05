@@ -1,16 +1,16 @@
-﻿namespace TradePlatform.MT4.SDK.API
-{
-    using System;
-    using TradePlatform.MT4.Core;
-    using TradePlatform.MT4.Core.Utils;
+﻿using System;
+using TradePlatform.MT4.Core;
+using TradePlatform.MT4.Core.Utils;
 
+namespace TradePlatform.MT4.SDK.API
+{
     /// <summary>
-    /// For each executable MQL4 program, a number of predefined variables is supported that reflect the state of the current price chart at the launching of a program: an expert, a script, or a custom indicator.
+    ///     For each executable MQL4 program, a number of predefined variables is supported that reflect the state of the current price chart at the launching of a program: an expert, a script, or a custom indicator.
     /// </summary>
     public static class PredefinedVariables
     {
         /// <summary>
-        /// The latest known seller's price (ask price) for the current symbol. The RefreshRates() function must be used to update.
+        ///     The latest known seller's price (ask price) for the current symbol. The RefreshRates() function must be used to update.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// Number of bars in the current chart.
+        ///     Number of bars in the current chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -34,7 +34,7 @@
         }
 
         /// <summary>
-        /// The latest known buyer's price (offer price, bid price) of the current symbol. The RefreshRates() function must be used to update.
+        ///     The latest known buyer's price (offer price, bid price) of the current symbol. The RefreshRates() function must be used to update.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -46,7 +46,7 @@
         }
 
         /// <summary>
-        /// Series array that contains close prices for each bar of the current chart.
+        ///     Series array that contains close prices for each bar of the current chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="i"></param>
@@ -59,7 +59,7 @@
         }
 
         /// <summary>
-        /// Number of digits after decimal point for the current symbol prices.
+        ///     Number of digits after decimal point for the current symbol prices.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -71,7 +71,7 @@
         }
 
         /// <summary>
-        /// Series array that contains the highest prices of each bar of the current chart.
+        ///     Series array that contains the highest prices of each bar of the current chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="i"></param>
@@ -84,7 +84,7 @@
         }
 
         /// <summary>
-        /// Series array that contains the lowest prices of each bar of the current chart.
+        ///     Series array that contains the lowest prices of each bar of the current chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="i"></param>
@@ -97,7 +97,7 @@
         }
 
         /// <summary>
-        /// Series array that contains open prices of each bar of the current chart.
+        ///     Series array that contains open prices of each bar of the current chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="i"></param>
@@ -110,7 +110,7 @@
         }
 
         /// <summary>
-        /// The current symbol point value in the quote currency.
+        ///     The current symbol point value in the quote currency.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -122,7 +122,7 @@
         }
 
         /// <summary>
-        /// Series array that contains open time of each bar of the current chart. Data like datetime represent time, in seconds, that has passed since 00:00 a.m. of 1 January, 1970.
+        ///     Series array that contains open time of each bar of the current chart. Data like datetime represent time, in seconds, that has passed since 00:00 a.m. of 1 January, 1970.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="i"></param>
@@ -135,7 +135,7 @@
         }
 
         /// <summary>
-        /// Series array that contains tick volumes of each bar of the current chart.
+        ///     Series array that contains tick volumes of each bar of the current chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>

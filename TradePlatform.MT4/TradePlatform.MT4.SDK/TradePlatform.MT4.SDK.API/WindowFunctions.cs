@@ -1,16 +1,16 @@
-﻿namespace TradePlatform.MT4.SDK.API
-{
-    using System;
-    using TradePlatform.MT4.Core;
-    using TradePlatform.MT4.Core.Utils;
+﻿using System;
+using TradePlatform.MT4.Core;
+using TradePlatform.MT4.Core.Utils;
 
+namespace TradePlatform.MT4.SDK.API
+{
     /// <summary>
-    /// A group of functions intended for working with the current chart window. 
+    ///     A group of functions intended for working with the current chart window.
     /// </summary>
     public static class WindowFunctions
     {
         /// <summary>
-        /// The function sets a flag hiding indicators called by the Expert Advisor. 
+        ///     The function sets a flag hiding indicators called by the Expert Advisor.
         /// </summary>
         /// <param name="handler"> </param>
         /// <param name="hide"></param>
@@ -20,7 +20,7 @@
         }
 
         /// <summary>
-        /// Returns the amount of minutes determining the used period (chart timeframe). 
+        ///     Returns the amount of minutes determining the used period (chart timeframe).
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -32,7 +32,7 @@
         }
 
         /// <summary>
-        /// Refreshing of data in pre-defined variables and series arrays. 
+        ///     Refreshing of data in pre-defined variables and series arrays.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -44,7 +44,7 @@
         }
 
         /// <summary>
-        /// Returns a text string with the name of the current financial instrument. 
+        ///     Returns a text string with the name of the current financial instrument.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -56,7 +56,7 @@
         }
 
         /// <summary>
-        /// Function returns the amount of bars visible on the chart. 
+        ///     Function returns the amount of bars visible on the chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -68,7 +68,7 @@
         }
 
         /// <summary>
-        /// Returns name of the executed expert, script, custom indicator, or library, depending on the MQL4 program, from which this function has been called. 
+        ///     Returns name of the executed expert, script, custom indicator, or library, depending on the MQL4 program, from which this function has been called.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -80,7 +80,7 @@
         }
 
         /// <summary>
-        /// If indicator with name was found, the function returns the window index containing this specified indicator, otherwise it returns -1.
+        ///     If indicator with name was found, the function returns the window index containing this specified indicator, otherwise it returns -1.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="name"></param>
@@ -93,7 +93,7 @@
         }
 
         /// <summary>
-        /// The function returns the first visible bar number in the current chart window.
+        ///     The function returns the first visible bar number in the current chart window.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -105,7 +105,7 @@
         }
 
         /// <summary>
-        /// Returns the system window handler containing the given chart.
+        ///     Returns the system window handler containing the given chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="symbol"></param>
@@ -113,13 +113,13 @@
         /// <returns></returns>
         public static int WindowHandle(this MqlHandler handler, string symbol, TIME_FRAME timeframe)
         {
-            string retrunValue = handler.CallMqlMethod("WindowHandle", symbol, ((int)timeframe));
+            string retrunValue = handler.CallMqlMethod("WindowHandle", symbol, ((int) timeframe));
 
             return Convertor.ToInt(retrunValue);
         }
 
         /// <summary>
-        /// Returns TRUE if the chart subwindow is visible, otherwise returns FALSE.
+        ///     Returns TRUE if the chart subwindow is visible, otherwise returns FALSE.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="index"></param>
@@ -132,7 +132,7 @@
         }
 
         /// <summary>
-        /// Returns window index where expert, custom indicator or script was dropped. 
+        ///     Returns window index where expert, custom indicator or script was dropped.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -144,7 +144,7 @@
         }
 
         /// <summary>
-        /// Returns maximal value of the vertical scale of the specified subwindow of the current chart (0-main chart window, the indicators' subwindows are numbered starting from 1). 
+        ///     Returns maximal value of the vertical scale of the specified subwindow of the current chart (0-main chart window, the indicators' subwindows are numbered starting from 1).
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="index"></param>
@@ -157,7 +157,7 @@
         }
 
         /// <summary>
-        /// Returns minimal value of the vertical scale of the specified subwindow of the current chart (0-main chart window, the indicators' subwindows are numbered starting from 1).
+        ///     Returns minimal value of the vertical scale of the specified subwindow of the current chart (0-main chart window, the indicators' subwindows are numbered starting from 1).
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="index"></param>
@@ -170,7 +170,7 @@
         }
 
         /// <summary>
-        /// Returns the price part of the chart point where expert or script was dropped.
+        ///     Returns the price part of the chart point where expert or script was dropped.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -182,7 +182,7 @@
         }
 
         /// <summary>
-        /// Redraws the current chart forcedly. It is normally used after the objects properties have been changed. 
+        ///     Redraws the current chart forcedly. It is normally used after the objects properties have been changed.
         /// </summary>
         /// <param name="handler"></param>
         public static void WindowRedraw(this MqlHandler handler)
@@ -191,7 +191,7 @@
         }
 
         /// <summary>
-        /// Saves current chart screen shot as a GIF file. Returns FALSE if it fails. 
+        ///     Saves current chart screen shot as a GIF file. Returns FALSE if it fails.
         /// </summary>
         /// <param name="handler"></param>
         /// <param name="filename"></param>
@@ -201,15 +201,17 @@
         /// <param name="chart_scale"></param>
         /// <param name="chart_mode"></param>
         /// <returns></returns>
-        public static bool WindowScreenShot(this MqlHandler handler, string filename, int size_x, int size_y, int start_bar = -1, int chart_scale = -1, int chart_mode = -1)
+        public static bool WindowScreenShot(this MqlHandler handler, string filename, int size_x, int size_y,
+                                            int start_bar = -1, int chart_scale = -1, int chart_mode = -1)
         {
-            string retrunValue = handler.CallMqlMethod("WindowScreenShot", filename, size_x, size_y, start_bar, chart_scale, chart_mode);
+            string retrunValue = handler.CallMqlMethod("WindowScreenShot", filename, size_x, size_y, start_bar,
+                                                       chart_scale, chart_mode);
 
             return Convertor.ToBoolean(retrunValue);
         }
 
         /// <summary>
-        /// Returns the time part of the chart point where expert or script was dropped.
+        ///     Returns the time part of the chart point where expert or script was dropped.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -221,7 +223,7 @@
         }
 
         /// <summary>
-        /// Returns count of indicator windows on the chart (including main chart). 
+        ///     Returns count of indicator windows on the chart (including main chart).
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -233,7 +235,7 @@
         }
 
         /// <summary>
-        /// Returns the value at X axis in pixels for the chart window client area point at which the expert or script was dropped. 
+        ///     Returns the value at X axis in pixels for the chart window client area point at which the expert or script was dropped.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
@@ -245,7 +247,7 @@
         }
 
         /// <summary>
-        /// Returns the value at Y axis in pixels for the chart window client area point at which the expert or script was dropped. 
+        ///     Returns the value at Y axis in pixels for the chart window client area point at which the expert or script was dropped.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>

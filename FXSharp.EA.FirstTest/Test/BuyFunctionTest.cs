@@ -1,17 +1,17 @@
-﻿using TradePlatform.MT4.SDK.API;
-using System;
-using FXSharp.TradingPlatform.Exts;
+﻿using FXSharp.TradingPlatform.Exts;
+
 //using TradePlatform.MT4.Data;
+
 namespace FXSharp.EA.FirstTest
-{   
+{
     public class BuyFunctionTest : EExpertAdvisor
     {
-        Order order = null;
-        int tickCount = 0;
+        private Order order;
+        private int tickCount;
 
         protected override int Init()
         {
-            order = Buy(0.1, Bid - 100 * Point, Bid + 500 * Point);
+            order = Buy(0.1, Bid - 100*Point, Bid + 500*Point);
 
             return 1;
         }
@@ -29,7 +29,7 @@ namespace FXSharp.EA.FirstTest
 
             if (order == null)
             {
-                order = Buy(0.1, Bid - 100 * Point, Bid + 500 * Point);
+                order = Buy(0.1, Bid - 100*Point, Bid + 500*Point);
             }
             else
             {
@@ -38,7 +38,7 @@ namespace FXSharp.EA.FirstTest
             }
 
             tickCount = 0;
-            
+
             return 1;
         }
     }

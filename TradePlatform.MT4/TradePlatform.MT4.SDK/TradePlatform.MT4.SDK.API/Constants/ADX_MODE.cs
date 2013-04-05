@@ -1,6 +1,6 @@
 namespace TradePlatform.MT4.SDK.API
 {
-    public enum ADX_MODE : int
+    public enum ADX_MODE
     {
         MODE_MAIN = 0,
         MODE_PLUSDI = 1,

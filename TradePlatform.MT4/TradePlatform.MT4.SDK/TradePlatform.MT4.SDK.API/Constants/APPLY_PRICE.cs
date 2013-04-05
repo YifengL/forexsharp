@@ -1,6 +1,6 @@
 namespace TradePlatform.MT4.SDK.API
 {
-    public enum APPLY_PRICE : int
+    public enum APPLY_PRICE
     {
         PRICE_CLOSE = 0,
         PRICE_OPEN = 1,

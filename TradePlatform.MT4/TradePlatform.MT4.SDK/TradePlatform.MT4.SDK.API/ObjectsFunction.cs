@@ -9,7 +9,7 @@ namespace TradePlatform.MT4.SDK.API
     public static class ObjectsFunction
     {
         /// <summary>
-        ///     Removes all objects of the specified type and in the specified sub-window of the chart. 
+        ///     Removes all objects of the specified type and in the specified sub-window of the chart.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>

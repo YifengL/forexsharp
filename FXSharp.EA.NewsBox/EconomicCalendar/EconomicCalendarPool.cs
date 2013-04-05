@@ -6,7 +6,7 @@ namespace FXSharp.EA.NewsBox
 {
     public class EconomicCalendarPool
     {
-        IList<IEconomicCalendar> calendars = new List<IEconomicCalendar>();
+        private readonly IList<IEconomicCalendar> calendars = new List<IEconomicCalendar>();
 
         public void Add(IEconomicCalendar calendar)
         {
@@ -15,10 +15,10 @@ namespace FXSharp.EA.NewsBox
 
         public async Task<IList<EconomicEvent>> AllResultsAsync()
         {
-            var tasks = from cal in calendars
-                         select cal.GetTodaysNextCriticalEventsAsync();
+            IEnumerable<Task<IList<EconomicEvent>>> tasks = from cal in calendars
+                                                            select cal.GetTodaysNextCriticalEventsAsync();
 
-            var result = await Task.WhenAll(tasks);
+            IList<EconomicEvent>[] result = await Task.WhenAll(tasks);
 
             return MergeResult(result).ToList();
         }
@@ -27,7 +27,7 @@ namespace FXSharp.EA.NewsBox
         {
             IEnumerable<EconomicEvent> allEvents = new List<EconomicEvent>();
 
-            foreach (IList<EconomicEvent> rs in results)
+            foreach (var rs in results)
             {
                 allEvents = allEvents.Concat(rs);
             }

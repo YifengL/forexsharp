@@ -1,8 +1,9 @@
-﻿namespace TradePlatform.MT4.SDK.Library.Handlers
-{
-    using System.Collections.Generic;
-    using TradePlatform.MT4.Core;
+﻿using System;
+using System.Collections.Generic;
+using TradePlatform.MT4.Core;
 
+namespace TradePlatform.MT4.SDK.Library.Handlers
+{
     public abstract class PerformanceCounterBase : MqlHandler
     {
         protected abstract void Begin();
@@ -13,13 +14,13 @@
             switch (methodName)
             {
                 case "Begin":
-                    this.Begin();
+                    Begin();
                     return "";
                 case "End":
-                    this.End();
+                    End();
                     return "";
                 default:
-                    throw new System.Exception("No method found");
+                    throw new Exception("No method found");
             }
         }
     }

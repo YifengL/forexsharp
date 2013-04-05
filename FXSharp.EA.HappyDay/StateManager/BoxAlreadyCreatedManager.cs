@@ -15,24 +15,17 @@ namespace FXSharp.EA.HappyDay
             _ea = happyDayEA;
         }
 
-        public void OnNewBar()
-        {
-            DeletePreviousMagicBox();
-            _ea.CreatedMagicBoxFromPreviousCandle();
-            _ea.ChangeStateToBoxAlreadyCreated();
-        }
-
         public void OnTick()
         {
             if (_buyOrder.IsRunning)
             {
-                _sellOrder.Close();
-                _ea.ChangeStateToOrderRunning(_buyOrder);
+                //_sellOrder.Close();
+                _ea.ChangeStateToOrderRunning(_buyOrder, _sellOrder);
             }
             else if (_sellOrder.IsRunning)
             {
-                _buyOrder.Close();
-                _ea.ChangeStateToOrderRunning(_sellOrder);
+                //_buyOrder.Close();
+                _ea.ChangeStateToOrderRunning(_sellOrder, _buyOrder);
             }
         }
 
@@ -41,6 +34,20 @@ namespace FXSharp.EA.HappyDay
             _ea.Print("Delete previous magic box");
             _buyOrder.Close();
             _sellOrder.Close();
+        }
+
+
+        public void OnLondonOpen()
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        public void OnNewYorkClose()
+        {
+            DeletePreviousMagicBox();
+            _ea.OrderCompleted();
+            //_ea.CreatedMagicBoxFromPreviousCandle();
+            //_ea.ChangeStateToBoxAlreadyCreated();
         }
     }
 }

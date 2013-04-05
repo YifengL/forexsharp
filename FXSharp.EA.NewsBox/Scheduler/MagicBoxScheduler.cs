@@ -1,12 +1,13 @@
-﻿using Quartz;
+﻿using System;
 using System.Collections.Concurrent;
+using Quartz;
 
 namespace FXSharp.EA.NewsBox
 {
-    class MagicBoxScheduler
+    internal class MagicBoxScheduler
     {
-        private IScheduler scheduler;
-        private ConcurrentQueue<MagicBoxOrder> orderQueue;
+        private readonly ConcurrentQueue<MagicBoxOrder> orderQueue;
+        private readonly IScheduler scheduler;
 
         public MagicBoxScheduler(IScheduler scheduler, ConcurrentQueue<MagicBoxOrder> orderQueue)
         {
@@ -16,16 +17,17 @@ namespace FXSharp.EA.NewsBox
 
         public void Schedule(MagicBoxOrder magicBox)
         {
-            var nexttime = magicBox.ExecutingTime;
+            DateTime nexttime = magicBox.ExecutingTime;
 
-            var jobDetail = JobBuilder.Create<MagicBoxOrderJob>()
-                .WithIdentity(magicBox.Id, "group1")
-                .Build();
+            IJobDetail jobDetail = JobBuilder.Create<MagicBoxOrderJob>()
+                                             .WithIdentity(magicBox.Id, "group1")
+                                             .Build();
 
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity(magicBox.Id, "group1")
-                .StartAt(DateBuilder.TodayAt(nexttime.Hour, nexttime.Minute, nexttime.Second))
-                .Build();
+            ITrigger trigger = TriggerBuilder.Create()
+                                             .WithIdentity(magicBox.Id, "group1")
+                                             .StartAt(DateBuilder.TodayAt(nexttime.Hour, nexttime.Minute,
+                                                                          nexttime.Second))
+                                             .Build();
 
             // should group this together in one command. just execute when arrived there
 
@@ -34,6 +36,5 @@ namespace FXSharp.EA.NewsBox
 
             scheduler.ScheduleJob(jobDetail, trigger);
         }
-
     }
 }

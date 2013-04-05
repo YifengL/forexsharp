@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FXSharp.EA.OrderManagements;
+using NUnit.Framework;
 
 namespace FXSharp.EA.NewsBox.Specs
 {

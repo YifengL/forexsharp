@@ -4,18 +4,18 @@ namespace FXSharp.EA.NewsBox
 {
     public class MagicBoxCreated : IOrderState
     {
-        private Order buyOrder;
-        private Order sellOrder;
-        private OrderWatcher orderManager;
-        private bool cancel = false;
-        private MagicBoxConfig mbConfig;
+        private readonly Order buyOrder;
+        private readonly MagicBoxConfig mbConfig;
+        private readonly OrderWatcher orderManager;
+        private readonly Order sellOrder;
+        private bool cancel;
 
         public MagicBoxCreated(OrderWatcher orderManager, Order buyOrder, Order sellOrder, MagicBoxConfig config)
         {
             this.orderManager = orderManager;
             this.buyOrder = buyOrder;
             this.sellOrder = sellOrder;
-            this.mbConfig = config;
+            mbConfig = config;
         }
 
         public void Manage()
@@ -28,20 +28,20 @@ namespace FXSharp.EA.NewsBox
                 buyOrder.ChangeTakeProfitInPoints(mbConfig.TakeProfit);
                 buyOrder.ChangeStopLossInPoints(mbConfig.StopLoss);
                 sellOrder.Close();
-                orderManager.OrderRunning(buyOrder, new BuyTrailingMethod(new OrderTrailingInfo(buyOrder)));
+                orderManager.OrderRunning(buyOrder, new TrailingMethod(buyOrder));
             }
             else if (sellOrder.IsRunning)
             {
                 sellOrder.ChangeTakeProfitInPoints(mbConfig.TakeProfit);
                 sellOrder.ChangeStopLossInPoints(mbConfig.StopLoss);
                 buyOrder.Close();
-                orderManager.OrderRunning(sellOrder, new SellTrailingMethod(new OrderTrailingInfo(sellOrder)));
+                orderManager.OrderRunning(sellOrder,  new TrailingMethod(sellOrder));
             }
             else if (cancel)
             {
                 buyOrder.Close();
                 sellOrder.Close();
-                orderManager.MagicBoxCompleted(); 
+                orderManager.MagicBoxCompleted();
                 // should describe event better, so we can publish it to different endpoint
             }
         }

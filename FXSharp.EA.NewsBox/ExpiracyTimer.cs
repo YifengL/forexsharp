@@ -3,29 +3,22 @@ using System.Timers;
 
 namespace FXSharp.EA.NewsBox
 {
-    class ExpiracyTimer
+    internal class ExpiracyTimer
     {
-        private Timer timers = new Timer();
-        public event EventHandler Expired;
+        private readonly Timer timers = new Timer();
 
         public ExpiracyTimer(double expiredTime)
         {
-            this.timers = new Timer();
-            this.timers.AutoReset = false;
-            this.timers.Interval = expiredTime * MINUTE;
-            this.timers.Elapsed += timers_Elapsed;
-            this.timers.Start();
-        }
-
-        void timers_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (Expired == null) return;
-            Expired(this, EventArgs.Empty);
+            timers = new Timer();
+            timers.AutoReset = false;
+            timers.Interval = expiredTime*MINUTE;
+            timers.Elapsed += timers_Elapsed;
+            timers.Start();
         }
 
         private int MINUTE
         {
-            get { return 60 * SECONDS; }
+            get { return 60*SECONDS; }
         }
 
         private int SECONDS
@@ -33,10 +26,18 @@ namespace FXSharp.EA.NewsBox
             get { return 1000; }
         }
 
+        public event EventHandler Expired;
+
+        private void timers_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (Expired == null) return;
+            Expired(this, EventArgs.Empty);
+        }
+
         internal void Finish()
         {
-            this.timers.Stop();
-            this.timers.Dispose();
+            timers.Stop();
+            timers.Dispose();
         }
     }
 }

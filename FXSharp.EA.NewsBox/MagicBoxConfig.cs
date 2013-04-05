@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FXSharp.EA.NewsBox
+﻿namespace FXSharp.EA.NewsBox
 {
     public class MagicBoxConfig
     {

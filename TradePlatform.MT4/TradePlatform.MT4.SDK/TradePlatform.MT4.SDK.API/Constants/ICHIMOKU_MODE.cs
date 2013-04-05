@@ -1,6 +1,6 @@
 namespace TradePlatform.MT4.SDK.API
 {
-    public enum ICHIMOKU_MODE : int
+    public enum ICHIMOKU_MODE
     {
         MODE_TENKANSEN = 1,
         MODE_KIJUNSEN = 2,

@@ -1,5 +1,4 @@
-﻿
-namespace FXSharp.EA.NewsBox
+﻿namespace FXSharp.EA.NewsBox
 {
     public interface IOrderState
     {

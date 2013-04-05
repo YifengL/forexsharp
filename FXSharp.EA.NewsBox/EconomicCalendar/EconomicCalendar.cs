@@ -9,9 +9,11 @@ namespace FXSharp.EA.NewsBox
     {
         public async Task<IList<EconomicEvent>> GetTodaysNextCriticalEventsAsync()
         {
-            var incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
+            IList<EconomicEvent> incomingNews = await GetTodaysCriticalEventsAsync().ConfigureAwait(false);
 
-            return incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date).ToList();
+            return
+                incomingNews.Where(x => x.DateTime > DateTime.Now && x.DateTime.Date == DateTime.Now.Date)
+                            .ToList();
         }
 
         private async Task<IList<EconomicEvent>> GetTodaysCriticalEventsAsync()

@@ -1,9 +1,6 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace FXSharp.EA.NewsBox.Specs
 {
@@ -15,8 +12,7 @@ namespace FXSharp.EA.NewsBox.Specs
         {
             //CurrencyPairRegistry a = new CurrencyPairRegistry();
 
-            var lists = CurrencyPairRegistry.RelatedCurrencyPairs("USD").Take(100);
-
+            IEnumerable<string> lists = CurrencyPairRegistry.RelatedCurrencyPairs("USD").Take(100);
         }
     }
 }

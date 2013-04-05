@@ -1,6 +1,5 @@
-﻿using Quartz;
-using System;
-using System.Collections.Concurrent;
+﻿using System.Threading.Tasks;
+using Quartz;
 
 namespace FXSharp.EA.NewsBox
 {
@@ -8,8 +7,8 @@ namespace FXSharp.EA.NewsBox
     {
         public void Execute(IJobExecutionContext context)
         {
-            var scheduler = (DailyEconomicScheduler)context.JobDetail.JobDataMap["scheduler"];
-            var task = scheduler.PrepareDailyReminder();
+            var scheduler = (DailyEconomicScheduler) context.JobDetail.JobDataMap["scheduler"];
+            Task task = scheduler.PrepareDailyReminder();
         }
     }
 }

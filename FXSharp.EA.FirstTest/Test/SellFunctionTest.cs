@@ -1,21 +1,20 @@
-﻿using TradePlatform.MT4.SDK.API;
-using System;
-using FXSharp.TradingPlatform.Exts;
+﻿using FXSharp.TradingPlatform.Exts;
+
 //using TradePlatform.MT4.Data;
+
 namespace FXSharp.EA.FirstTest
 {
     public class SellFunctionTest : EExpertAdvisor
     {
-        Order order = null;
-        int tickCount = 0;
+        private Order order;
+        private int tickCount;
 
         protected override int Init()
         {
-            order = Sell(0.1, Bid + 100 * Point, Bid - 500 * Point);
-            
+            order = Sell(0.1, Bid + 100*Point, Bid - 500*Point);
+
             return 1;
         }
-
 
 
         protected override int DeInit()
@@ -31,7 +30,7 @@ namespace FXSharp.EA.FirstTest
 
             if (order == null)
             {
-                order = Sell(0.1, Bid + 100 * Point, Bid - 500 * Point);
+                order = Sell(0.1, Bid + 100*Point, Bid - 500*Point);
             }
             else
             {
@@ -40,7 +39,7 @@ namespace FXSharp.EA.FirstTest
             }
 
             tickCount = 0;
-            
+
             return 1;
         }
     }

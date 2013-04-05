@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using TradePlatform.MT4.Core;
 using TradePlatform.MT4.Core.Exceptions;
 using TradePlatform.MT4.SDK.API;
-using TradePlatform.MT4.SDK.Library.Experts;
 
 namespace FXSharp.TradingPlatform.Exts
 {
@@ -18,20 +13,115 @@ namespace FXSharp.TradingPlatform.Exts
         public static readonly POOL_MODES MODE_TRADES = POOL_MODES.MODE_TRADES;
 
         #region Special Constant
+
         public const int CLR_NONE = -1;
+
         #endregion
 
         private int lastError;
 
         public EExpertAdvisor()
         {
-            this.MqlError += OnMqlError;
+            MqlError += OnMqlError;
+        }
+
+        public string Symbol
+        {
+            get { return this.Symbol(); }
+        }
+
+        public int Period
+        {
+            get { return this.Period(); }
+        }
+
+        public double Bid
+        {
+            get
+            {
+                RefreshRates();
+                return this.Bid();
+            }
+        }
+
+        public double Ask
+        {
+            get
+            {
+                RefreshRates();
+                return this.Ask();
+            }
+        }
+
+        public double Point
+        {
+            get { return this.Point(); }
+        }
+
+        public double BuyOpenPrice
+        {
+            get { return Ask; }
+        }
+
+        public double BuyClosePrice
+        {
+            get { return Bid; }
+        }
+
+        public double SellOpenPrice
+        {
+            get { return Bid; }
+        }
+
+        public double SellClosePrice
+        {
+            get { return Ask; }
+        }
+
+        public Highs High
+        {
+            get { return new Highs(this); }
+        }
+
+        public Lows Low
+        {
+            get { return new Lows(this); }
+        }
+
+        public Opens Open
+        {
+            get { return new Opens(this); }
+        }
+
+        public Closes Close
+        {
+            get { return new Closes(this); }
+        }
+
+        public Times Time
+        {
+            get { return new Times(this); }
+        }
+
+        public double ATR
+        {
+            get { return this.iATR(Symbol, TIME_FRAME.PERIOD_H4, 14, 0); }
+        }
+
+        public int Digits
+        {
+            get { return this.Digits(); }
+        }
+
+        public double Balance
+        {
+            get { return this.AccountEquity(); }
         }
 
         private void OnMqlError(MqlErrorException mqlErrorException)
         {
-            var err = mqlErrorException.Message.Split(' ')[3].Trim('\'');
-            var msg = err.Split(':');
+            string err = mqlErrorException.Message.Split(' ')[3].Trim('\'');
+            string[] msg = err.Split(':');
             lastError = Convert.ToInt32(msg[0]);
         }
 
@@ -42,7 +132,7 @@ namespace FXSharp.TradingPlatform.Exts
 
         public double NormalizeDouble(double value, double digits)
         {
-            return Math.Round(value, (int)digits);
+            return Math.Round(value, (int) digits);
         }
 
         public int GetLastError()
@@ -82,10 +172,13 @@ namespace FXSharp.TradingPlatform.Exts
             return TradingFunctions.OrderType(this);
         }
 
-        public int OrderSend(string symbol, ORDER_TYPE cmd, double volume, double price, int slippage, double stoploss, double takeprofit, string comment = "", int magic = 0, DateTime expiration = default(DateTime), int arrow_color = -1)
+        public int OrderSend(string symbol, ORDER_TYPE cmd, double volume, double price, int slippage, double stoploss,
+                             double takeprofit, string comment = "", int magic = 0,
+                             DateTime expiration = default(DateTime), int arrow_color = -1)
         {
-            int ticket = TradingFunctions.OrderSend(this, symbol, cmd, volume, price, slippage, stoploss, takeprofit, comment,
-                                              magic, DateTime.Now.AddDays(100), arrow_color);
+            int ticket = TradingFunctions.OrderSend(this, symbol, cmd, volume, price, slippage, stoploss, takeprofit,
+                                                    comment,
+                                                    magic, DateTime.Now.AddDays(100), arrow_color);
 
             if (ticket == -1)
             {
@@ -104,9 +197,11 @@ namespace FXSharp.TradingPlatform.Exts
             throw CreateException(lastError);
         }
 
-        public bool OrderModify(int ticket, double price, double stoploss, double takeprofit, DateTime expiration = default(DateTime), int arrow_color = -1)
+        public bool OrderModify(int ticket, double price, double stoploss, double takeprofit,
+                                DateTime expiration = default(DateTime), int arrow_color = -1)
         {
-            return TradingFunctions.OrderModify(this, ticket, price, stoploss, takeprofit, DateTime.Now.AddDays(100), arrow_color);
+            return TradingFunctions.OrderModify(this, ticket, price, stoploss, takeprofit, DateTime.Now.AddDays(100),
+                                                arrow_color);
         }
 
         public bool OrderClose(int ticket, double lots, double price, int slippage, int color = 0)
@@ -135,16 +230,6 @@ namespace FXSharp.TradingPlatform.Exts
             return WindowFunctions.RefreshRates(this);
         }
 
-        public string Symbol
-        {
-            get { return WindowFunctions.Symbol(this); }
-        }
-
-        public int Period
-        {
-            get { return WindowFunctions.Period(this); }
-        }
-
         public double MarketInfo(string symbol, MARKER_INFO_MODE mode)
         {
             return CommonFunctions.MarketInfo(this, symbol, mode);
@@ -162,35 +247,24 @@ namespace FXSharp.TradingPlatform.Exts
             return MarketInfo(symbol, MARKER_INFO_MODE.MODE_BID);
         }
 
-        public double BuyOpenPriceFor(string symbol) { return AskFor(symbol); }
-
-        public double BuyClosePriceFor(string symbol) { return BidFor(symbol); }
-
-        public double SellOpenPriceFor(string symbol) { return BidFor(symbol); }
-
-        public double SellClosePriceFor(string symbol) { return AskFor(symbol); }
-
-        public double Bid
+        public double BuyOpenPriceFor(string symbol)
         {
-            get
-            {
-                RefreshRates();
-                return PredefinedVariables.Bid(this);
-            }
+            return AskFor(symbol);
         }
 
-        public double Ask
+        public double BuyClosePriceFor(string symbol)
         {
-            get
-            {
-                RefreshRates();
-                return PredefinedVariables.Ask(this);
-            }
+            return BidFor(symbol);
         }
 
-        public double Point
+        public double SellOpenPriceFor(string symbol)
         {
-            get { return PredefinedVariables.Point(this); }
+            return BidFor(symbol);
+        }
+
+        public double SellClosePriceFor(string symbol)
+        {
+            return AskFor(symbol);
         }
 
         public double PointFor(string symbol)
@@ -226,11 +300,14 @@ namespace FXSharp.TradingPlatform.Exts
         {
             // check if stopLoss and take profit valid for buy
 
-            if (stopLoss != 0 && stopLoss >= BuyOpenPriceFor(symbol)) throw new ApplicationException("Stop Loss for Buy have to less than Ask");
+            if (stopLoss != 0 && stopLoss >= BuyOpenPriceFor(symbol))
+                throw new ApplicationException("Stop Loss for Buy have to less than Ask");
 
-            if (takeProfit != 0 && takeProfit <= BuyOpenPriceFor(symbol)) throw new ApplicationException("Take profit for Buy have to more than Ask");
+            if (takeProfit != 0 && takeProfit <= BuyOpenPriceFor(symbol))
+                throw new ApplicationException("Take profit for Buy have to more than Ask");
 
-            int ticket = OrderSend(symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPriceFor(symbol), 3, stopLoss, takeProfit, "", 12134);
+            int ticket = OrderSend(symbol, ORDER_TYPE.OP_BUY, size, BuyOpenPriceFor(symbol), 3, stopLoss, takeProfit, "",
+                                   12134);
 
             // check if we can create and order to ecn 
 
@@ -253,11 +330,14 @@ namespace FXSharp.TradingPlatform.Exts
         {
             // check if stopLoss and take profit valid for buy
 
-            if (stopLoss != 0 && stopLoss <= SellOpenPriceFor(symbol)) throw new ApplicationException("Stop Loss for Sell have to more than Bid");
+            if (stopLoss != 0 && stopLoss <= SellOpenPriceFor(symbol))
+                throw new ApplicationException("Stop Loss for Sell have to more than Bid");
 
-            if (takeProfit != 0 && takeProfit >= SellOpenPriceFor(symbol)) throw new ApplicationException("Take profit for Sell have to less than Bid");
+            if (takeProfit != 0 && takeProfit >= SellOpenPriceFor(symbol))
+                throw new ApplicationException("Take profit for Sell have to less than Bid");
 
-            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPriceFor(symbol), 3, stopLoss, takeProfit, "", 12134);
+            int ticket = OrderSend(Symbol, ORDER_TYPE.OP_SELL, size, SellOpenPriceFor(symbol), 3, stopLoss, takeProfit,
+                                   "", 12134);
 
             // check if we can create and order to ecn 
 
@@ -271,20 +351,14 @@ namespace FXSharp.TradingPlatform.Exts
             return new Order(symbol, ticket, size, this);
         }
 
-        public double BuyOpenPrice { get { return Ask; } }
-
-        public double BuyClosePrice { get { return Bid; } }
-
-        public double SellOpenPrice { get { return Bid; } }
-
-        public double SellClosePrice { get { return Ask; } }
-
         public Order PendingBuy(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
-            if (stopLoss != 0 && stopLoss >= entry) throw new ApplicationException("Stop Loss for Buy have to less than entry price");
+            if (stopLoss != 0 && stopLoss >= entry)
+                throw new ApplicationException("Stop Loss for Buy have to less than entry price");
 
-            if (takeProfit != 0 && takeProfit <= entry) throw new ApplicationException("Take profit for Buy have to more than entry price");
+            if (takeProfit != 0 && takeProfit <= entry)
+                throw new ApplicationException("Take profit for Buy have to more than entry price");
 
             ORDER_TYPE orderType = default(ORDER_TYPE);
 
@@ -297,7 +371,8 @@ namespace FXSharp.TradingPlatform.Exts
                 orderType = ORDER_TYPE.OP_BUYLIMIT;
             }
 
-            int ticket = OrderSend(symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
+            int ticket = OrderSend(symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134,
+                                   DateTime.Now.AddDays(100), CLR_NONE);
 
             // check if we can create and order to ecn 
 
@@ -325,9 +400,11 @@ namespace FXSharp.TradingPlatform.Exts
         public Order PendingSell(string symbol, double size, double entry, double stopLoss = 0, double takeProfit = 0)
         {
             // check if stopLoss and take profit valid for buy
-            if (stopLoss != 0 && stopLoss <= entry) throw new ApplicationException("Stop Loss for Sell have to more than entry price");
+            if (stopLoss != 0 && stopLoss <= entry)
+                throw new ApplicationException("Stop Loss for Sell have to more than entry price");
 
-            if (takeProfit != 0 && takeProfit >= entry) throw new ApplicationException("Take profit for Sell have to less than entry price");
+            if (takeProfit != 0 && takeProfit >= entry)
+                throw new ApplicationException("Take profit for Sell have to less than entry price");
 
             ORDER_TYPE orderType = default(ORDER_TYPE);
 
@@ -342,7 +419,8 @@ namespace FXSharp.TradingPlatform.Exts
                 orderType = ORDER_TYPE.OP_SELLSTOP;
             }
 
-            int ticket = OrderSend(symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134, DateTime.Now.AddDays(100), CLR_NONE);
+            int ticket = OrderSend(symbol, orderType, size, entry, 3, stopLoss, takeProfit, "", 12134,
+                                   DateTime.Now.AddDays(100), CLR_NONE);
 
             // check if we can create and order to ecn 
 
@@ -357,51 +435,9 @@ namespace FXSharp.TradingPlatform.Exts
             //return new Order(
         }
 
-        public Highs High
-        {
-            get { return new Highs(this); }
-        }
-
-        public Lows Low
-        {
-            get { return new Lows(this); }
-        }
-
-        public Opens Open
-        {
-            get { return new Opens(this); }
-        }
-
-        public Closes Close
-        {
-            get { return new Closes(this); }
-        }
-
-        public Times Time
-        {
-            get { return new Times(this); }
-        }
-
-        public double ATR
-        {
-            get { return TechnicalIndicators.iATR(this, Symbol, TIME_FRAME.PERIOD_H4, 14, 0); }
-        }
-
-        public int Digits
-        {
-            get { return PredefinedVariables.Digits(this); }
-        }
-
-        public double Balance
-        {
-            get { return AccountInformation.AccountEquity(this); }
-        }
-
         public int DigitsFor(string symbol)
         {
-            return (int)MarketInfo(symbol, MARKER_INFO_MODE.MODE_DIGITS);
+            return (int) MarketInfo(symbol, MARKER_INFO_MODE.MODE_DIGITS);
         }
     }
-
 }
-

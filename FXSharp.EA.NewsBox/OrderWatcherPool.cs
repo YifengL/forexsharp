@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
 namespace FXSharp.EA.NewsBox
 {
-    class OrderWatcherPool
+    internal class OrderWatcherPool
     {
-        IList<OrderWatcher> orderWatchers = new List<OrderWatcher>(); // be careful race condition and deadlock
+        private readonly IList<OrderWatcher> orderWatchers = new List<OrderWatcher>();
+                                             // be careful race condition and deadlock
 
         internal void ManageAllOrder()
         {
-            var cloned = orderWatchers.ToList(); // clone to avoid race condition
+            List<OrderWatcher> cloned = orderWatchers.ToList(); // clone to avoid race condition
 
-            foreach (var order in cloned)
+            foreach (OrderWatcher order in cloned)
             {
                 order.ManageOrder();
             }
@@ -23,9 +26,9 @@ namespace FXSharp.EA.NewsBox
             orderWatchers.Add(watcher);
         }
 
-        void watcher_OrderClosed(object sender, System.EventArgs e)
+        private void watcher_OrderClosed(object sender, EventArgs e)
         {
-            var watcher = (OrderWatcher)sender;
+            var watcher = (OrderWatcher) sender;
             orderWatchers.Remove(watcher);
             watcher.OrderClosed -= watcher_OrderClosed;
         }

@@ -1,13 +1,14 @@
-﻿using FXSharp.TradingPlatform.Exts;
-using TradePlatform.MT4.SDK.API;
+﻿using FXSharp.EA.OrderManagements;
+using FXSharp.TradingPlatform.Exts;
 
 namespace FXSharp.EA.PinBar
 {
     internal class OrderRunningManager : IOrderManager
     {
-        private readonly Order _order;
         private readonly PinBarEA _ea;
+        private readonly Order _order;
         private readonly IProfitProtector _profitProtector;
+
         public OrderRunningManager(PinBarEA pinBarEA, Order order)
         {
             _ea = pinBarEA;
@@ -33,12 +34,6 @@ namespace FXSharp.EA.PinBar
             //_ea.MoveToPendingOrderCreatedState(order);
         }
 
-        private void CloseOrder()
-        {
-            _order.Close();
-            //_ea.OrderCompleted();
-        }
-
         public void OnTick()
         {
             if (_order.IsRunning && _order.IsOpen)
@@ -50,6 +45,12 @@ namespace FXSharp.EA.PinBar
                 _ea.OrderCompleted();
             }
             // should trail and lock profit ?
+        }
+
+        private void CloseOrder()
+        {
+            _order.Close();
+            //_ea.OrderCompleted();
         }
     }
 }

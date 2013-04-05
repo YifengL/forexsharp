@@ -1,10 +1,10 @@
-﻿namespace TradePlatform.MT4.SDK.Library.Common
-{
-    using System;
-    using System.Diagnostics;
-    using TradePlatform.MT4.Core.Utils;
-    using TradePlatform.MT4.SDK.Library.Handlers;
+﻿using System;
+using System.Diagnostics;
+using TradePlatform.MT4.Core.Utils;
+using TradePlatform.MT4.SDK.Library.Handlers;
 
+namespace TradePlatform.MT4.SDK.Library.Common
+{
     public class TickCounter : PerformanceCounterBase
     {
         private DateTime _beginTime;
@@ -12,14 +12,15 @@
 
         protected override void Begin()
         {
-            this._beginTime = DateTime.Now;
+            _beginTime = DateTime.Now;
         }
 
         protected override void End()
         {
-            this._endTime = DateTime.Now;
+            _endTime = DateTime.Now;
 
-            Trace.Write(new TraceInfo(BridgeTraceErrorType.Service, message: "Last tick time: " + (this._endTime - this._beginTime).TotalMilliseconds + " ms."));
+            Trace.Write(new TraceInfo(BridgeTraceErrorType.Service,
+                                      message: "Last tick time: " + (_endTime - _beginTime).TotalMilliseconds + " ms."));
         }
     }
 }

@@ -12,23 +12,27 @@ namespace FXSharp.EA.NewsBox
         public string Actual { get; set; }
         public string Previous { get; set; }
         public string Consensus { get; set; }
-        public bool IsSpeechOrMeeting { get { return string.IsNullOrEmpty(Previous); } }
+
+        public bool IsSpeechOrMeeting
+        {
+            get { return string.IsNullOrEmpty(Previous); }
+        }
 
         public override bool Equals(object obj)
         {
-            if (Object.ReferenceEquals(obj, null)) return false;
+            if (ReferenceEquals(obj, null)) return false;
 
-            if (Object.ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (this.GetType() != obj.GetType()) return false;
+            if (GetType() != obj.GetType()) return false;
 
-            var another = (EconomicEvent)obj;
+            var another = (EconomicEvent) obj;
 
-            return another.DateTime == this.DateTime 
-                && another.Currency == this.Currency
-                && another.Actual == this.Actual 
-                && another.Previous == this.Previous
-                && another.Consensus == this.Consensus;
+            return another.DateTime == DateTime
+                   && another.Currency == Currency
+                   && another.Actual == Actual
+                   && another.Previous == Previous
+                   && another.Consensus == Consensus;
         }
 
         public override int GetHashCode()

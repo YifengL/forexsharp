@@ -4,7 +4,7 @@ namespace FXSharp.TradingPlatform.Exts
 {
     public class Lows
     {
-        private EExpertAdvisor ea;
+        private readonly EExpertAdvisor ea;
 
         public Lows(EExpertAdvisor ea)
         {
@@ -13,10 +13,7 @@ namespace FXSharp.TradingPlatform.Exts
 
         public double this[int i]
         {
-            get
-            {
-                return ea.Low(i);
-            }
+            get { return ea.Low(i); }
         }
     }
 }

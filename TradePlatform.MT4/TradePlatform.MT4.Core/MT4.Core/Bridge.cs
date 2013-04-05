@@ -1,49 +1,40 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Web;
 using TradePlatform.MT4.Core.Config;
 using TradePlatform.MT4.Core.Internals;
-using TradePlatform.MT4.Core.Utils;
+
 //using TradePlatform.MT4.Data;
 
 namespace TradePlatform.MT4.Core
 {
-	public class Bridge
-	{
-		public static BridgeConfiguration Configuration
-		{
-			get
-			{
-				BridgeConfiguration section = (BridgeConfiguration)ConfigurationManager.GetSection("BridgeConfiguration");
-				return section;
-			}
-		}
+    public class Bridge
+    {
+        public static BridgeConfiguration Configuration
+        {
+            get
+            {
+                var section = (BridgeConfiguration) ConfigurationManager.GetSection("BridgeConfiguration");
+                return section;
+            }
+        }
 
-		public Bridge()
-		{
-		}
+        public static MetaTrader4 GetTerminal(int accountNumber, string symbol)
+        {
+            return MetaTrader4.For(accountNumber, symbol);
+        }
 
-		public static MetaTrader4 GetTerminal(int accountNumber, string symbol)
-		{
-			return MetaTrader4.For(accountNumber, symbol);
-		}
+        public static List<MetaTrader4> GetTerminals()
+        {
+            return MetaTrader4.All();
+        }
 
-		public static List<MetaTrader4> GetTerminals()
-		{
-			return MetaTrader4.All();
-		}
-
-		public static void InitializeHosts(bool isBackground = false)
-		{
-			foreach (HostElement host in Bridge.Configuration.Hosts)
-			{
-				HandlerHost handlerHost = new HandlerHost(host.Name, host.IPAddress, host.Port, isBackground);
-				handlerHost.Run();
-			}
+        public static void InitializeHosts(bool isBackground = false)
+        {
+            foreach (HostElement host in Configuration.Hosts)
+            {
+                var handlerHost = new HandlerHost(host.Name, host.IPAddress, host.Port, isBackground);
+                handlerHost.Run();
+            }
             //try
             //{
             //    Uri[] uri = new Uri[] { new Uri(Bridge.Configuration.WcfBaseAddress) };
@@ -56,6 +47,6 @@ namespace TradePlatform.MT4.Core
             //    Exception exception = exception1;
             //    Trace.Write(new TraceInfo(BridgeTraceErrorType.Execption, exception, ""));
             //}
-		}
-	}
+        }
+    }
 }

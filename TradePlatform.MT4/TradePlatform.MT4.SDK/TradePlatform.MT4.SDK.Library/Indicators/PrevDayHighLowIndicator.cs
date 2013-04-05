@@ -1,14 +1,14 @@
-﻿namespace TradePlatform.MT4.SDK.Library.Indicators
-{
-    using TradePlatform.MT4.Core;
-    using TradePlatform.MT4.SDK.API;
+﻿using TradePlatform.MT4.Core;
+using TradePlatform.MT4.SDK.API;
 
+namespace TradePlatform.MT4.SDK.Library.Indicators
+{
     public class PrevDayHighLowIndicator : ExpertAdvisor
     {
-        double _dayHigh;
-        double _dayLow;
-        double _dayHigh1;
-        double _dayLow1;
+        private double _dayHigh;
+        private double _dayHigh1;
+        private double _dayLow;
+        private double _dayLow1;
 
         protected override int Init()
         {
@@ -25,19 +25,19 @@
 
             for (int i = limit; i >= 0; i--)
             {
-                this.ExtMapBuffer1(i, this._dayHigh1);
-                this.ExtMapBuffer2(i, this._dayLow1);
+                this.ExtMapBuffer1(i, _dayHigh1);
+                this.ExtMapBuffer2(i, _dayLow1);
 
-                if (this.High(i + 1) > this._dayHigh) this._dayHigh = this.High(i + 1);
-                if (this.Low(i + 1) < this._dayLow) this._dayLow = this.Low(i + 1);
+                if (this.High(i + 1) > _dayHigh) _dayHigh = this.High(i + 1);
+                if (this.Low(i + 1) < _dayLow) _dayLow = this.Low(i + 1);
 
 
                 if (this.Time(i).Day != this.Time(i + 1).Day && this.Time(i + 1).DayOfWeek != 0)
                 {
-                    this._dayHigh1 = this._dayHigh;
-                    this._dayLow1 = this._dayLow;
-                    this._dayHigh = this.Open(i);
-                    this._dayLow = this.Open(i);
+                    _dayHigh1 = _dayHigh;
+                    _dayLow1 = _dayLow;
+                    _dayHigh = this.Open(i);
+                    _dayLow = this.Open(i);
                 }
             }
 

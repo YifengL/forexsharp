@@ -81,6 +81,10 @@
       <Project>{9808d624-79e6-455f-a601-f35c805d983c}</Project>
       <Name>FXSharp.EA.NewsBox</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FXSharp.EA.OrderManagements\FXSharp.EA.OrderManagements.csproj">
+      <Project>{f864a993-0025-44a7-8517-9d216b93b29f}</Project>
+      <Name>FXSharp.EA.OrderManagements</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FXSharp.TradingPlatform.Exts
+﻿namespace FXSharp.TradingPlatform.Exts
 {
-    public enum MQLError : int
+    public enum MQLError
     {
         //---- errors returned from trade server
         ERR_NO_ERROR = 0,

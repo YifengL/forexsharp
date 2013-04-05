@@ -6,31 +6,31 @@ namespace FXSharp.EA.NewsBox
 {
     public class OrderCreator
     {
+        private readonly MagicBoxConfig commonCfg = new MagicBoxConfig
+            {
+                MinutePendingExecution = -1, // 2-1 minute
+                MinuteExpiracy = 10,
+                Range = 100, // 5-10 pips 
+                StopLoss = 150,
+                TakeProfit = 300
+            };
+
+        private readonly MagicBoxConfig speechCfg = new MagicBoxConfig
+            {
+                MinutePendingExecution = -1, // test for 2 minutes and change range
+                MinuteExpiracy = 30, // 20 - 30 minutes
+                Range = 200, // 20-25  minutes
+                StopLoss = 200,
+                TakeProfit = 500
+            };
+
         private CurrencyPairRegistry analyzer = new CurrencyPairRegistry();
-        
-        MagicBoxConfig speechCfg = new MagicBoxConfig
-        {
-            MinutePendingExecution = -1, // test for 2 minutes and change range
-            MinuteExpiracy = 30, // 20 - 30 minutes
-            Range = 200, // 20-25  minutes
-            StopLoss = 200,
-            TakeProfit = 500
-        };
-        
-        MagicBoxConfig commonCfg = new MagicBoxConfig
-        {
-            MinutePendingExecution = -1, // 2-1 minute
-            MinuteExpiracy = 10, 
-            Range = 100, // 5-10 pips 
-            StopLoss = 150,
-            TakeProfit = 300
-        };
 
         public IList<MagicBoxOrder> CreateOrdersFromEvents(IEnumerable<EconomicEvent> events)
         {
             var mgcBoxOrderList = new List<MagicBoxOrder>();
 
-            var groups = events.GroupBy(x => x.DateTime);
+            IEnumerable<IGrouping<DateTime, EconomicEvent>> groups = events.GroupBy(x => x.DateTime);
 
             foreach (var eventGroup in groups)
             {
@@ -53,31 +53,32 @@ namespace FXSharp.EA.NewsBox
 
             var currencyPairsCandidate = new List<MagicBoxOrder>();
 
-            foreach (var economicEvent in eventGroup.Distinct())
+            foreach (EconomicEvent economicEvent in eventGroup.Distinct())
             {
                 currencyPairsCandidate.Add(new MagicBoxOrder
-                {
-                    Symbol = economicEvent.Currency,
-                    LotSize = 1,
-                    Config = speechCfg,
-                    NewsTime = economicEvent.DateTime
-                });
+                    {
+                        Symbol = economicEvent.Currency,
+                        LotSize = 1,
+                        Config = speechCfg,
+                        NewsTime = economicEvent.DateTime
+                    });
             }
 
             mgcBoxOrderList.AddRange(currencyPairsCandidate.Distinct());
         }
 
-        private void AddSingleMagicBox(List<MagicBoxOrder> mgcBoxOrderList, IGrouping<DateTime, EconomicEvent> eventGroup)
+        private void AddSingleMagicBox(List<MagicBoxOrder> mgcBoxOrderList,
+                                       IGrouping<DateTime, EconomicEvent> eventGroup)
         {
-            var singleEvent = eventGroup.Single();
+            EconomicEvent singleEvent = eventGroup.Single();
 
             mgcBoxOrderList.Add(new MagicBoxOrder
-            {
-                Symbol = singleEvent.Currency,
-                LotSize = 1,
-                Config = SelectConfig(singleEvent),
-                NewsTime = singleEvent.DateTime
-            });   
+                {
+                    Symbol = singleEvent.Currency,
+                    LotSize = 1,
+                    Config = SelectConfig(singleEvent),
+                    NewsTime = singleEvent.DateTime
+                });
         }
 
         private static bool IsSingleEvent(IGrouping<DateTime, EconomicEvent> item)

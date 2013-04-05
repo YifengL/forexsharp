@@ -1,18 +1,16 @@
-﻿
+﻿using System.Diagnostics;
+using TradePlatform.MT4.Core;
+using TradePlatform.MT4.Core.Exceptions;
+using TradePlatform.MT4.Core.Utils;
+using TradePlatform.MT4.SDK.Library.UnitTests;
 
 namespace TradePlatform.MT4.SDK.Library.Scripts
 {
-    using System.Diagnostics;
-    using TradePlatform.MT4.Core;
-    using TradePlatform.MT4.Core.Exceptions;
-    using TradePlatform.MT4.Core.Utils;
-    using TradePlatform.MT4.SDK.Library.UnitTests;
-
     public class UnitTestScript : ExpertAdvisor
     {
         public UnitTestScript()
         {
-            this.MqlError += this.OnMqlError;
+            MqlError += OnMqlError;
         }
 
         private void OnMqlError(MqlErrorException mqlErrorException)
@@ -24,12 +22,12 @@ namespace TradePlatform.MT4.SDK.Library.Scripts
         {
             Trace.Write(new TraceInfo(BridgeTraceErrorType.Debug, message: "Init()"));
 
-           // AccountInformationTests.RunTests(this);
+            // AccountInformationTests.RunTests(this);
             CommonFunctionsTests.RunTests(this);
             //PredefinedVariablesTests.RunTests(this);
-           // TechnicalIndicatorsTests.RunTests(this);
+            // TechnicalIndicatorsTests.RunTests(this);
 //TradingFunctionsTests.RunTests(this);
-          //  WindowFunctionsTests.RunTests(this);
+            //  WindowFunctionsTests.RunTests(this);
 
             return 1;
         }
@@ -49,4 +47,3 @@ namespace TradePlatform.MT4.SDK.Library.Scripts
         }
     }
 }
-

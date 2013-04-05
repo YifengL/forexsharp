@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FXSharp.EA.NewsBox
+﻿namespace FXSharp.EA.NewsBox
 {
-    class SpreadInfo
+    internal class SpreadInfo
     {
         public string Symbol { get; set; }
         public double Spread { get; set; }

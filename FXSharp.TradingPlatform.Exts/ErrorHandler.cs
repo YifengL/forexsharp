@@ -1,11 +1,12 @@
 ﻿using System;
+
 namespace FXSharp.TradingPlatform.Exts
 {
     public static class ErrorHandler
     {
         internal static Exception CreateException(int errorCode)
         {
-            return new MQLException(ErrorDescription((MQLError)errorCode));
+            return new MQLException(ErrorDescription((MQLError) errorCode));
         }
 
         private static string ErrorDescription(MQLError error_code)
@@ -14,7 +15,7 @@ namespace FXSharp.TradingPlatform.Exts
 
             switch (error_code)
             {
-                //---- codes returned from trade server
+                    //---- codes returned from trade server
                 case MQLError.ERR_NO_ERROR:
                 case MQLError.ERR_NO_RESULT:
                     error_string = "no error";

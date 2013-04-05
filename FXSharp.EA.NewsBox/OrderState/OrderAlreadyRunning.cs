@@ -1,15 +1,16 @@
-﻿using FXSharp.TradingPlatform.Exts;
+﻿using FXSharp.EA.OrderManagements;
+using FXSharp.TradingPlatform.Exts;
 
 namespace FXSharp.EA.NewsBox
 {
     public class OrderAlreadyRunning : IOrderState
     {
-        private OrderWatcher orderManager;
-        private Order order;
-        private bool cancel = false;
-        private ITrailingMethod trailing;
+        private readonly Order order;
+        private readonly OrderWatcher orderManager;
+        private readonly IProfitProtector trailing;
+        private bool cancel;
 
-        public OrderAlreadyRunning(OrderWatcher orderManager, Order order, ITrailingMethod trailing)
+        public OrderAlreadyRunning(OrderWatcher orderManager, Order order, IProfitProtector trailing)
         {
             this.orderManager = orderManager;
             this.order = order;
@@ -29,7 +30,8 @@ namespace FXSharp.EA.NewsBox
             }
             else
             {
-                trailing.Trail();
+                //trailing.Trail();
+                trailing.TryProtectProfit();
             }
         }
 

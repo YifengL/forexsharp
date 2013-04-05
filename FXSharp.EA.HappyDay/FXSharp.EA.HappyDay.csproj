@@ -39,20 +39,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MoneyManagement.cs" />
     <Compile Include="StateManager\BoxAlreadyCreatedManager.cs" />
-    <Compile Include="IProfitProtector.cs" />
-    <Compile Include="Trailing\ThreeLevelProfitProtector.cs" />
-    <Compile Include="Trailing\BuyTrailingMethod.cs" />
     <Compile Include="HappyDayEA.cs" />
     <Compile Include="IOrderManager.cs" />
-    <Compile Include="ITrailingMethod.cs" />
+    <Compile Include="StateManager\SecondOrderPendingManager.cs" />
+    <Compile Include="StateManager\SecondOrderRunningManager.cs" />
     <Compile Include="StateManager\NoOrderCreatedManager.cs" />
-    <Compile Include="StateManager\OrderRunningManager.cs" />
+    <Compile Include="StateManager\FirstOrderRunningManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Trailing\SellTrailingMethod.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FXSharp.EA.OrderManagements\FXSharp.EA.OrderManagements.csproj">
+      <Project>{f864a993-0025-44a7-8517-9d216b93b29f}</Project>
+      <Name>FXSharp.EA.OrderManagements</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FXSharp.TradingPlatform.Exts\FXSharp.TradingPlatform.Exts.csproj">
       <Project>{e33f0f2b-6fbd-4e1c-9981-510dd229c58e}</Project>
       <Name>FXSharp.TradingPlatform.Exts</Name>

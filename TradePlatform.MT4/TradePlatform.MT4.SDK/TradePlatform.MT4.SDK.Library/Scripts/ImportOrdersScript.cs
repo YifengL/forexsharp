@@ -1,16 +1,13 @@
-﻿namespace TradePlatform.MT4.SDK.Library.Scripts
+﻿using TradePlatform.MT4.Core;
+
+namespace TradePlatform.MT4.SDK.Library.Scripts
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using TradePlatform.MT4.Core;
     //using TradePlatform.MT4.Data;
-    using TradePlatform.MT4.SDK.API;
 
     public class ImportOrdersScript : ExpertAdvisor
     {
         protected override int Init()
         {
-
             return 1;
         }
 
@@ -52,7 +49,7 @@
             //        if (this.OrderSelect(i, SELECT_BY.SELECT_BY_POS, POOL_MODES.MODE_TRADES))
             //        {
             //            TradeOrder order = new TradeOrder();
-  
+
             //            order.ClosePrice = this.OrderClosePrice();
             //            order.CloseTime = this.OrderCloseTime();
             //            order.Comment = this.OrderComment();

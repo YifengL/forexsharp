@@ -1,34 +1,35 @@
-﻿using FXSharp.TradingPlatform.Exts;
-using System;
+﻿using System;
+using FXSharp.TradingPlatform.Exts;
+using FXSharp.EA.OrderManagements;
 
 namespace FXSharp.EA.NewsBox
 {
     public class OrderWatcher
     {
-        IOrderState state;
-        public event EventHandler OrderClosed;
+        private readonly double expiredTime;
+        private readonly MagicBoxConfig mbConfig;
         private ExpiracyTimer expiracyTimer;
-        private double expiredTime;
-        private MagicBoxConfig mbConfig;
-
-        public string Symbol { get; set; }
+        private IOrderState state;
 
         public OrderWatcher(Order buyOrder, Order sellOrder, double expiredTime, MagicBoxConfig config)
         {
             mbConfig = config;
             AddOneCancelAnother(buyOrder, sellOrder);
             Symbol = buyOrder.Symbol;
-            
+
             this.expiredTime = expiredTime;
 
-            expiracyTimer = new ExpiracyTimer(expiredTime / 2);
+            expiracyTimer = new ExpiracyTimer(expiredTime/2);
             expiracyTimer.Expired += expiracyTimer_Expired;
         }
 
-        void expiracyTimer_Expired(object sender, EventArgs e)
+        public string Symbol { get; set; }
+        public event EventHandler OrderClosed;
+
+        private void expiracyTimer_Expired(object sender, EventArgs e)
         {
             if (state == null) return;
-            
+
             state.Cancel();
             expiracyTimer.Expired -= expiracyTimer_Expired;
         }
@@ -46,7 +47,7 @@ namespace FXSharp.EA.NewsBox
         }
 
         // we should use event based for this
-        internal void OrderRunning(Order order, ITrailingMethod trailing)
+        internal void OrderRunning(Order order, IProfitProtector trailing)
         {
             ResetExpiracy();
 

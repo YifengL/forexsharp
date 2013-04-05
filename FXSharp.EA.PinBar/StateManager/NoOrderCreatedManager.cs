@@ -1,4 +1,6 @@
-﻿namespace FXSharp.EA.PinBar
+﻿using FXSharp.TradingPlatform.Exts;
+
+namespace FXSharp.EA.PinBar
 {
     internal class NoOrderCreatedManager : IOrderManager
     {
@@ -11,13 +13,13 @@
 
         public void OnNewBullishPinBar()
         {
-            var order = _ea.CreatePendingBuyOrder();
+            Order order = _ea.CreatePendingBuyOrder();
             _ea.MoveToPendingOrderCreatedState(order);
         }
 
         public void OnNewBearishPinBar()
         {
-            var order = _ea.CreatePendingSellOrder();
+            Order order = _ea.CreatePendingSellOrder();
             _ea.MoveToPendingOrderCreatedState(order);
         }
 

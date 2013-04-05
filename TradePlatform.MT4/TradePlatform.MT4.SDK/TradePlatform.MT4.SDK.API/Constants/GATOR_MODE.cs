@@ -1,6 +1,6 @@
 namespace TradePlatform.MT4.SDK.API
 {
-    public enum GATOR_MODE : int
+    public enum GATOR_MODE
     {
         MODE_GATORJAW = 0,
         MODE_GATORTEETH = 1,

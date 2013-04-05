@@ -1,10 +1,10 @@
-﻿namespace TradePlatform.MT4.SDK.Library.UnitTests
-{
-    using System.Diagnostics;
-    using TradePlatform.MT4.Core;
-    using TradePlatform.MT4.Core.Utils;
-    using TradePlatform.MT4.SDK.API;
+﻿using System.Diagnostics;
+using TradePlatform.MT4.Core;
+using TradePlatform.MT4.Core.Utils;
+using TradePlatform.MT4.SDK.API;
 
+namespace TradePlatform.MT4.SDK.Library.UnitTests
+{
     public static class PredefinedVariablesTests
     {
         public static void RunTests(MqlHandler script)

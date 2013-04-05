@@ -5,7 +5,7 @@ namespace FXSharp.TradingPlatform.Exts
 {
     public class Times
     {
-        private EExpertAdvisor ea;
+        private readonly EExpertAdvisor ea;
 
         public Times(EExpertAdvisor ea)
         {
@@ -14,10 +14,7 @@ namespace FXSharp.TradingPlatform.Exts
 
         public DateTime this[int i]
         {
-            get
-            {
-                return ea.Time(i);
-            }
+            get { return ea.Time(i); }
         }
     }
 }

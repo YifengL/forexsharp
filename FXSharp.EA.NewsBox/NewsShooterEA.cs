@@ -1,13 +1,14 @@
-﻿using FXSharp.TradingPlatform.Exts;
-using System.Linq;
+﻿using FXSharp.EA.OrderManagements;
+using FXSharp.TradingPlatform.Exts;
+
 namespace FXSharp.EA.NewsBox
 {
     public class NewsShooterEA : EExpertAdvisor
     {
-        private NewsReminder reminder;
-        private OrderWatcherPool orderPool;
         private ICurrencyRepository currencyRepository;
-        private bool initialized = false;
+        private bool initialized;
+        private OrderWatcherPool orderPool;
+        private NewsReminder reminder;
 
         protected override int DeInit()
         {
@@ -65,26 +66,26 @@ namespace FXSharp.EA.NewsBox
             double stopLoss = magicBox.StopLoss; // nullify stop loss, should set after enter the trade.
             double expiredTime = magicBox.MinuteExpiracy;
 
-            var moneyManagement = new MoneyManagement(1, this.Balance);
+            var moneyManagement = new MoneyManagement(1, Balance);
 
             double lotSize = moneyManagement.CalculateLotSize(magicBox.StopLoss);
 
-            foreach (var currencyPairs in currencyRepository.GetRelatedCurrencyPairs(this, magicBox.Symbol))
+            foreach (string currencyPairs in currencyRepository.GetRelatedCurrencyPairs(this, magicBox.Symbol))
             {
                 // check if the order has been created for this pair
                 if (orderPool.ContainsOrderForSymbol(currencyPairs)) continue;
-                
+
                 // refactor to next class and cache the traded value ...(don't let it duplicated like tonight usdcad pairs)
                 // the logic should be in orderPool
-                var buyOrder = PendingBuy(currencyPairs, lotSize,
-                            BuyOpenPriceFor(currencyPairs) + range * PointFor(currencyPairs));
+                Order buyOrder = PendingBuy(currencyPairs, lotSize,
+                                            BuyOpenPriceFor(currencyPairs) + range*PointFor(currencyPairs));
                 buyOrder.ChangeStopLossInPoints(magicBox.StopLoss);
-                buyOrder.ChangeTakeProfitInPoints(magicBox.StopLoss);
+                buyOrder.ChangeTakeProfitInPoints(magicBox.TakeProfit);
 
-                var sellOrder = PendingSell(currencyPairs, lotSize,
-                            SellOpenPriceFor(currencyPairs) - range * PointFor(currencyPairs));
+                Order sellOrder = PendingSell(currencyPairs, lotSize,
+                                              SellOpenPriceFor(currencyPairs) - range*PointFor(currencyPairs));
                 sellOrder.ChangeStopLossInPoints(magicBox.StopLoss);
-                sellOrder.ChangeTakeProfitInPoints(magicBox.StopLoss);
+                sellOrder.ChangeTakeProfitInPoints(magicBox.TakeProfit);
 
                 //var buyOrder = PendingBuy(magicBox.Symbol, lotSize,
                 //    BuyOpenPriceFor(magicBox.Symbol) + range * PointFor(magicBox.Symbol),

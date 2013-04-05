@@ -1,6 +1,6 @@
 namespace TradePlatform.MT4.SDK.API
 {
-    public enum ORDER_TYPE : int
+    public enum ORDER_TYPE
     {
         OP_BUY = 0,
         OP_SELL = 1,

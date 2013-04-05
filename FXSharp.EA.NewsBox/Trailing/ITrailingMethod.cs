@@ -1,7 +1,7 @@
-﻿namespace FXSharp.EA.NewsBox
-{
-    public interface ITrailingMethod
-    {
-        void Trail();
-    }
-}
+﻿//namespace FXSharp.EA.NewsBox
+//{
+//    public interface ITrailingMethod
+//    {
+//        void Trail();
+//    }
+//}

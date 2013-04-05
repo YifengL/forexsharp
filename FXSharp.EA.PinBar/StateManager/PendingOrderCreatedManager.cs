@@ -1,5 +1,4 @@
 ﻿using FXSharp.TradingPlatform.Exts;
-using TradePlatform.MT4.SDK.API;
 
 namespace FXSharp.EA.PinBar
 {
@@ -32,12 +31,6 @@ namespace FXSharp.EA.PinBar
             //_ea.MoveToPendingOrderCreatedState(order);
         }
 
-        private void CloseOrder()
-        {
-            _order.Close();
-            //_ea.OrderCompleted();
-        }
-
         public void OnTick()
         {
             if (_order.IsRunning)
@@ -49,6 +42,12 @@ namespace FXSharp.EA.PinBar
                 CloseOrder();
                 _ea.OrderCompleted();
             }
+        }
+
+        private void CloseOrder()
+        {
+            _order.Close();
+            //_ea.OrderCompleted();
         }
     }
 }

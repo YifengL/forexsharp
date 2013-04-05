@@ -1,6 +1,6 @@
 namespace TradePlatform.MT4.SDK.API
 {
-    public enum TIME_FRAME : int
+    public enum TIME_FRAME
     {
         UserByChart = 0,
         PERIOD_M1 = 1,

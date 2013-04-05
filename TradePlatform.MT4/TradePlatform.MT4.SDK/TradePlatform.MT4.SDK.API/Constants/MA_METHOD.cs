@@ -1,6 +1,6 @@
 namespace TradePlatform.MT4.SDK.API
 {
-    public enum MA_METHOD : int
+    public enum MA_METHOD
     {
         MODE_SMA = 0,
         MODE_EMA = 1,

@@ -1,4 +1,5 @@
 ﻿using System;
+using FXSharp.EA.OrderManagements;
 using FXSharp.TradingPlatform.Exts;
 using TradePlatform.MT4.SDK.API;
 
@@ -6,11 +7,11 @@ namespace FXSharp.EA.PinBar
 {
     public class PinBarEA : EExpertAdvisor
     {
-        private IOrderManager _orderManager;
+        private const double Range = 100;
         private bool _isInitialize;
+        private IOrderManager _orderManager;
         //private double LotSize = 1;
         private DateTime _prevtime = default(DateTime);
-        private const double Range = 100;
 
         protected override int DeInit()
         {
@@ -20,7 +21,7 @@ namespace FXSharp.EA.PinBar
         protected override int Init()
         {
             _orderManager = new NoOrderCreatedManager(this);
-            
+
             _prevtime = Time[0];
             _isInitialize = true;
             return 0;
@@ -41,12 +42,12 @@ namespace FXSharp.EA.PinBar
         {
             // the body is small, the position of the body near open. 
             // still can handle if this fall into trap both shadow is > 50 ??
-            return (High[1] - Math.Max(Close[1], Open[1])) / Point > 600; 
+            return (High[1] - Math.Max(Close[1], Open[1]))/Point > 600;
         }
 
         private bool IsBullishPinBar()
         {
-            return (Math.Min(Close[1], Open[1]) - Low[1]) / Point > 600;
+            return (Math.Min(Close[1], Open[1]) - Low[1])/Point > 600;
         }
 
         protected override int Start()
@@ -76,22 +77,22 @@ namespace FXSharp.EA.PinBar
 
         internal Order CreatePendingBuyOrder()
         {
-            var slPoints = (High[1] - Low[1])/Point + 2*Range;
-            var tpPoints = 2*slPoints * Point;
+            double slPoints = (High[1] - Low[1])/Point + 2*Range;
+            double tpPoints = 2*slPoints*Point;
             var moneyManagement = new MoneyManagement(2, Balance);
-            var lotSize = moneyManagement.CalculateLotSize(slPoints);
-            var order = PendingBuy(Symbol, lotSize, High[1] + Range * Point, Low[1] - Range * Point, High[1] + tpPoints);
+            double lotSize = moneyManagement.CalculateLotSize(slPoints);
+            Order order = PendingBuy(Symbol, lotSize, High[1] + Range*Point, Low[1] - Range*Point, High[1] + tpPoints);
             this.ObjectsDeleteAll();
             return order;
         }
 
         internal Order CreatePendingSellOrder()
         {
-            var slPoints = (High[1] - Low[1])/Point + 2*Range;
-            var tpPoints = 2*slPoints * Point;
+            double slPoints = (High[1] - Low[1])/Point + 2*Range;
+            double tpPoints = 2*slPoints*Point;
             var moneyManagement = new MoneyManagement(2, Balance);
-            var lotSize = moneyManagement.CalculateLotSize(slPoints);
-            var order = PendingSell(Symbol, lotSize, Low[1] - Range * Point, High[1] + Range * Point, Low[1] - tpPoints);
+            double lotSize = moneyManagement.CalculateLotSize(slPoints);
+            Order order = PendingSell(Symbol, lotSize, Low[1] - Range*Point, High[1] + Range*Point, Low[1] - tpPoints);
             this.ObjectsDeleteAll();
             return order;
         }

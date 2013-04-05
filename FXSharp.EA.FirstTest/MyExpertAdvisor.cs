@@ -1,20 +1,20 @@
 ﻿//using TradePlatform.MT4.Data;
-using FXSharp.TradingPlatform.Exts;
+
 using System;
 using System.Threading;
+using FXSharp.TradingPlatform.Exts;
+using TradePlatform.MT4.SDK.API;
 
 namespace FXSharp.EA.FirstTest
 {
     public class MyExpertAdvisor : EExpertAdvisor
     {
-        Order order = null;
-        int count = 0;
-
         private QuoteBeat beat;
-
-        private double threshold = 3;
+        private int count = 0;
 
         private bool isInitialize;
+        private Order order;
+        private double threshold = 3;
 
         protected override int Init()
         {
@@ -28,7 +28,6 @@ namespace FXSharp.EA.FirstTest
 
         protected override int DeInit()
         {
-
             return 1;
         }
 
@@ -106,12 +105,12 @@ namespace FXSharp.EA.FirstTest
 
         private bool IsAlreadyOpenSell()
         {
-            return order.OrderType == TradePlatform.MT4.SDK.API.ORDER_TYPE.OP_SELL;
+            return order.OrderType == ORDER_TYPE.OP_SELL;
         }
 
         private bool IsAlreadyOpenBuy()
         {
-            return order.OrderType == TradePlatform.MT4.SDK.API.ORDER_TYPE.OP_BUY;
+            return order.OrderType == ORDER_TYPE.OP_BUY;
         }
 
         private bool IsNoOpenOrder()

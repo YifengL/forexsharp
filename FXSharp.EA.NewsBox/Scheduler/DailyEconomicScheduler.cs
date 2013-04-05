@@ -1,15 +1,17 @@
 ﻿using System;
-using Quartz;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Quartz;
 
 namespace FXSharp.EA.NewsBox
 {
     public class DailyEconomicScheduler
     {
-        
-        private MagicBoxScheduler scheduler;
-        private OrderDecisionProcessor decisionProcessor = new OrderDecisionProcessor(); // currently using polling model, next publish
+        private readonly OrderDecisionProcessor decisionProcessor = new OrderDecisionProcessor();
+                                                // currently using polling model, next publish
+
+        private readonly MagicBoxScheduler scheduler;
 
         public DailyEconomicScheduler(IScheduler scheduler, ConcurrentQueue<MagicBoxOrder> queues)
         {
@@ -18,9 +20,9 @@ namespace FXSharp.EA.NewsBox
 
         public async Task PrepareDailyReminder()
         {
-            var magicBoxes = await decisionProcessor.GetTodayMagicBoxOrders();
+            List<MagicBoxOrder> magicBoxes = await decisionProcessor.GetTodayMagicBoxOrders();
 
-            foreach (var order in magicBoxes)
+            foreach (MagicBoxOrder order in magicBoxes)
             {
                 Console.WriteLine("Scheduled : {0} @ {1}", order.Symbol, order.ExecutingTime);
                 scheduler.Schedule(order);

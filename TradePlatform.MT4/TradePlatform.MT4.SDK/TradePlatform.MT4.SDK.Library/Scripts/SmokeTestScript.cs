@@ -1,21 +1,19 @@
-﻿
+﻿using System.Diagnostics;
+using TradePlatform.MT4.Core;
+using TradePlatform.MT4.Core.Exceptions;
+using TradePlatform.MT4.Core.Utils;
+using TradePlatform.MT4.SDK.API;
 
 namespace TradePlatform.MT4.SDK.Library.Scripts
 {
-    using System.Diagnostics;
-    using TradePlatform.MT4.Core;
-    using TradePlatform.MT4.Core.Exceptions;
-    using TradePlatform.MT4.Core.Utils;
-    using TradePlatform.MT4.SDK.API;
-
     public class SmokeTestScript : ExpertAdvisor
     {
-        public int TestProperty { get; set; }
-
         public SmokeTestScript()
         {
-            this.MqlError += this.OnMqlError;
+            MqlError += OnMqlError;
         }
+
+        public int TestProperty { get; set; }
 
         private void OnMqlError(MqlErrorException mqlErrorException)
         {
@@ -36,7 +34,7 @@ namespace TradePlatform.MT4.SDK.Library.Scripts
 
             Trace.Write(new TraceInfo(BridgeTraceErrorType.Debug, message: "Bid: " + bid));
             Trace.Write(new TraceInfo(BridgeTraceErrorType.Debug, message: "Ask: " + ask));
-            
+
             return 2;
         }
 
@@ -48,4 +46,3 @@ namespace TradePlatform.MT4.SDK.Library.Scripts
         }
     }
 }
-
