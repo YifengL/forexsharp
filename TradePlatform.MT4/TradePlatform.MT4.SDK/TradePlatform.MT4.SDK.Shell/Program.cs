@@ -14,7 +14,7 @@ namespace TradePlatform.MT4.SDK.Shell
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            SetupConsole();
+            //SetupConsole();
 
             Bridge.InitializeHosts();
         }
