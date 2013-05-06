@@ -1,6 +1,4 @@
-﻿//using FXSharp.TradingPlatform.Exts;
-
-using System;
+﻿using System;
 using FXSharp.EA.OrderManagements;
 using FXSharp.TradingPlatform.Exts;
 
@@ -8,38 +6,6 @@ namespace FXSharp.EA.NewsBox
 {
     public class TrailingMethod : IProfitProtector
     {
-        //private const double LimitProtectedLevel = 50;
-        //private readonly IOrderDetail _detail;
-
-        //private double _latestProtectedLevel = 50;
-
-        //public TrailingMethod(IOrderDetail detail)
-        //{
-        //    _detail = detail;
-        //}
-
-        //public void Trail()
-        //{
-        //    double profitPoints = _detail.ProfitPoints;
-
-        //    if (profitPoints >= _latestProtectedLevel*_detail.Point)
-        //    {
-        //        ProtectProfit(profitPoints);
-        //        _latestProtectedLevel = profitPoints/_detail.Point;
-        //    }
-        //}
-
-        //private void ProtectProfit(double profitPoints)
-        //{
-        //    double protectPoint = _detail.OpenPrice - (profitPoints - LimitProtectedLevel*_detail.Point);
-        //    _detail.ModifyStopLoss(Math.Round(protectPoint, _detail.Digits));
-        //}
-
-        //public void TryProtectProfit()
-        //{
-            
-        //}
-
         private readonly Order _order;
 
         private readonly double[] _protectLevel = new double[] {100, 200, 300, 10000};

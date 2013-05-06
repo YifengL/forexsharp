@@ -8,30 +8,30 @@ namespace FXSharp.EA.NewsBox
 {
     public class NewsReminder
     {
-        private readonly DailyEconomicScheduler economicScheduler;
-        private readonly ConcurrentQueue<MagicBoxOrder> orderQueue = new ConcurrentQueue<MagicBoxOrder>();
-        private readonly IScheduler sched;
-        private readonly ISchedulerFactory schedFact = new StdSchedulerFactory();
+        private readonly DailyEconomicScheduler _economicScheduler;
+        private readonly ConcurrentQueue<MagicBoxOrder> _orderQueue = new ConcurrentQueue<MagicBoxOrder>();
+        private readonly IScheduler _sched;
+        private readonly ISchedulerFactory _schedFact = new StdSchedulerFactory();
 
         public NewsReminder()
         {
-            sched = schedFact.GetScheduler();
-            economicScheduler = new DailyEconomicScheduler(sched, orderQueue);
+            _sched = _schedFact.GetScheduler();
+            _economicScheduler = new DailyEconomicScheduler(_sched, _orderQueue);
         }
 
         public ConcurrentQueue<MagicBoxOrder> OrderQueue
         {
-            get { return orderQueue; }
+            get { return _orderQueue; }
         }
 
         public bool IsAvailable
         {
-            get { return orderQueue.Count > 0; }
+            get { return _orderQueue.Count > 0; }
         }
 
         internal void Start()
         {
-            sched.Start();
+            _sched.Start();
 
             LoadDailyEconomicCalendar();
 
@@ -40,7 +40,7 @@ namespace FXSharp.EA.NewsBox
 
         private void LoadDailyEconomicCalendar()
         {
-            Task task = economicScheduler.PrepareDailyReminder();
+            Task task = _economicScheduler.PrepareDailyReminder();
         }
 
         private void StartDailyEconomicCalendar()
@@ -57,14 +57,14 @@ namespace FXSharp.EA.NewsBox
                                              .WithCronSchedule("0 01 00 * * ?") // everyday at 00 01
                                              .Build();
 
-            jobDetail.JobDataMap.Add("scheduler", economicScheduler);
+            jobDetail.JobDataMap.Add("scheduler", _economicScheduler);
 
-            sched.ScheduleJob(jobDetail, trigger);
+            _sched.ScheduleJob(jobDetail, trigger);
         }
 
         internal void Stop()
         {
-            sched.Shutdown();
+            _sched.Shutdown();
         }
     }
 }

@@ -8,24 +8,24 @@ namespace FXSharp.EA.NewsBox
 {
     public class DailyEconomicScheduler
     {
-        private readonly OrderDecisionProcessor decisionProcessor = new OrderDecisionProcessor();
-                                                // currently using polling model, next publish
+        private readonly OrderDecisionProcessor _decisionProcessor = new OrderDecisionProcessor();
+        // currently using polling model, next publish
 
-        private readonly MagicBoxScheduler scheduler;
+        private readonly MagicBoxScheduler _scheduler;
 
         public DailyEconomicScheduler(IScheduler scheduler, ConcurrentQueue<MagicBoxOrder> queues)
         {
-            this.scheduler = new MagicBoxScheduler(scheduler, queues);
+            this._scheduler = new MagicBoxScheduler(scheduler, queues);
         }
 
         public async Task PrepareDailyReminder()
         {
-            List<MagicBoxOrder> magicBoxes = await decisionProcessor.GetTodayMagicBoxOrders();
+            var magicBoxes = await _decisionProcessor.GetTodayMagicBoxOrders();
 
-            foreach (MagicBoxOrder order in magicBoxes)
+            foreach (var order in magicBoxes)
             {
                 Console.WriteLine("Scheduled : {0} @ {1}", order.Symbol, order.ExecutingTime);
-                scheduler.Schedule(order);
+                _scheduler.Schedule(order);
             }
         }
     }

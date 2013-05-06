@@ -62,8 +62,6 @@
     <Compile Include="Currency\LowestSpreadsRelatedPairsRepository.cs" />
     <Compile Include="MagicBoxConfig.cs" />
     <Compile Include="OrderCreator.cs" />
-    <Compile Include="Trailing\ITrailingMethod.cs" />
-    <Compile Include="Trailing\OrderTrailingInfo.cs" />
     <Compile Include="OrderWatcherPool.cs" />
     <Compile Include="Scheduler\DailyEconomicCalendarUpdateJob.cs" />
     <Compile Include="Scheduler\DailyEconomicScheduler.cs" />
@@ -80,9 +78,7 @@
     <Compile Include="OrderWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OrderDecisionProcessor.cs" />
-    <Compile Include="Trailing\BuyTrailingMethod.cs" />
-    <Compile Include="Trailing\IOrderDetail.cs" />
-    <Compile Include="Trailing\SellTrailingMethod.cs" />
+    <Compile Include="Trailing\TrailingMethod.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FXSharp.EA.OrderManagements\FXSharp.EA.OrderManagements.csproj">
