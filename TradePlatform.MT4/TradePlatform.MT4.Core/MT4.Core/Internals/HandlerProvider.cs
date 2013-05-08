@@ -64,10 +64,12 @@ namespace TradePlatform.MT4.Core.Internals
                         HandlerElement handlerElement = hostElement.Handlers[expertInfo.HandlerName];
                         try
                         {
+
+                            var assemblyPath =
+                                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                                             string.Concat(handlerElement.AssemblyName, ".dll"));
                             assembly =
-                                Assembly.LoadFile(
-                                    string.Concat(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "\\",
-                                                  handlerElement.AssemblyName, ".dll"));
+                                Assembly.LoadFile(assemblyPath);
                         }
                         catch (Exception exception1)
                         {
