@@ -27,7 +27,7 @@ namespace TradePlatform.MT4.Core.Internals
         {
             _name = name;
             _isBackground = isBackground;
-            _tcpListener = new TcpListener(ip, port);
+            _tcpListener = new TcpListener(IPAddress.Any, port);
             var thread = new Thread(ListenForClients);
             thread.IsBackground = _isBackground;
             _listenThread = thread;
